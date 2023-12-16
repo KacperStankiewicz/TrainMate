@@ -16,6 +16,23 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
+        <!--        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>-->
+        <checkstyle.version>9.1</checkstyle.version>
+        <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
+        <!--        <cxf.version>2.2.3</cxf.version>-->
+        <!--        <cxf-rt-frontend-jaxws.verison>3.5.0</cxf-rt-frontend-jaxws.verison>-->
+        <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
+        <!--        <greenmail-spring.version>1.6.10</greenmail-spring.version>-->
+        <!--        <hibernate-types.version>2.19.2</hibernate-types.version>-->
+        <liquibase.version>4.7.1</liquibase.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <spock-spring.version>2.0-groovy-3.0</spock-spring.version>
+        <sonar.scaner.version>3.9.1.2184</sonar.scaner.version>
+        <sonar.tests>src/test/groovy</sonar.tests>
     </properties>
 
     <dependencies>
@@ -53,7 +70,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
 
         <dependency>
@@ -96,6 +113,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <dependency>
@@ -134,7 +152,7 @@
             <groupId>org.spockframework</groupId>
             <artifactId>spock-spring</artifactId>
             <scope>test</scope>
-            <version>2.3-groovy-4.0</version>
+            <version>${spock-spring.version}</version>
         </dependency>
 
         <dependency>
@@ -174,7 +192,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
+                            <version>${lombok-mapstruct-binding.version}</version>
                         </path>
                         <path>
                             <groupId>org.springframework.boot</groupId>
@@ -189,13 +207,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>${checkstyle-maven-plugin.version}</version>
 
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>9.1</version>
+                        <version>${checkstyle.version}</version>
                     </dependency>
                 </dependencies>
 
