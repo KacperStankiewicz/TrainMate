@@ -10,13 +10,13 @@ class CoreApplicationIT extends IntegrationSpecification {
 
     @Test
     void contextLoads() throws Exception {
-        // given:
+        given:
         var url = "/actuator/health";
 
-        // when:
+        when:
         var response = mockMvc.perform(get(url));
 
-        // then:
+        then:
         response
             .andExpect(status().isOk())
             .andExpect(content().json("{\"status\":\"UP\"}"));
