@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.utils
 
-import jakarta.persistence.EntityManager
-import jakarta.persistence.Table
+import javax.persistence.EntityManager
+import javax.persistence.Table
 import org.hibernate.Session
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.ContextRefreshedEvent
