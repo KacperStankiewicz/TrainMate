@@ -16,13 +16,6 @@ spring:
 
   liquibase:
     change-log: db/changelog-master.xml
-  docker:
-    compose:
-      enabled: false
-  security:
-    user:
-      name: user
-      password: user
 
 springdoc:
   api-docs:
@@ -30,11 +23,13 @@ springdoc:
   override-with-generic-response: false
   show-actuator: true
 
+
 management:
-  health:
-    rabbit:
-      enabled: false
   endpoints:
     web:
       exposure:
         include: "info,health"
+
+server:
+  servlet:
+    context-path: /api/tm-core
