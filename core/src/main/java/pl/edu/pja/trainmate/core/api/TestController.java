@@ -9,12 +9,12 @@ import pl.edu.pja.trainmate.core.service.UserImplementation;
 import pl.edu.pja.trainmate.core.service.UserService;
 
 import java.util.List;
-
+//todo: formatowanie i importy
 @RestController
 public class TestController {
     private UserImplementation userImplementation;
 
-    public TestController(UserImplementation userImplementation) {
+    public TestController(UserImplementation userImplementation) { //todo: to do wywaleenia, mozna dac requiredArgsConstructor
         this.userImplementation = userImplementation;
     }
 

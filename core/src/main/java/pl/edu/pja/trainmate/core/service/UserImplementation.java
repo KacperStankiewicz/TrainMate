@@ -7,11 +7,11 @@ import pl.edu.pja.trainmate.core.model.User;
 import pl.edu.pja.trainmate.core.repos.UserRepository;
 
 import java.util.List;
-
+//todo: formatowanie
 @Service
-@AllArgsConstructor
-public class UserImplementation implements UserService {
-    @Autowired
+@AllArgsConstructor //do wwyalenia
+public class UserImplementation implements UserService { //todo: ja bym nie szedłl w interfejs serwisu + implementacja, lepiej zrrobic serwis package-private i do tego pubbbliczna fasade
+    @Autowired      //todo: lepiej tak nie robic. dodaj adnotacje na requiredArgs i private final
     UserRepository userRepository;
     @Override
     public List<User> getUsers() {
@@ -24,7 +24,7 @@ public class UserImplementation implements UserService {
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(long id) { //todo: uzywajmy ,,duzych" longów czyli obiektu Long
         userRepository.deleteById(id);
     }
 
