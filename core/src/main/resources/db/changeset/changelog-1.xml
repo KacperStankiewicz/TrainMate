@@ -5,7 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <changeSet id="TrainMete-#10 create table user" author="B.Laskowski">
+    <changeSet id="TrainMate-#10 create table user" author="B.Laskowski">
         <preConditions>
             <not>
                 <tableExists tableName="user"/>
@@ -13,9 +13,11 @@
         </preConditions>
 
         <createTable tableName="user">
-            <column name="ID" type="java.lang.Long"/>
-            <column name="Name" type="varchar(32)"/>
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user_id"/>
+            </column>
+            <column name="name" type="varchar(32)"/>
         </createTable>
-        <addPrimaryKey tableName="user" columnNames="ID" constraintName="primary_key_constraint"/>
+        <createSequence sequenceName="seq_user" startValue="1" incrementBy="1"/>
     </changeSet>
 </databaseChangeLog>
