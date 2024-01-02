@@ -1,7 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
