@@ -31,3 +31,6 @@ management:
 server:
   servlet:
     context-path: /api/tm-core
+
+keycloak:
+  enabled: false
