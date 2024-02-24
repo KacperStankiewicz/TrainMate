@@ -5,6 +5,7 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
+        format_sql: false
 
   datasource:
     url: jdbc:postgresql://localhost:5432/tm_core
