@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.dietplan.ingredient;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,6 +31,7 @@ public class IngredientEntity extends BaseEntity {
     @GeneratedValue(strategy = SEQUENCE, generator = "ingredient_id_seq_generator")
     private Long id;
 
+    @Embedded
     private Macros macros;
     private String name;
     private String category; //todo: pewnie trzeba to jako enum zrobic -> mieso, nabial etc.

@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Macros {
 
-    private Long fat;
-    private Long carbs;
-    private Long protein;
-    private Long calories;
+    private Integer fat;
+    private Integer carbs;
+    private Integer protein;
+    private Integer calories;
 }

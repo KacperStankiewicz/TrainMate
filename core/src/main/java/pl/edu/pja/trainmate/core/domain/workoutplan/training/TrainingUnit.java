@@ -1,10 +1,12 @@
 package pl.edu.pja.trainmate.core.domain.workoutplan.training;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.DayOfWeek;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
@@ -35,6 +37,7 @@ public class TrainingUnit extends BaseEntity {
     @Column(name = "workout_plan_id")
     private Long workoutPlanId;
 
+    @Enumerated(STRING)
     private DayOfWeek dayOfWeek;
     private Long weekNumber;
 

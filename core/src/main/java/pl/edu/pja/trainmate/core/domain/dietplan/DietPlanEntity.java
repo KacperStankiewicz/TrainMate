@@ -2,6 +2,8 @@ package pl.edu.pja.trainmate.core.domain.dietplan;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,7 +35,10 @@ public class DietPlanEntity extends BaseEntity {
     private Long id;
 
     private String name;
+
+    @AttributeOverride(name = "value", column = @Column(name = "user_id"))
     private UserId userId;
+
     private String category;
     private DateRange period; //todo: pomyslec trzeba nad lepsza nazwa bo samo period malo mowi chyba
 }

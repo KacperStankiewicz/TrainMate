@@ -36,6 +36,4 @@ public class IngredientItemEntity extends BaseEntity {
 
     @Embedded
     private IngredientAmount amount;
-    @Embedded
-    private Macros macros;
 }

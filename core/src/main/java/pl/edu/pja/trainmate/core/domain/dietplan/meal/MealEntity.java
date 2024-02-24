@@ -1,10 +1,12 @@
 package pl.edu.pja.trainmate.core.domain.dietplan.meal;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.DayOfWeek;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
@@ -36,7 +38,11 @@ public class MealEntity extends BaseEntity {
     @Column(name = "diet_plan_id")
     private Long dietPlanId;
 
-    private Long weekNumber;
+    private Integer weekNumber;
+
+    @Enumerated(STRING)
     private DayOfWeek dayOfWeek;
+
+    @Enumerated(STRING)
     private MealTime mealTime;
 }

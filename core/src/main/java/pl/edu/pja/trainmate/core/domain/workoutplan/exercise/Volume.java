@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class Volume {
 
-    private Long repetitions;
+    private Integer repetitions;
 
     private String tempo;
 
-    private Long weight;
+    private Integer weight;
 
-    private Long rir;
+    private Integer rir;
 
-    private Long sets;
+    private Integer sets;
 }

@@ -1,8 +1,10 @@
 package pl.edu.pja.trainmate.core.common;
 
+import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PRIVATE;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class IngredientAmount {
 
-    private Long amount;
+    private Integer amount;
+
+    @Enumerated(STRING)
     private UnitOfMeasurement unitOfMeasurement;
 }

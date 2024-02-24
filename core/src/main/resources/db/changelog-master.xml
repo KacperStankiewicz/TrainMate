@@ -7,5 +7,6 @@
 
     <include file="db/changelog-properties.xml"/>
     <include file="db/changeset/changelog-1.xml"/>
+    <include file="db/changeset/changelog-2.xml"/>
 
 </databaseChangeLog>

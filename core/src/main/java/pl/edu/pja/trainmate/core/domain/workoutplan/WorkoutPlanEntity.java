@@ -2,6 +2,8 @@ package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,6 +34,8 @@ public class WorkoutPlanEntity extends BaseEntity { //todo: ja bym połączył t
     private Long id;
 
     private String name;
+
+    @AttributeOverride(name = "value", column = @Column(name = "user_id"))
     private UserId userId;
     private String category;
 }
