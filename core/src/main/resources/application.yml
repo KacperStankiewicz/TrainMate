@@ -16,12 +16,17 @@ spring:
   liquibase:
     change-log: db/changelog-master.xml
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8123/realms/trainmate/protocol/openid-connect/certs
+
 springdoc:
   api-docs:
     path: /api-docs
   override-with-generic-response: false
   show-actuator: true
-
 
 management:
   endpoints:
@@ -34,4 +39,14 @@ server:
     context-path: /api/tm-core
 
 keycloak:
-  enabled: false
+  enabled: true
+  auth-server-url: http://localhost:8123/realms/trainmate
+  realm: trainmate
+  bearer-only: true
+  resource: train-mate
+  public-client: true
+  cors: true
+  use-resource-role-mappings: true
+#  ssl-required: none
+#  credentials:
+#    secret: GVqNkg9N4JDH3BdDPrW3mDCoWMcbAXZJ
