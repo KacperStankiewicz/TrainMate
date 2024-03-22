@@ -27,7 +27,8 @@ import pl.edu.pja.trainmate.core.common.UserId;
     sequenceName = "seq_workout_plan",
     allocationSize = 1
 )
-public class WorkoutPlanEntity extends BaseEntity { //todo: ja bym połączył te oncje i DietPlanEntity w jedno. Żeby był po porstu PlanEntity z enumem w srodku. a moze w ogole jest niepotrzebna?
+public class WorkoutPlanEntity extends
+    BaseEntity { //todo: ja bym połączył te oncje i DietPlanEntity w jedno. Żeby był po porstu PlanEntity z enumem w srodku. a moze w ogole jest niepotrzebna?
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "workout_plan_id_seq_generator")

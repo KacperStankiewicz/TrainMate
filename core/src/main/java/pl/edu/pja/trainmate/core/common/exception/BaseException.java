@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
-import pl.edu.pja.trainmate.core.common.errorcode.BaseErrorCode;
+import pl.edu.pja.trainmate.core.common.error.BaseErrorCode;
 
 @Builder
 @AllArgsConstructor

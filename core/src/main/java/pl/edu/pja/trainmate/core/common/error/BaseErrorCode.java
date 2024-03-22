@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.common.errorcode;
+package pl.edu.pja.trainmate.core.common.error;
 
 import org.springframework.http.HttpStatus;
 
