@@ -47,6 +47,3 @@ keycloak:
   public-client: true
   cors: true
   use-resource-role-mappings: true
-#  ssl-required: none
-#  credentials:
-#    secret: GVqNkg9N4JDH3BdDPrW3mDCoWMcbAXZJ

@@ -1,7 +1,8 @@
 package pl.edu.pja.trainmate.core.config.security;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldNameConstants;
@@ -17,13 +18,7 @@ public enum RoleType {
 
     private final String value;
 
-    private static final Map<String, RoleType> stringToEnumMap = new HashMap<>();
-
-    static {
-        for (RoleType role : RoleType.values()) {
-            stringToEnumMap.put(role.getValue(), role);
-        }
-    }
+    private static final Map<String, RoleType> stringToEnumMap = Arrays.stream(RoleType.values()).collect(Collectors.toMap(RoleType::getValue, role -> role));
 
     public static RoleType fromString(String text) {
         return stringToEnumMap.get(text.toLowerCase());

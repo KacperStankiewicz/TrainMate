@@ -10,7 +10,7 @@ import pl.edu.pja.trainmate.core.config.security.RoleType;
 
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
-public @interface HasRoleType {
+public @interface HasRole {
 
     RoleType[] roleType() default {};
 }

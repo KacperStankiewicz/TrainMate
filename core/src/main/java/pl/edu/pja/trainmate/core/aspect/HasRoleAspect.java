@@ -15,7 +15,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-import pl.edu.pja.trainmate.core.annotation.HasRoleType;
+import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 import pl.edu.pja.trainmate.core.config.security.KeycloakRoleConverter;
 
@@ -25,16 +25,16 @@ import pl.edu.pja.trainmate.core.config.security.KeycloakRoleConverter;
 @Configuration
 @EnableAspectJAutoProxy
 @Component
-class HasRoleTypeAspect {
+class HasRoleAspect {
 
     private final KeycloakRoleConverter keycloakRoleConverter;
 
-    @Around("@within(pl.edu.pja.trainmate.core.annotation.HasRoleType) && execution(* *(..))")
+    @Around("@within(pl.edu.pja.trainmate.core.annotation.HasRole) && execution(* *(..))")
     public Object authorizeClass(ProceedingJoinPoint point) throws Throwable {
         return authorize(point, true);
     }
 
-    @Around("@annotation(pl.edu.pja.trainmate.core.annotation.HasRoleType)")
+    @Around("@annotation(pl.edu.pja.trainmate.core.annotation.HasRole)")
     public Object authorizeMethod(ProceedingJoinPoint point) throws Throwable {
         return authorize(point, false);
     }
@@ -46,7 +46,7 @@ class HasRoleTypeAspect {
         var declaration = authorizeClass
             ? methodSignature.getMethod().getDeclaringClass()
             : methodSignature.getMethod();
-        var requiredUserRoles = List.of(declaration.getAnnotation(HasRoleType.class).roleType());
+        var requiredUserRoles = List.of(declaration.getAnnotation(HasRole.class).roleType());
         var actualUserRole = keycloakRoleConverter.convert(principal);
 
         if (actualUserRole == ADMIN) {
