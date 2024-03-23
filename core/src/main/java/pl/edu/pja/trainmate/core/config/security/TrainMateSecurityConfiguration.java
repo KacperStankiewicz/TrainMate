@@ -2,7 +2,6 @@ package pl.edu.pja.trainmate.core.config.security;
 
 import static pl.edu.pja.trainmate.core.config.Profiles.DEV;
 import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
-import static pl.edu.pja.trainmate.core.config.Profiles.LOCAL;
 import static pl.edu.pja.trainmate.core.config.Profiles.PROD;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @RequiredArgsConstructor
 @Configuration
-@Profile({DEV, INTEGRATION, LOCAL, PROD})
+@Profile({DEV, INTEGRATION, PROD})
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @KeycloakConfiguration
 @EnableWebSecurity
