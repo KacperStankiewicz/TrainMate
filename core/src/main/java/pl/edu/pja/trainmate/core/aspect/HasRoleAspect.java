@@ -1,6 +1,9 @@
 package pl.edu.pja.trainmate.core.aspect;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.NO_ACCESS_TO_THE_RESOURCE;
+import static pl.edu.pja.trainmate.core.config.Profiles.DEV;
+import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
+import static pl.edu.pja.trainmate.core.config.Profiles.PROD;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.ADMIN;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
@@ -25,6 +29,7 @@ import pl.edu.pja.trainmate.core.config.security.KeycloakRoleConverter;
 @Configuration
 @EnableAspectJAutoProxy
 @Component
+@Profile({DEV, PROD, INTEGRATION})
 class HasRoleAspect {
 
     private final KeycloakRoleConverter keycloakRoleConverter;

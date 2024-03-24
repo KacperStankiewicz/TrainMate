@@ -2,7 +2,7 @@ package pl.edu.pja.trainmate.core.domain.user;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
-import javax.persistence.Embedded;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,28 +13,27 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
-import pl.edu.pja.trainmate.core.common.UserId;
 
-@Table(name = "user", schema = "public")
+@Table(name = "medical_info", schema = "public")
 @Entity
 @SequenceGenerator(
-    name = "user_id_seq_generator",
-    sequenceName = "seq_user",
+    name = "medical_info_id_seq_generator",
+    sequenceName = "seq_medical_info",
     allocationSize = 1
 )
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserEntity extends BaseEntity {
+public class MedicalInfoEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "user_id_seq_generator")
+    @GeneratedValue(strategy = SEQUENCE, generator = "medical_info_id_seq_generator")
     private Long id;
 
-    @Embedded
-    private PersonalInfo personalInfo;
+    private Long userId;
 
-    @Embedded
-    private UserId userId;
+    @Column(name = "injuries")
+    private String injuries; //todo : serializacja i deserializacja z/na JSON
+
 }

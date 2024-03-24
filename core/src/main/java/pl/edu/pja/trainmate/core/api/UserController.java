@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
-import pl.edu.pja.trainmate.core.domain.user.UserEntity;
+import pl.edu.pja.trainmate.core.domain.user.UserCreateDto;
 import pl.edu.pja.trainmate.core.domain.user.UserFacade;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.UserProjection;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,19 +21,25 @@ public class UserController {
     private final UserFacade userFacade;
 
     @PostMapping("/add")
-    public UserEntity addUser(@RequestBody String name) {
-        return userFacade.create(name);
+    public Long addUser(@RequestBody UserCreateDto userCreateDto) {
+        return userFacade.create(userCreateDto);
     }
 
     @HasRole(roleType = TRAINED_PERSON)
     @GetMapping("/all")
-    public List<UserEntity> getAllUsers() {
+    public List<UserProjection> getAllUsers() {
         return userFacade.getUsers();
     }
 
     @HasRole(roleType = ADMIN)
     @GetMapping("/admin")
-    public List<UserEntity> getAllUsersForAdmin() {
+    public List<UserProjection> getAllUsersForAdmin() {
+        return userFacade.getUsers();
+    }
+
+    //    @HasRole(roleType = ADMIN)
+    @GetMapping("/search")
+    public List<UserProjection> dupa() {
         return userFacade.getUsers();
     }
 }
