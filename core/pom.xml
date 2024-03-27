@@ -16,15 +16,9 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-
-        <!--        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>-->
         <checkstyle.version>9.1</checkstyle.version>
         <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
-        <!--        <cxf.version>2.2.3</cxf.version>-->
-        <!--        <cxf-rt-frontend-jaxws.verison>3.5.0</cxf-rt-frontend-jaxws.verison>-->
         <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
-        <!--        <greenmail-spring.version>1.6.10</greenmail-spring.version>-->
-        <!--        <hibernate-types.version>2.19.2</hibernate-types.version>-->
         <liquibase.version>4.7.1</liquibase.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -33,20 +27,24 @@
         <spock-spring.version>2.0-groovy-3.0</spock-spring.version>
         <sonar.scaner.version>3.9.1.2184</sonar.scaner.version>
         <sonar.tests>src/test/groovy</sonar.tests>
+        <keycloak-security-adapter.version>24.0.1</keycloak-security-adapter.version>
+        <vavr.version>0.10.4</vavr.version>
+        <keycloak.version>11.0.3</keycloak.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.keycloak.bom</groupId>
+                <artifactId>keycloak-adapter-bom</artifactId>
+                <version>24.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!--                <dependency>-->
-        <!--                    <groupId>org.springframework</groupId>-->
-        <!--                    <artifactId>spring-beans</artifactId>-->
-        <!--                    <version>6.1.1</version>-->
-        <!--                </dependency>-->
-
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
@@ -55,6 +53,24 @@
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
         <dependency>
@@ -68,37 +84,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>commons-validator</groupId>-->
-        <!--            <artifactId>commons-validator</artifactId>-->
-        <!--            <version>1.7</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.vladmihalcea</groupId>-->
-        <!--            <artifactId>hibernate-types-60</artifactId>-->
-        <!--            <version>2.21.1</version>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -179,11 +167,6 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
-                        </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -282,30 +265,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
-            <!--            <plugin>-->
-            <!--                <groupId>io.github.git-commit-id</groupId>-->
-            <!--                <artifactId>git-commit-id-maven-plugin</artifactId>-->
-            <!--                <version>5.0.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>get-the-git-infos</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>revision</goal>-->
-            <!--                        </goals>-->
-            <!--                        <phase>initialize</phase>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--                <configuration>-->
-            <!--                    <generateGitPropertiesFile>true</generateGitPropertiesFile>-->
-            <!--                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>-->
-            <!--                    <includeOnlyProperties>-->
-            <!--                        <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>-->
-            <!--                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>-->
-            <!--                    </includeOnlyProperties>-->
-            <!--                    <commitIdGenerationMode>full</commitIdGenerationMode>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

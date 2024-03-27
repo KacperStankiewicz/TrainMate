@@ -1,10 +1,10 @@
 package pl.edu.pja.trainmate.core
 
+import org.junit.jupiter.api.Test
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-
-import org.junit.jupiter.api.Test
 
 class CoreApplicationIT extends IntegrationSpecification {
 
@@ -18,7 +18,7 @@ class CoreApplicationIT extends IntegrationSpecification {
 
         then:
         response
-            .andExpect(status().isOk())
-            .andExpect(content().json("{\"status\":\"UP\"}"));
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"status\":\"UP\"}"));
     }
 }

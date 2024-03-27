@@ -1,7 +1,6 @@
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show_sql: false
     hibernate:
       ddl-auto: validate
     properties:
@@ -17,12 +16,17 @@ spring:
   liquibase:
     change-log: db/changelog-master.xml
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8123/realms/trainmate/protocol/openid-connect/certs
+
 springdoc:
   api-docs:
     path: /api-docs
   override-with-generic-response: false
   show-actuator: true
-
 
 management:
   endpoints:
@@ -33,3 +37,13 @@ management:
 server:
   servlet:
     context-path: /api/tm-core
+
+keycloak:
+  enabled: true
+  auth-server-url: http://localhost:8123/realms/trainmate
+  realm: trainmate
+  bearer-only: true
+  resource: train-mate
+  public-client: true
+  cors: true
+  use-resource-role-mappings: true

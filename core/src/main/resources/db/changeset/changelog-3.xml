@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm12-add fields to user entity" author="kstankiewicz">
+        <preConditions>
+            <tableExists tableName="user"/>
+            <columnExists tableName="user" columnName="name"/>
+            <not>
+                <columnExists tableName="user" columnName="firstname"/>
+                <columnExists tableName="user" columnName="lastname"/>
+                <columnExists tableName="user" columnName="date_of_birth"/>
+                <columnExists tableName="user" columnName="phone"/>
+                <columnExists tableName="user" columnName="email"/>
+                <columnExists tableName="user" columnName="creation_date_time"/>
+                <columnExists tableName="user" columnName="modification_date_time"/>
+                <columnExists tableName="user" columnName="created_by"/>
+                <columnExists tableName="user" columnName="modified_by"/>
+            </not>
+        </preConditions>
+
+        <renameColumn tableName="user" oldColumnName="name" newColumnName="firstname"/>
+        <modifyDataType tableName="user" columnName="firstname" newDataType="varchar(50)"/>
+        <addColumn tableName="user">
+            <column name="lastname" type="varchar(50)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="phone" type="varchar(32)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="keycloak_id" type="varchar(128)"/>
+            <column name="created_by" type="varchar(36)"/>
+            <column name="modified_by" type="varchar(36)"/>
+            <column name="creation_date_time" type="timestamp"/>
+            <column name="modification_date_time" type="timestamp"/>
+        </addColumn>
+
+
+    </changeSet>
+
+    <changeSet id="Tm12- create medical info entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <tableExists tableName="medical_info"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="medical_info">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_medical_info_id"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="injuries" type="text"/>
+            <column name="created_by" type="varchar(36)"/>
+            <column name="modified_by" type="varchar(36)"/>
+            <column name="creation_date_time" type="timestamp"/>
+            <column name="modification_date_time" type="timestamp"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_medical_info"/>
+    </changeSet>
+
+</databaseChangeLog>

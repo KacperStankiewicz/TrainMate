@@ -1,13 +1,14 @@
 package pl.edu.pja.trainmate.core.utils
 
-import javax.persistence.EntityManager
-import javax.persistence.Table
 import org.hibernate.Session
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
+import javax.persistence.EntityManager
+import javax.persistence.Table
 
 @Service
 @Transactional
@@ -32,7 +33,7 @@ class DatabaseCleanupService {
 
     def cleanupDatabase() {
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
-        tables.forEach {entityManager.createNativeQuery("DELETE FROM " + it).executeUpdate()}
+        tables.forEach { entityManager.createNativeQuery("DELETE FROM " + it).executeUpdate() }
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate()
     }
 }
