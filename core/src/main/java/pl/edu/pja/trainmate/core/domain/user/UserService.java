@@ -1,41 +1,33 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
-import java.util.List;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.COULD_NOT_CREATE_MENTEE;
+import static pl.edu.pja.trainmate.core.domain.user.mapper.MenteeMapper.mapToUserEntity;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserIdProvider;
-import pl.edu.pja.trainmate.core.domain.user.querydsl.UserProjection;
-import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
+import pl.edu.pja.trainmate.core.domain.user.dto.MenteeCreateDto;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeQueryService;
 
 @Service
 @RequiredArgsConstructor
 class UserService {
 
-    private final UserRepository userRepository;
     private final UserIdProvider userIdProvider;
-    private final UserQueryService queryService;
+    private final MenteeRepository menteeRepository;
+    private final MenteeQueryService queryService;
 
-    public List<UserProjection> searchByCriteria() {
-        return queryService.searchUserByCriteria();
+    public Page<MenteeProjection> searchByCriteria(MenteeSearchCriteria criteria, Pageable pageable) {
+        return queryService.searchMenteeByCriteria(criteria, pageable);
     }
 
-    public Long addUser(UserCreateDto userCreateDto) {
-        return userRepository.save(buildUser(userCreateDto)).getId();
-    }
+    public ResultDto<Long> createMentee(MenteeCreateDto menteeCreateDto) {
+        var mentee = mapToUserEntity(menteeCreateDto, userIdProvider.getLoggedUserId());
 
-    private UserEntity buildUser(UserCreateDto userCreateDto) {
-
-        var personalInfo = PersonalInfo.builder()
-            .firstname(userCreateDto.getFirstname())
-            .lastname(userCreateDto.getLastname())
-            .dateOfBirth(userCreateDto.getDateOfBirth())
-            .phone(userCreateDto.getPhone())
-            .email(userCreateDto.getEmail())
-            .build();
-
-        return UserEntity.builder()
-            .personalInfo(personalInfo)
-            .userId(userIdProvider.getLoggedUserId())
-            .build();
+        return ResultDto.ofValueOrError(menteeRepository.save(mentee).getId(), COULD_NOT_CREATE_MENTEE);
     }
 }

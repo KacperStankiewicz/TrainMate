@@ -14,7 +14,7 @@ import lombok.experimental.FieldNameConstants;
 @NoArgsConstructor(access = PRIVATE, force = true)
 @Value
 @FieldNameConstants
-public class UserProjection {
+public class MenteeProjection {
 
     String firstname;
     String lastname;
@@ -23,7 +23,7 @@ public class UserProjection {
     String email;
 
     @QueryProjection
-    public UserProjection(String firstname, String lastname, LocalDate dateOfBirth, String phone, String email) {
+    public MenteeProjection(String firstname, String lastname, LocalDate dateOfBirth, String phone, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
