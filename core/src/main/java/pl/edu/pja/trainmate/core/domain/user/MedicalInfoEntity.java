@@ -33,7 +33,7 @@ public class MedicalInfoEntity extends BaseEntity {
 
     private Long userId;
 
-    @Column(name = "injuries")
+    @Column(name = "injuries", columnDefinition = "clob")
     private String injuries; //todo : serializacja i deserializacja z/na JSON
 
 }

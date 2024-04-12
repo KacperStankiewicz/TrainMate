@@ -6,15 +6,16 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum CommonErrorCode implements BaseErrorCode {
+public enum MenteeErrorCode implements BaseErrorCode {
 
-    ENTITY_NOT_FOUND("ENTITY_NOT_FOUND", BAD_REQUEST);
+    COULD_NOT_CREATE_MENTEE("Mentee was not created", BAD_REQUEST);
+
 
     private final String message;
     private final HttpStatus httpStatus;
 
-    CommonErrorCode(String message, HttpStatus status) {
+    MenteeErrorCode(String message, HttpStatus httpStatus) {
         this.message = message;
-        this.httpStatus = status;
+        this.httpStatus = httpStatus;
     }
 }
