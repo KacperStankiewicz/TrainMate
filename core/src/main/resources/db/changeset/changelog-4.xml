@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm33-add muscle field to exercise entity" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="exercise" columnName="muscle_involved"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="exercise">
+            <column name="muscle_involved" type="varchar(32)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm33-change dish entity column types to varchar" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="dish" columnName="instruction"/>
+            <columnExists tableName="dish" columnName="instruction_video_url"/>
+        </preConditions>
+        <modifyDataType tableName="dish" columnName="instruction" newDataType="varchar(1024)"/>
+        <modifyDataType tableName="dish" columnName="instruction_video_url" newDataType="varchar(1024)"/>
+    </changeSet>
+
+    <changeSet id="Tm33-change exercise entity column types to varchar" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="exercise" columnName="url"/>
+        </preConditions>
+        <modifyDataType tableName="exercise" columnName="url" newDataType="varchar(1024)"/>
+    </changeSet>
+</databaseChangeLog>
