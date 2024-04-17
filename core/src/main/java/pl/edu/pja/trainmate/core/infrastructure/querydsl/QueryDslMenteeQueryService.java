@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.NumberRange;
 import pl.edu.pja.trainmate.core.common.OrderByBuilder;
-import pl.edu.pja.trainmate.core.domain.user.MenteeSearchCriteria;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 import pl.edu.pja.trainmate.core.domain.user.QPersonalInfo;
 import pl.edu.pja.trainmate.core.domain.user.QUserEntity;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;

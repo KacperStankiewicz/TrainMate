@@ -15,17 +15,17 @@ import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.common.UserId;
 
-@Table(name = "user", schema = "public")
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(name = "user")
 @SequenceGenerator(
     name = "user_id_seq_generator",
     sequenceName = "seq_user",
     allocationSize = 1
 )
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 public class UserEntity extends BaseEntity {
 
     @Id

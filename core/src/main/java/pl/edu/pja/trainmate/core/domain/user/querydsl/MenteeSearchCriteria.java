@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.user;
+package pl.edu.pja.trainmate.core.domain.user.querydsl;
 
 import static lombok.AccessLevel.PRIVATE;
 

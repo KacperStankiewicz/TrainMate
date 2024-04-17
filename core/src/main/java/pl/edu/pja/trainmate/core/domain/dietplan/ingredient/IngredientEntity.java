@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.dietplan.ingredient;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,5 +36,6 @@ public class IngredientEntity extends BaseEntity {
     private Macros macros;
     private String name;
     private String category; //todo: pewnie trzeba to jako enum zrobic -> mieso, nabial etc.
+    @Column(name = "photo", columnDefinition = "clob")
     private String photo; //todo: to pewnie nie bedzie string
 }
