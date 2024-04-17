@@ -21,7 +21,6 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
 
 @RequiredArgsConstructor
 @RestController
-@HasRole(roleType = PERSONAL_TRAINER)
 @RequestMapping("/mentees")
 public class MenteeController {
 
