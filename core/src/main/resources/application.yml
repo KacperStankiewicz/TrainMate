@@ -5,14 +5,12 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true # Ustawienie na true, aby formatować wygenerowane zapytania
-        show_sql: true
-        use_sql_comments: true
+        format_sql: false
 
   datasource:
     url: jdbc:postgresql://localhost:5432/tm_core
     username: postgres
-    password: admin
+    password: postgres
     driverClassName: org.postgresql.Driver
 
   liquibase:
@@ -39,7 +37,6 @@ management:
 server:
   servlet:
     context-path: /api/tm-core
-  port: 8989
 
 keycloak:
   enabled: true
