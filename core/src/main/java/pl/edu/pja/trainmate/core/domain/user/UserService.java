@@ -1,7 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.COULD_NOT_CREATE_MENTEE;
-import static pl.edu.pja.trainmate.core.domain.user.mapper.MenteeMapper.mapToUserEntity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +11,7 @@ import pl.edu.pja.trainmate.core.common.UserIdProvider;
 import pl.edu.pja.trainmate.core.domain.user.dto.MenteeCreateDto;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeQueryService;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +26,21 @@ class UserService {
     }
 
     public ResultDto<Long> createMentee(MenteeCreateDto menteeCreateDto) {
-        var mentee = mapToUserEntity(menteeCreateDto, userIdProvider.getLoggedUserId());
+        var mentee = buildUserEntity(menteeCreateDto);
 
         return ResultDto.ofValueOrError(menteeRepository.save(mentee).getId(), COULD_NOT_CREATE_MENTEE);
+    }
+
+    private UserEntity buildUserEntity(MenteeCreateDto createDto) {
+        return UserEntity.builder()
+            .userId(userIdProvider.getLoggedUserId())
+            .personalInfo(PersonalInfo.builder()
+                .firstname(createDto.getFirstname())
+                .lastname(createDto.getLastname())
+                .email(createDto.getEmail())
+                .phone(createDto.getPhone())
+                .dateOfBirth(createDto.getDateOfBirth())
+                .build())
+            .build();
     }
 }
