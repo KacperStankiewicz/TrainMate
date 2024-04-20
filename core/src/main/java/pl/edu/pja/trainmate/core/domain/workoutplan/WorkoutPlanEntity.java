@@ -2,8 +2,6 @@ package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
-import pl.edu.pja.trainmate.core.common.UserId;
 
 @Getter
 @Builder
@@ -27,8 +24,7 @@ import pl.edu.pja.trainmate.core.common.UserId;
     sequenceName = "seq_workout_plan",
     allocationSize = 1
 )
-public class WorkoutPlanEntity extends
-    BaseEntity { //todo: ja bym połączył te oncje i DietPlanEntity w jedno. Żeby był po porstu PlanEntity z enumem w srodku. a moze w ogole jest niepotrzebna?
+public class WorkoutPlanEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "workout_plan_id_seq_generator")
@@ -36,7 +32,6 @@ public class WorkoutPlanEntity extends
 
     private String name;
 
-    @AttributeOverride(name = "value", column = @Column(name = "user_id"))
-    private UserId userId;
+    private Long userId;
     private String category;
 }

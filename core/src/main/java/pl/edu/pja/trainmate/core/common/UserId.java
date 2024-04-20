@@ -23,23 +23,23 @@ public class UserId implements Serializable {
     private static final long serialVersionUID = 7667472043944913479L;
 
     @Column(name = "keycloak_id")
-    String value;
+    String keycloakId;
 
     @PersistenceConstructor
     @QueryProjection
-    public UserId(String value) {
-        Objects.requireNonNull(value);
-        this.value = value;
+    public UserId(String keycloakId) {
+        Objects.requireNonNull(keycloakId);
+        this.keycloakId = keycloakId;
     }
 
-    public static UserId valueOf(String value) {
-        Objects.requireNonNull(value);
-        return new UserId(value);
+    public static UserId valueOf(String keycloakId) {
+        Objects.requireNonNull(keycloakId);
+        return new UserId(keycloakId);
     }
 
     @Override
     public String toString() {
-        return value;
+        return keycloakId;
     }
 
     @Override
@@ -51,11 +51,11 @@ public class UserId implements Serializable {
             return false;
         }
         UserId userId = (UserId) o;
-        return Objects.equals(value, userId.value);
+        return Objects.equals(keycloakId, userId.keycloakId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(keycloakId);
     }
 }
