@@ -30,4 +30,32 @@
         </preConditions>
         <modifyDataType tableName="exercise" columnName="url" newDataType="varchar(1024)"/>
     </changeSet>
+
+    <changeSet id="uber_fix add role to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="role"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="role" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="uber_fix change column types" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="diet_plan" columnName="user_id"/>
+        </preConditions>
+
+        <modifyDataType tableName="diet_plan" columnName="user_id" newDataType="bigint"/>
+    </changeSet>
+
+    <changeSet id="uber_fix change workout_plan column types" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="workout_plan" columnName="user_id"/>
+        </preConditions>
+
+        <modifyDataType tableName="workout_plan" columnName="user_id" newDataType="bigint"/>
+    </changeSet>
 </databaseChangeLog>
