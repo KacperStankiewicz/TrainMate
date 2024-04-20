@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-class RpwdlExceptionHandlerFilter extends OncePerRequestFilter {
+class SecurityExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver handlerExceptionResolver;
 

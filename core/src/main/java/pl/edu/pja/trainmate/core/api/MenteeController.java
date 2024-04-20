@@ -32,11 +32,6 @@ public class MenteeController {
         return menteeFacade.search(criteria, pageable);
     }
 
-    @PostMapping("/dupa")
-    public String createMentee() {
-        return "DUPAA";
-    }
-
     @PostMapping("/create")
     public ResultDto<Long> createMentee(@RequestBody MenteeCreateDto menteeCreateDto) {
         return menteeFacade.create(menteeCreateDto);

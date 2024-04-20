@@ -29,9 +29,9 @@ import org.springframework.web.filter.CorsFilter;
 @Profile({DEV, INTEGRATION, LOCAL, PROD})
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @KeycloakConfiguration
-class RpwdlSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+class TrainMateSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
 
-    private final RpwdlExceptionHandlerFilter exceptionHandlerFilter;
+    private final SecurityExceptionHandlerFilter exceptionHandlerFilter;
     private final AuthenticationEventPublisher authenticationEventPublisher;
     private final GrantedAuthoritiesMapper authoritiesMapper;
 
