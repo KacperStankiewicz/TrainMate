@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-class TrainMateExceptionHandlerFilter extends OncePerRequestFilter {
+class RpwdlExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver handlerExceptionResolver;
 
