@@ -11,16 +11,18 @@ import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.NumberRange;
 import pl.edu.pja.trainmate.core.common.OrderByBuilder;
-import pl.edu.pja.trainmate.core.domain.user.MenteeSearchCriteria;
+import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
+import pl.edu.pja.trainmate.core.config.security.QLoggedUserDataDto;
 import pl.edu.pja.trainmate.core.domain.user.QPersonalInfo;
 import pl.edu.pja.trainmate.core.domain.user.QUserEntity;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
-import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeQueryService;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.QMenteeProjection;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 
 @Service
 @RequiredArgsConstructor
-class QueryDslMenteeQueryService extends BaseJpaQueryService implements MenteeQueryService {
+class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryService {
 
     private static final QUserEntity user = QUserEntity.userEntity;
     private static final QPersonalInfo personalInfo = user.personalInfo;
@@ -51,6 +53,20 @@ class QueryDslMenteeQueryService extends BaseJpaQueryService implements MenteeQu
                 .build());
 
         return fetchPage(query, pageable);
+    }
+
+    @Override
+    public LoggedUserDataDto getUserByKeycloakId(String keycloakId) {
+        return queryFactory()
+            .select(new QLoggedUserDataDto(
+                user.userId,
+                user.role
+            ))
+            .from(user)
+            .where(new BooleanBuilder()
+                .and(user.userId.keycloakId.eq(keycloakId))
+            )
+            .fetchOne();
     }
 
     private Predicate buildAgePredicate(NumberRange range) {

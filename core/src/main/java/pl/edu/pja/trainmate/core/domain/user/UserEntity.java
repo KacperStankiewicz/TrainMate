@@ -1,9 +1,13 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
@@ -14,18 +18,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.config.security.RoleType;
 
-@Table(name = "user", schema = "public")
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(name = "user", schema = "public")
 @SequenceGenerator(
     name = "user_id_seq_generator",
     sequenceName = "seq_user",
     allocationSize = 1
 )
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -37,4 +42,8 @@ public class UserEntity extends BaseEntity {
 
     @Embedded
     private UserId userId;
+
+    @Enumerated(STRING)
+    @Column(name = "role")
+    private RoleType role;
 }

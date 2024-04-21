@@ -23,7 +23,7 @@ public abstract class BaseEntity {
 
     @CreatedBy
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "created_by"))
+    @AttributeOverride(name = "keycloakId", column = @Column(name = "created_by"))
     private UserId createdBy;
 
     @LastModifiedDate
@@ -31,7 +31,7 @@ public abstract class BaseEntity {
 
     @LastModifiedBy
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "modified_by"))
+    @AttributeOverride(name = "keycloakId", column = @Column(name = "modified_by"))
     private UserId modifiedBy;
 
     public abstract Long getId();

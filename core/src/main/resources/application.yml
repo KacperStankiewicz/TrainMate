@@ -40,11 +40,12 @@ server:
   port: 8989
 
 keycloak:
-  enabled: true
-  auth-server-url: http://localhost:8123/realms/trainmate
+  auth-server-url: http://localhost:8123
   realm: trainmate
-  bearer-only: true
   resource: train-mate
+  bearerOnly: true
+  enabled: true
   public-client: true
   cors: true
   use-resource-role-mappings: true
+  ssl-required: none
