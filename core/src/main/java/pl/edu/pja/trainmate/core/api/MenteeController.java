@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.ADMIN;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,7 +22,7 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 
 @RequiredArgsConstructor
 @RestController
-@HasRole(roleType = PERSONAL_TRAINER)
+@HasRole(roleType = ADMIN)
 @RequestMapping("/mentees")
 public class MenteeController {
 
@@ -35,5 +36,10 @@ public class MenteeController {
     @PostMapping("/create")
     public ResultDto<Long> createMentee(@RequestBody MenteeCreateDto menteeCreateDto) {
         return menteeFacade.create(menteeCreateDto);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
     }
 }

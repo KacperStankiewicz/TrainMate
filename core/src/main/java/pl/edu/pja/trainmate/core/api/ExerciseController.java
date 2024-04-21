@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.ExerciseFacade;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseCreateDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseListItemProjection;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.querydsl.ExerciseSearchCriteria;
+import pl.edu.pja.trainmate.core.domain.exercise.ExerciseFacade;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
+import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseSearchCriteria;
 
 @RestController
 @Slf4j

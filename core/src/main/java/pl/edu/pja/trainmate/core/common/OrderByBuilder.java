@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.common;
 
+
 import static com.querydsl.core.types.Order.ASC;
 import static com.querydsl.core.types.Order.DESC;
 

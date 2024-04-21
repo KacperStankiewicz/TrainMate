@@ -10,8 +10,8 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.user.dto.MenteeCreateDto;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
-import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
+import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 
 @Service
 @RequiredArgsConstructor

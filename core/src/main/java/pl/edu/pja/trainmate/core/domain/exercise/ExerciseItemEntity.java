@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise;
+package pl.edu.pja.trainmate.core.domain.exercise;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 

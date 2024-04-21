@@ -13,8 +13,8 @@ class DatabaseCleanupListener implements TestExecutionListener {
 
     void beforeTestClass(TestContext testContext) {
         testContext.getApplicationContext()
-                .getAutowireCapableBeanFactory()
-                .autowireBean(this)
+            .getAutowireCapableBeanFactory()
+            .autowireBean(this)
     }
 
     void afterTestMethod(TestContext testContext) throws Exception {

@@ -18,7 +18,7 @@ class CoreApplicationIT extends IntegrationSpecification {
 
         then:
         response
-                .andExpect(status().isOk())
-                .andExpect(content().json("{\"status\":\"UP\"}"));
+            .andExpect(status().isOk())
+            .andExpect(content().json("{\"status\":\"UP\"}"));
     }
 }

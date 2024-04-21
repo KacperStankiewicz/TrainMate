@@ -33,7 +33,7 @@ class DatabaseCleanupService {
 
     def cleanupDatabase() {
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate()
-        tables.forEach { entityManager.createNativeQuery("DELETE FROM " + it).executeUpdate() }
+        tables.forEach {entityManager.createNativeQuery("DELETE FROM " + it).executeUpdate()}
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate()
     }
 }

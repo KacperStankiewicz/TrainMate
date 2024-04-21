@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.common.exception;
 
+
 import org.springframework.http.HttpStatus;
 import pl.edu.pja.trainmate.core.common.error.BaseErrorCode;
 

@@ -10,17 +10,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/tm_core
     username: postgres
-    password: postgres
+    password: admin
     driverClassName: org.postgresql.Driver
 
   liquibase:
     change-log: db/changelog-master.xml
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8123/realms/trainmate/protocol/openid-connect/certs
 
 springdoc:
   api-docs:
@@ -37,9 +31,10 @@ management:
 server:
   servlet:
     context-path: /api/tm-core
+  port: 8989
 
 keycloak:
-  auth-server-url: http://localhost:8123
+  auth-server-url: http://0.0.0.0:8123
   realm: trainmate
   resource: train-mate
   bearerOnly: true
