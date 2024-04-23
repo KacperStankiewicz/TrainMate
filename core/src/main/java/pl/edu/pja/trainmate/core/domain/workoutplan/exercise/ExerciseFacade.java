@@ -43,7 +43,7 @@ public class ExerciseFacade {
     }
 
     private void validateSearchCriteria(ExerciseSearchCriteria criteria) {
-        if (!criteria.getMuscle().isInGroup(criteria.getMuscleGroup())) {
+        if (criteria.getMuscle() != null && !criteria.getMuscle().isInGroup(criteria.getMuscleGroup())) {
             throw new CommonException(INVALID_SEARCH_CRITERIA);
         }
     }

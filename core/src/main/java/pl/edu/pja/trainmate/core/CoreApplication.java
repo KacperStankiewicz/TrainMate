@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         description = "Used for ...",
         version = "1.0"
     ),
-    servers = @Server(url = "/api/trainmate")
+    servers = @Server(url = "/api/tm-core")
 )
 @SecurityScheme(
     type = HTTP,
