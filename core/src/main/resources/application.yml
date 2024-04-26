@@ -16,18 +16,11 @@ spring:
   liquibase:
     change-log: db/changelog-master.xml
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8123/realms/trainmate/protocol/openid-connect/certs
-
 springdoc:
   api-docs:
     path: /api-docs
   override-with-generic-response: false
   show-actuator: true
-
 management:
   endpoints:
     web:
@@ -48,3 +41,8 @@ keycloak:
   cors: true
   use-resource-role-mappings: true
   ssl-required: none
+
+keycloak-admin:
+  server-url: http://localhost:8123
+  client-id: admin-cli
+  secret: cIxS7m4WPIsG6hd1UfCBqs4yi0Fkl0s4
