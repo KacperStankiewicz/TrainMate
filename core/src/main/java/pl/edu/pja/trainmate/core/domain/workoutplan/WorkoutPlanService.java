@@ -5,6 +5,8 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.COULD_
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
+import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
+import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 
@@ -12,19 +14,26 @@ import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 @Service
 public class WorkoutPlanService {
 
-    private final WorkoutPlanRepository repository;
+    private final WorkoutPlanRepository workoutPlanRepository;
+    private final ExerciseItemRepository exerciseItemRepository;
+    private final TrainingUnitRepository trainingUnitRepository;
 
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
         var entity = buildWorkoutPlanEntity(workoutPlanCreateDto);
-        return ResultDto.ofValueOrError(repository.save(entity).getId(), COULD_NOT_CREATE_WORKOUT_PLAN);
+        return ResultDto.ofValueOrError(workoutPlanRepository.save(entity).getId(), COULD_NOT_CREATE_WORKOUT_PLAN);
     }
 
     public void update(WorkoutPlanDto workoutPlanDto) {
-        var workoutPlan = repository.findExactlyOneById(workoutPlanDto.getId());
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(workoutPlanDto.getId());
         workoutPlan.update(workoutPlanDto);
-        repository.saveAndFlush(workoutPlan);
+        workoutPlanRepository.saveAndFlush(workoutPlan);
     }
 
+    public void delete(Long id) {
+        workoutPlanRepository.deleteById(id);
+        exerciseItemRepository.deleteByWorkoutPlanId(id);
+        trainingUnitRepository.deleteByWorkoutPlanId(id);
+    }
 
     private WorkoutPlanEntity buildWorkoutPlanEntity(WorkoutPlanCreateDto workoutPlanCreateDto) {
         return WorkoutPlanEntity.builder()

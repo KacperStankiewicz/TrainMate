@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm-35 insert initial data" author="blaskowski">
+        <preConditions>
+            <tableExists tableName="user"/>
+            <tableExists tableName="exercise"/>
+            <tableExists tableName="exercise_item"/>
+            <tableExists tableName="workout_plan"/>
+            <tableExists tableName="training_unit"/>
+        </preConditions>
+
+        <loadData tableName="user" file="db/initial-data/users.csv" separator=";"/>
+        <loadData tableName="workout_plan" file="db/initial-data/workoutplan.csv" separator=";"/>
+        <loadData tableName="exercise" file="db/initial-data/exercise.csv" separator=";"/>
+        <loadData tableName="training_unit" file="db/initial-data/training_unit.csv" separator=";"/>
+        <loadData tableName="exercise_item" file="db/initial-data/exercise_item.csv" separator=";"/>
+    </changeSet>
+
+</databaseChangeLog>

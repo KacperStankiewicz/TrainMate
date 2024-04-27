@@ -12,4 +12,11 @@ public class TrainingUnitDto {
     Long workoutPlanId;
     DayOfWeek dayOfWeek;
     Long weekNumber;
+    Long exerciseId;
+    Integer repetitions;
+    String tempo;
+    Integer weight;
+    Integer targetRir;
+    Integer actualRir;
+    Integer sets;
 }

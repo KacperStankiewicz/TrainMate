@@ -1,7 +1,6 @@
 package pl.edu.pja.trainmate.core.api;
 
 import static pl.edu.pja.trainmate.core.config.security.RoleType.ADMIN;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
