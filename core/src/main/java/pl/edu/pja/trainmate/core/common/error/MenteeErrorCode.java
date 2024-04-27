@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum MenteeErrorCode implements BaseErrorCode {
 
-    COULD_NOT_CREATE_MENTEE("Mentee was not created", BAD_REQUEST);
-
+    COULD_NOT_CREATE_MENTEE("Mentee was not created", BAD_REQUEST),
+    COULD_NOT_FIND_MENTEE("Could not find mentee with id: %s", BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

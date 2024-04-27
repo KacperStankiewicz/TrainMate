@@ -65,6 +65,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
             .from(user)
             .where(new BooleanBuilder()
                 .and(user.userId.keycloakId.eq(keycloakId))
+                .and(user.active.isTrue())
             )
             .fetchOne();
     }

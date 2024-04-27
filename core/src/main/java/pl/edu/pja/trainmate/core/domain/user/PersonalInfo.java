@@ -1,14 +1,17 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
+import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PRIVATE;
 
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.edu.pja.trainmate.core.common.Gender;
 
 @Embeddable
 @AllArgsConstructor
@@ -31,4 +34,7 @@ public class PersonalInfo {
 
     @Column(name = "email")
     private String email;
+
+    @Enumerated(STRING)
+    private Gender gender;
 }

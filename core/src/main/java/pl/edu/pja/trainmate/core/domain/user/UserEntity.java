@@ -3,7 +3,6 @@ package pl.edu.pja.trainmate.core.domain.user;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -46,4 +45,14 @@ public class UserEntity extends BaseEntity {
     @Enumerated(STRING)
     @Column(name = "role")
     private RoleType role;
+
+    private boolean active = true;
+
+    public void updatePersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
