@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
+import pl.edu.pja.trainmate.core.domain.user.dto.MenteeUpdateDto;
+import pl.edu.pja.trainmate.core.domain.user.keycloak.KeycloakService;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
@@ -19,9 +21,10 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 @RequiredArgsConstructor
 class UserService {
 
-    private final LoggedUserDataProvider userIdProvider;
+    private final LoggedUserDataProvider userProvider;
     private final UserRepository userRepository;
     private final UserQueryService queryService;
+    private final KeycloakService keycloakService;
 
     public Page<MenteeProjection> searchByCriteria(MenteeSearchCriteria criteria, Pageable pageable) {
         return queryService.searchMenteeByCriteria(criteria, pageable);
@@ -31,6 +34,40 @@ class UserService {
         var mentee = buildUserEntity(userRepresentation);
 
         return ResultDto.ofValueOrError(userRepository.save(mentee).getId(), COULD_NOT_CREATE_MENTEE);
+    }
+
+    public void updatePersonalData(MenteeUpdateDto menteeUpdateDto) {
+        var keycloakId = userProvider.getUserDetails().getUserId().getKeycloakId();
+
+        var mentee = getUserByKeycloakId(keycloakId);
+
+        if (!mentee.getPersonalInfo().getEmail().equals(menteeUpdateDto.getEmail())) {
+            keycloakService.updateUserEmail(menteeUpdateDto.getEmail(), keycloakId);
+        }
+
+        mentee.updatePersonalInfo(PersonalInfo.builder()
+            .firstname(menteeUpdateDto.getFirstname())
+            .lastname(menteeUpdateDto.getLastname())
+            .phone(menteeUpdateDto.getPhone())
+            .dateOfBirth(menteeUpdateDto.getDateOfBirth())
+            .email(menteeUpdateDto.getEmail())
+            .gender(menteeUpdateDto.getGender())
+            .weight(menteeUpdateDto.getWeight())
+            .height(menteeUpdateDto.getHeight())
+            .build());
+
+        userRepository.saveAndFlush(mentee);
+    }
+
+    public void changeAccountActivity(Long userId, boolean active) {
+        var mentee = userRepository.findExactlyOneById(userId);
+        mentee.setActive(active);
+
+        keycloakService.enableOrDisableAccount(mentee.getUserId().getKeycloakId(), active);
+    }
+
+    private UserEntity getUserByKeycloakId(String keycloakId) {
+        return userRepository.getUserByKeycloakId(keycloakId);
     }
 
     private UserEntity buildUserEntity(UserRepresentation userRepresentation) {

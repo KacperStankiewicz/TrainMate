@@ -35,7 +35,10 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
                 personalInfo.lastname,
                 personalInfo.dateOfBirth,
                 personalInfo.phone,
-                personalInfo.email
+                personalInfo.email,
+                personalInfo.gender,
+                personalInfo.weight,
+                personalInfo.height
             ))
             .from(user)
             .where(new BooleanBuilder()
@@ -43,6 +46,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
                 .and(isLike(personalInfo.firstname, criteria.getFirstname()))
                 .and(isLike(personalInfo.lastname, criteria.getLastname()))
                 .and(isLike(personalInfo.email, criteria.getEmail()))
+                .and(personalInfo.gender.eq(criteria.getGender()))
             )
             .orderBy(OrderByBuilder.with(pageable.getSort())
                 .whenPropertyIs("age").thenSortBy(personalInfo.dateOfBirth)
@@ -65,6 +69,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
             .from(user)
             .where(new BooleanBuilder()
                 .and(user.userId.keycloakId.eq(keycloakId))
+                .and(user.active.isTrue())
             )
             .fetchOne();
     }

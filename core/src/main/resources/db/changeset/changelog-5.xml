@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+
+    <changeSet id="Tm40-add gender to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="gender"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="gender" type="varchar(8)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm40-add active to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="active"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="active" type="boolean" defaultValue="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm40-add height and weight to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="weight"/>
+                <columnExists tableName="user" columnName="height"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="weight" type="int"/>
+            <column name="height" type="int"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

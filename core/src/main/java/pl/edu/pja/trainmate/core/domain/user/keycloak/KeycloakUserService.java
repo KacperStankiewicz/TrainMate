@@ -27,14 +27,6 @@ class KeycloakUserService implements KeycloakService {
     private final Keycloak keycloak;
     private final RandomPasswordGenerator passwordGenerator;
 
-    @Override
-    public List<UserRepresentation> searchUsers() {
-        return keycloak.realm(realm)
-            .users()
-            .list();
-    }
-
-    @Override
     public UserRepresentation createUser(String email) {
         var resource = getUsersResource();
 
@@ -49,6 +41,22 @@ class KeycloakUserService implements KeycloakService {
         var user = getUserByEmail(email);
         resource.get(user.getId()).executeActionsEmail(List.of("VERIFY_EMAIL", "UPDATE_PASSWORD"));
         return user;
+    }
+
+    public void updateUserEmail(String email, String keycloakId) {
+        var user = getUsersResource().get(keycloakId);
+        var representation = user.toRepresentation();
+
+        representation.setEmail(email);
+        user.update(representation);
+    }
+
+    public void enableOrDisableAccount(String keycloakId, boolean enabled) {
+        var user = getUsersResource().get(keycloakId);
+        var representation = user.toRepresentation();
+
+        representation.setEnabled(enabled);
+        user.update(representation);
     }
 
     private UsersResource getUsersResource() {
