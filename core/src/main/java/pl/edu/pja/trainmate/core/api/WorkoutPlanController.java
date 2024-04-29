@@ -70,7 +70,7 @@ public class WorkoutPlanController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @GetMapping("/{id}/get")
+    @GetMapping("/{id}")
     public AllWorkoutData getWorkoutPlanData(@PathVariable Long id) {
         return workoutPlanFacade.get(id);
     }

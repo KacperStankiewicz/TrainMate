@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.user.MenteeFacade;
+import pl.edu.pja.trainmate.core.domain.user.dto.MenteeUpdateDto;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeProjection;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 

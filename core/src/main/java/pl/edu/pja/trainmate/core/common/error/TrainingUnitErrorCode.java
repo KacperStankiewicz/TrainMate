@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum TrainingUnitErrorCode implements BaseErrorCode {
 
-    COULD_NOT_CREATE_TRAINING_UNIT("Exercise was not created", BAD_REQUEST);
+    COULD_NOT_CREATE_TRAINING_UNIT("Training was not created", BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

@@ -44,7 +44,7 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}/update")
     public void updateTrainingUnit(@RequestBody TrainingUnitDto trainingUnitDto, @RequestParam Long id) {
         if (!Objects.equals(trainingUnitDto.getId(), id)) {
             throw new IllegalArgumentException("Id in path and body must be the same");
@@ -59,7 +59,7 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PutMapping("/exercise/update/{id}")
+    @PutMapping("/exercise/{id}/update")
     public void updateExerciseItem(@RequestBody TrainingUnitDto trainingUnitDto, @RequestParam Long id) {
         if (!Objects.equals(trainingUnitDto.getExerciseId(), id)) {
             throw new IllegalArgumentException("Id in path and body must be the same");
@@ -74,7 +74,7 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public void deleteTrainingUnit(@RequestBody Long bodyId, @RequestParam Long id) {
         if (!Objects.equals(bodyId, id)) {
             throw new IllegalArgumentException("Id in path and body must be the same");
@@ -89,7 +89,7 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/exercise/delete/{id}")
+    @DeleteMapping("/exercise/{id}/delete")
     public void deleteExerciseItem(@RequestBody Long bodyId, @RequestParam Long id) {
         if (!Objects.equals(bodyId, id)) {
             throw new IllegalArgumentException("Id in path and body must be the same");

@@ -1,6 +1,5 @@
 package pl.edu.pja.trainmate.core.domain.training;
 
-import java.util.List;
 import org.springframework.stereotype.Repository;
 import pl.edu.pja.trainmate.core.common.BaseRepository;
 

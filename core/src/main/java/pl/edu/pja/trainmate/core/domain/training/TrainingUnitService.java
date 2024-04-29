@@ -58,12 +58,12 @@ public class TrainingUnitService {
     }
 
     private ExerciseItemEntity buildExerciseItemEntity(TrainingUnitDto dto, Long trainingUnitId) {
-        return ExerciseItemEntity.builder()
+        return exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseId(dto.getExerciseId())
             .trainingUnitId(trainingUnitId)
             .workoutPlanId(dto.getWorkoutPlanId())
             .volume(buildVolume(dto))
-            .build();
+            .build());
     }
 
     private Volume buildVolume(TrainingUnitDto dto) {

@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.training;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 
 @Service
@@ -10,8 +11,8 @@ public class TrainingUnitFacade {
 
     private final TrainingUnitService service;
 
-    public void create(TrainingUnitDto dto) {
-        service.create(dto);
+    public ResultDto<Long> create(TrainingUnitDto dto) {
+        return service.create(dto);
     }
 
     public void updateTrainingUnit(TrainingUnitDto dto) {
