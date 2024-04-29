@@ -45,4 +45,14 @@ public class UserEntity extends BaseEntity {
     @Enumerated(STRING)
     @Column(name = "role")
     private RoleType role;
+
+    private boolean active = true;
+
+    public void updatePersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

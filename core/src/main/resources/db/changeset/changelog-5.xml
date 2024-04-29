@@ -7,11 +7,46 @@
     <changeSet id="Tm35-changed volume entity" author="blaskowski">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="exercise_item" columnName="rir"/>
+
+    <changeSet id="Tm40-add gender to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="gender"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="gender" type="varchar(8)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm40-add active to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="active"/>
+            </not>
         </preConditions>
         <renameColumn tableName="exercise_item" oldColumnName="rir" newColumnName="actual_rir"/>
         <addColumn tableName="exercise_item">
             <column name="target_rir" type="int"/>
             <column name="workout_plan_id" type="bigint"/>
+
+        <addColumn tableName="user">
+            <column name="active" type="boolean" defaultValue="true"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm40-add height and weight to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="weight"/>
+                <columnExists tableName="user" columnName="height"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="weight" type="int"/>
+            <column name="height" type="int"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

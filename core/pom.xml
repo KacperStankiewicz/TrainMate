@@ -24,7 +24,6 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <spock-spring.version>2.0-groovy-3.0</spock-spring.version>
         <sonar.scaner.version>3.9.1.2184</sonar.scaner.version>
         <sonar.tests>src/test/groovy</sonar.tests>
         <keycloak-security-adapter.version>24.0.1</keycloak-security-adapter.version>
@@ -45,6 +44,18 @@
         <spring-cloud-starter-openfeign.version>3.1.1</spring-cloud-starter-openfeign.version>
         <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.10.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -198,23 +209,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-core</artifactId>
-            <scope>test</scope>
-            <version>2.3-groovy-4.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-spring</artifactId>
-            <scope>test</scope>
-            <version>${spock-spring.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
