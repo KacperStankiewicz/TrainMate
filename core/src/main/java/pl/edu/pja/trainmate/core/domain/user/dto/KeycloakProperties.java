@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class KeycloakProperties {
+
     public final String authServerUrl = "http://localhost:8123/realms/trainmate";
     public final String realm = "trainmate";
     public final String adminClientId = "train-mate";

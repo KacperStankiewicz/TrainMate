@@ -1,0 +1,16 @@
+id;name;description;url;muscle_involved;creation_date_time;created_by
+1;Bench Press;aaaa;https://en.wikipedia.org/wiki/Bench_press;MIDDLE_CHEST;2021-10-01 00:00:00;admin
+2;Squat;aaaa;https://en.wikipedia.org/wiki/Squat_(exercise);QUADS;2021-10-01 00:00:00;admin
+3;Deadlift;aaaa;https://en.wikipedia.org/wiki/Deadlift;LOWER_BACK;2021-10-01 00:00:00;admin
+4;Pull-up;aaaaa;https://en.wikipedia.org/wiki/Pull-up_(exercise);LATS;2021-10-01 00:00:00;admin
+5;Push-up;aaaa;https://en.wikipedia.org/wiki/Push-up;UPPER_CHEST;2021-10-01 00:00:00;admin
+6;Dumbbell Curl;aaaaa;https://en.wikipedia.org/wiki/Biceps_curl;BICEPS;2021-10-01 00:00:00;admin
+7;Tricep Extension;aaaaa;https://en.wikipedia.org/wiki/Triceps_extension;TRICEPS;2021-10-01 00:00:00;admin
+8;Leg Press;aaaaa;https://en.wikipedia.org/wiki/Leg_press;QUADS;2021-10-01 00:00:00;admin
+9;Leg Curl;aaaaaa;https://en.wikipedia.org/wiki/Leg_curl;HAMSTRINGS;2021-10-01 00:00:00;admin
+10;Calf Raise;aaaaaaaaa;https://en.wikipedia.org/wiki/Calf_raise;CALVES;2021-10-01 00:00:00;admin
+11;Shoulder Press;aaabygahygay;https://en.wikipedia.org/wiki/Shoulder_press;FRONTAL_DELTOID;2021-10-01 00:00:00;admin
+12;Lateral Raise;asdasdasd;https://en.wikipedia.org/wiki/Lateral_raise;MIDDLE_DELTOID;2021-10-01 00:00:00;admin
+13;Front Raise;asdasdas;https://en.wikipedia.org/wiki/Front_raise;FRONTAL_DELTOID;2021-10-01 00:00:00;admin
+14;Bent-over Row;asdasdasdsadsaasd;https://en.wikipedia.org/wiki/Bent-over_row;LATS;2021-10-01 00:00:00;admin
+15;Crunches;asdasddaads;https://en.wikipedia.org/wiki/Crunches;ABS;2021-10-01 00:00:00;admin

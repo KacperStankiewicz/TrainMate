@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto;
+package pl.edu.pja.trainmate.core.domain.exercise.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Value;

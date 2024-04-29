@@ -4,6 +4,16 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
+    <changeSet id="Tm35-changed volume entity" author="blaskowski">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="exercise_item" columnName="rir"/>
+        </preConditions>
+        <renameColumn tableName="exercise_item" oldColumnName="rir" newColumnName="actual_rir"/>
+        <addColumn tableName="exercise_item">
+            <column name="target_rir" type="int"/>
+            <column name="workout_plan_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
 
     <changeSet id="Tm40-add gender to user entity" author="kstankiewicz">
         <preConditions>

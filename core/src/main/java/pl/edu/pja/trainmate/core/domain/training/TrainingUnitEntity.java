@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.training;
+package pl.edu.pja.trainmate.core.domain.training;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
+import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 
 @Getter
 @Builder
@@ -28,7 +29,7 @@ import pl.edu.pja.trainmate.core.common.BaseEntity;
     sequenceName = "seq_training_unit",
     allocationSize = 1
 )
-public class TrainingUnit extends BaseEntity {
+public class TrainingUnitEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "training_unit_id_seq_generator")
@@ -43,4 +44,17 @@ public class TrainingUnit extends BaseEntity {
 
     @Column(name = "was_completed")
     private Boolean wasCompleted = false;
+
+    public void markAsCompleted() {
+        this.wasCompleted = true;
+    }
+
+    public void markAsNotCompleted() {
+        this.wasCompleted = false;
+    }
+
+    public void update(TrainingUnitDto trainingUnitDto) {
+        this.dayOfWeek = trainingUnitDto.getDayOfWeek();
+        this.weekNumber = trainingUnitDto.getWeekNumber();
+    }
 }

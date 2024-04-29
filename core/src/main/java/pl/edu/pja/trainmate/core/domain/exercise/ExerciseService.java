@@ -1,12 +1,12 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise;
+package pl.edu.pja.trainmate.core.domain.exercise;
 
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.COULD_NOT_CREATE_EXERCISE;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseCreateDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 
 @RequiredArgsConstructor
 @Service

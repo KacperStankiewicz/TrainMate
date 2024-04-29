@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 
 @Getter
 @Builder
@@ -34,4 +35,10 @@ public class WorkoutPlanEntity extends BaseEntity {
 
     private Long userId;
     private String category;
+
+    public void update(WorkoutPlanDto workoutPlanDto) {
+        this.name = workoutPlanDto.getName();
+        this.userId = workoutPlanDto.getUserId();
+        this.category = workoutPlanDto.getCategory();
+    }
 }

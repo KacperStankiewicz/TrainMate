@@ -1,8 +1,8 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise.querydsl;
+package pl.edu.pja.trainmate.core.domain.exercise.querydsl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseListItemProjection;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
 
 public interface ExerciseQueryService {
 

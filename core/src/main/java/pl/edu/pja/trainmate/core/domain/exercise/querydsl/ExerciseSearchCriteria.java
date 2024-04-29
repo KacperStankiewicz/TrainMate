@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise.querydsl;
+package pl.edu.pja.trainmate.core.domain.exercise.querydsl;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

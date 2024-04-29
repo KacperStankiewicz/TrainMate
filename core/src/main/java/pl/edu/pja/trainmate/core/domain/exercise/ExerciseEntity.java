@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.exercise;
+package pl.edu.pja.trainmate.core.domain.exercise;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.common.Muscle;
-import pl.edu.pja.trainmate.core.domain.workoutplan.exercise.dto.ExerciseDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 
 
 @Getter
