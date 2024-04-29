@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import pl.edu.pja.trainmate.core.common.Gender;
 import pl.edu.pja.trainmate.core.common.NumberRange;
 
 @Value
@@ -18,5 +19,6 @@ public class MenteeSearchCriteria {
     String lastname;
     String email;
     NumberRange ageRange;
+    Gender gender;
 }
 

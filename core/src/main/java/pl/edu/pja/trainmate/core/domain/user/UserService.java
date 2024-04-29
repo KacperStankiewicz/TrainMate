@@ -52,6 +52,8 @@ class UserService {
             .dateOfBirth(menteeUpdateDto.getDateOfBirth())
             .email(menteeUpdateDto.getEmail())
             .gender(menteeUpdateDto.getGender())
+            .weight(menteeUpdateDto.getWeight())
+            .height(menteeUpdateDto.getHeight())
             .build());
 
         userRepository.saveAndFlush(mentee);

@@ -37,4 +37,8 @@ public class PersonalInfo {
 
     @Enumerated(STRING)
     private Gender gender;
+
+    private Integer height;
+
+    private Integer weight;
 }

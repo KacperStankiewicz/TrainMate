@@ -28,4 +28,18 @@
             <column name="active" type="boolean" defaultValue="true"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="Tm40-add height and weight to user entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="user" columnName="weight"/>
+                <columnExists tableName="user" columnName="height"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="weight" type="int"/>
+            <column name="height" type="int"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

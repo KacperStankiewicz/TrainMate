@@ -13,4 +13,6 @@ public class MenteeUpdateDto {
     LocalDate dateOfBirth;
     String phone;
     Gender gender;
+    Integer height;
+    Integer weight;
 }
