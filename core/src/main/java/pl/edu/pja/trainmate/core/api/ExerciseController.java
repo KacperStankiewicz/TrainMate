@@ -1,6 +1,6 @@
 package pl.edu.pja.trainmate.core.api;
 
-import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.INVALID_EXERCISE_ID;
+import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.INVALID_ID;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,7 +76,7 @@ public class ExerciseController {
     @PutMapping("/{exerciseId}")
     public void updateExercise(@PathVariable Long exerciseId, @RequestBody ExerciseDto dto) {
         log.debug("REST request to UPDATE exercise with id: {}", exerciseId);
-        validateExerciseId(exerciseId, dto.getId());
+        validateId(exerciseId, dto.getId());
         facade.update(dto);
         log.debug("Successfully UPDATED exercise");
     }
@@ -95,9 +95,9 @@ public class ExerciseController {
         log.debug("Successfully DELETED exercise");
     }
 
-    private void validateExerciseId(Long applicationId, Long idFromDto) {
+    private void validateId(Long applicationId, Long idFromDto) {
         if (!applicationId.equals(idFromDto)) {
-            throw new CommonException(INVALID_EXERCISE_ID);
+            throw new CommonException(INVALID_ID);
         }
     }
 

@@ -23,7 +23,6 @@ public class MenteeProjection {
     String phone;
     String email;
     Gender gender;
-    Integer weight;
     Integer height;
 
     @QueryProjection
@@ -34,7 +33,6 @@ public class MenteeProjection {
         String phone,
         String email,
         Gender gender,
-        Integer weight,
         Integer height) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -42,7 +40,6 @@ public class MenteeProjection {
         this.phone = phone;
         this.email = email;
         this.gender = gender;
-        this.weight = weight;
         this.height = height;
     }
 }

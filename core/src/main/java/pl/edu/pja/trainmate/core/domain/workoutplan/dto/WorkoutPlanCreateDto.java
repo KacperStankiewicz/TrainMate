@@ -14,6 +14,6 @@ import lombok.Value;
 public class WorkoutPlanCreateDto {
 
     String name;
-    Long userId;
+    String userId;
     String category;
 }

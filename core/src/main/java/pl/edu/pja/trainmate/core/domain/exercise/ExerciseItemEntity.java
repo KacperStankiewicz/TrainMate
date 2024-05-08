@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
+import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 
 @Getter
@@ -45,6 +46,11 @@ public class ExerciseItemEntity extends BaseEntity {
     @Embedded
     private Volume volume;
 
+    @Embedded
+    private ExerciseReport exerciseReport;
+
+    private boolean reported = false;
+
     public void update(TrainingUnitDto dto) {
         this.exerciseId = dto.getExerciseId();
         this.trainingUnitId = dto.getId();
@@ -52,9 +58,18 @@ public class ExerciseItemEntity extends BaseEntity {
             .repetitions(dto.getRepetitions())
             .tempo(dto.getTempo())
             .weight(dto.getWeight())
-            .targetRir(dto.getTargetRir())
-            .actualRir(dto.getActualRir())
+            .rir(dto.getRir())
             .sets(dto.getSets())
+            .build();
+    }
+
+    public void addReport(ReportCreateDto dto) {
+        this.exerciseReport = ExerciseReport.builder()
+            .reportedRepetitions(dto.getRepetitions())
+            .reportedWeight(dto.getWeight())
+            .reportedRir(dto.getRir())
+            .reportedSets(dto.getSets())
+            .remarks(dto.getRemarks())
             .build();
     }
 }

@@ -2,6 +2,9 @@ package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
+import pl.edu.pja.trainmate.core.common.DateRange;
+import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 
 @Getter
@@ -33,12 +38,17 @@ public class WorkoutPlanEntity extends BaseEntity {
 
     private String name;
 
-    private Long userId;
+    @AttributeOverride(name = "keycloakId", column = @Column(name = "user_id"))
+    private UserId userId;
     private String category;
+
+    @Embedded
+    @AttributeOverride(name = "from", column = @Column(name = "workout_plan_start_date"))
+    @AttributeOverride(name = "to", column = @Column(name = "workout_plan_end_date"))
+    private DateRange dateRange;
 
     public void update(WorkoutPlanDto workoutPlanDto) {
         this.name = workoutPlanDto.getName();
-        this.userId = workoutPlanDto.getUserId();
         this.category = workoutPlanDto.getCategory();
     }
 }

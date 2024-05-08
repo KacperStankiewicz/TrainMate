@@ -3,6 +3,7 @@ package pl.edu.pja.trainmate.core.domain.training;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
+import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 
 @Service
@@ -29,5 +30,13 @@ public class TrainingUnitFacade {
 
     public void deleteExerciseItem(Long id) {
         service.deleteExerciseItem(id);
+    }
+
+    public void addReport(ReportCreateDto reportCreateDto) {
+        service.addExerciseItemReport(reportCreateDto);
+    }
+
+    public void reviewReport(Long exerciseItemId) {
+        service.reviewReport(exerciseItemId);
     }
 }

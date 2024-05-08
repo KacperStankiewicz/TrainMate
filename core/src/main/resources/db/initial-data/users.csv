@@ -1,2 +1,2 @@
 id;firstname;lastname;date_of_birth;phone;email;keycloak_id;role;creation_date_time;created_by
-1;John;Doe;1980-01-01;+123456789;inzynierka.trainmate@gmail.com;1;admin;2021-01-01 00:00:00;1
+1;John;Doe;1980-01-01;+123456789;inzynierka.trainmate@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc78e;ADMIN;2021-01-01 00:00:00;1

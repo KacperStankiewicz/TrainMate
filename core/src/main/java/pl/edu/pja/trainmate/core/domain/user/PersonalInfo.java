@@ -39,6 +39,4 @@ public class PersonalInfo {
     private Gender gender;
 
     private Integer height;
-
-    private Integer weight;
 }
