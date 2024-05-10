@@ -9,6 +9,5 @@ public class WorkoutPlanDto {
 
     Long id;
     String name;
-    Long userId;
     String category;
 }

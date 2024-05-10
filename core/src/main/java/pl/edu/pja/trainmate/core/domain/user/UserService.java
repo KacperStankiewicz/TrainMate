@@ -52,15 +52,14 @@ class UserService {
             .dateOfBirth(menteeUpdateDto.getDateOfBirth())
             .email(menteeUpdateDto.getEmail())
             .gender(menteeUpdateDto.getGender())
-            .weight(menteeUpdateDto.getWeight())
             .height(menteeUpdateDto.getHeight())
             .build());
 
         userRepository.saveAndFlush(mentee);
     }
 
-    public void changeAccountActivity(Long userId, boolean active) {
-        var mentee = userRepository.findExactlyOneById(userId);
+    public void changeAccountActivity(String userId, boolean active) {
+        var mentee = userRepository.getUserByKeycloakId(userId);
         mentee.setActive(active);
 
         keycloakService.enableOrDisableAccount(mentee.getUserId().getKeycloakId(), active);

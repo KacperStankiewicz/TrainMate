@@ -4,6 +4,7 @@ import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +17,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         description = "Used for ...",
         version = "1.0"
     ),
-    servers = @Server(url = "/api/tm-core")
+    servers = @Server(url = "/api/tm-core"),
+    security = @SecurityRequirement(name = "Authorization")
 )
 @SecurityScheme(
     type = HTTP,

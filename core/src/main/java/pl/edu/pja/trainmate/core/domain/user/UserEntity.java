@@ -2,6 +2,8 @@ package pl.edu.pja.trainmate.core.domain.user;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.SEQUENCE;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.MENTEE_ACCOUNT_IS_ALREADY_ACTIVE;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.MENTEE_ACCOUNT_IS_ALREADY_INACTIVE;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -17,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.RoleType;
 
 @Getter
@@ -53,6 +56,9 @@ public class UserEntity extends BaseEntity {
     }
 
     public void setActive(boolean active) {
+        if (this.active == active) {
+            throw new CommonException(active ? MENTEE_ACCOUNT_IS_ALREADY_ACTIVE : MENTEE_ACCOUNT_IS_ALREADY_INACTIVE);
+        }
         this.active = active;
     }
 }

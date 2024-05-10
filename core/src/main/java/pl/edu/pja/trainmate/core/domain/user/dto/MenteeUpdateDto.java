@@ -14,5 +14,4 @@ public class MenteeUpdateDto {
     String phone;
     Gender gender;
     Integer height;
-    Integer weight;
 }

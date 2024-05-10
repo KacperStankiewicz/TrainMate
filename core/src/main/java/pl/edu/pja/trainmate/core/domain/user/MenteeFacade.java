@@ -30,11 +30,11 @@ public class MenteeFacade {
         service.updatePersonalData(menteeUpdateDto);
     }
 
-    public void deleteAccount(Long userId) {
+    public void deleteAccount(String userId) {
         service.changeAccountActivity(userId, false);
     }
 
-    public void activateAccount(Long userId) {
+    public void activateAccount(String userId) {
         service.changeAccountActivity(userId, true);
     }
 }

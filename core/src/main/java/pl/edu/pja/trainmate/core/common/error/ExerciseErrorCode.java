@@ -10,7 +10,6 @@ public enum ExerciseErrorCode implements BaseErrorCode {
 
     COULD_NOT_FIND_EXERCISE("Could not find Exercise entity for id: %s", BAD_REQUEST),
     COULD_NOT_CREATE_EXERCISE("Exercise was not created", BAD_REQUEST),
-    INVALID_EXERCISE_ID("Provided id is invalid", BAD_REQUEST),
     INVALID_SEARCH_CRITERIA("Provided exercise search criteria are invalid", BAD_REQUEST);
 
     private final String message;

@@ -16,7 +16,6 @@ public class TrainingUnitDto {
     Integer repetitions;
     String tempo;
     Integer weight;
-    Integer targetRir;
-    Integer actualRir;
+    Integer rir;
     Integer sets;
 }

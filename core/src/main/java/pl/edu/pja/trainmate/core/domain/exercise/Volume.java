@@ -1,6 +1,5 @@
 package pl.edu.pja.trainmate.core.domain.exercise;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,11 +19,7 @@ public class Volume {
 
     private Integer weight;
 
-    @Column(name = "target_rir")
-    private Integer targetRir;
-
-    @Column(name = "actual_rir")
-    private Integer actualRir;
+    private Integer rir;
 
     private Integer sets;
 }

@@ -10,7 +10,7 @@ import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 
 @RequiredArgsConstructor
 @Service
-public class ExerciseService {
+class ExerciseService {
 
     private final ExerciseRepository repository;
 

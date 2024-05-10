@@ -5,6 +5,7 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.COULD_
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
+import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
@@ -12,7 +13,7 @@ import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 
 @RequiredArgsConstructor
 @Service
-public class WorkoutPlanService {
+class WorkoutPlanService {
 
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseItemRepository exerciseItemRepository;
@@ -38,7 +39,7 @@ public class WorkoutPlanService {
     private WorkoutPlanEntity buildWorkoutPlanEntity(WorkoutPlanCreateDto workoutPlanCreateDto) {
         return WorkoutPlanEntity.builder()
             .name(workoutPlanCreateDto.getName())
-            .userId(workoutPlanCreateDto.getUserId())
+            .userId(UserId.valueOf(workoutPlanCreateDto.getUserId()))
             .category(workoutPlanCreateDto.getCategory())
             .build();
     }

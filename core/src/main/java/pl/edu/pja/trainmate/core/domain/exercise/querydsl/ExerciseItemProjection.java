@@ -16,8 +16,7 @@ public class ExerciseItemProjection {
     Integer repetitions;
     String tempo;
     Integer weight;
-    Integer targetRir;
-    Integer actualRir;
+    Integer rir;
     Integer sets;
     Muscle muscleInvolved;
     String name;
@@ -27,14 +26,13 @@ public class ExerciseItemProjection {
     Long trainingUnitId;
 
     @QueryProjection
-    public ExerciseItemProjection(Long id, Integer repetitions, String tempo, Integer weight, Integer targetRir, Integer actualRir, Integer sets,
+    public ExerciseItemProjection(Long id, Integer repetitions, String tempo, Integer weight, Integer rir, Integer sets,
         Muscle muscleInvolved, String name, String description, String url, Long trainingUnitId) {
         this.id = id;
         this.repetitions = repetitions;
         this.tempo = tempo;
         this.weight = weight;
-        this.targetRir = targetRir;
-        this.actualRir = actualRir;
+        this.rir = rir;
         this.sets = sets;
         this.muscleInvolved = muscleInvolved;
         this.name = name;
