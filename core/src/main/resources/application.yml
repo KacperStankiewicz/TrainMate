@@ -12,12 +12,6 @@ spring:
     password: postgres
     driverClassName: org.postgresql.Driver
 
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: tm_report
-
   liquibase:
     change-log: db/changelog-master.xml
 

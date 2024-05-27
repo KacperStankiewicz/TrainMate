@@ -80,7 +80,7 @@ public class ReportController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PostMapping("/exercise/{id}/review-report")
+    @PostMapping("/exercise/{id}/review")
     public void reviewReport(@PathVariable Long id) {
         log.debug("Request to review report for exercise item with id: {}", id);
         trainingUnitFacade.reviewReport(id);

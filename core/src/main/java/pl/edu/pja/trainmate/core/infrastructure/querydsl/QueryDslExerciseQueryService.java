@@ -32,7 +32,7 @@ class QueryDslExerciseQueryService extends BaseJpaQueryService implements Exerci
             .from(exercise)
             .where(new BooleanBuilder()
                 .and(isLike(exercise.name, criteria.getName()))
-                .and(exercise.muscleInvolved.eq(criteria.getMuscle()))
+                .and(equals(exercise.muscleInvolved,criteria.getMuscle()))
                 .and(exercise.muscleInvolved.in(getAllMusclesByGroup(criteria.getMuscleGroup())))
             )
             .orderBy(OrderByBuilder.with(pageable.getSort())

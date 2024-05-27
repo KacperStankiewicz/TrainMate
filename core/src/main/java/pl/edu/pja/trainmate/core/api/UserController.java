@@ -23,7 +23,7 @@ public class UserController {
         PERSONAL_TRAINER, TRAINED_PERSON
     })
     @PostMapping("/get-current-user-info")
-    public UserEntity searchMenteesByCriteria() {
+    public UserEntity getLoggedUserInfo() {
         String keycloakId = loggedUserDataProvider.getUserDetails().getUserId().getKeycloakId();
         return userRepository.getUserByKeycloakId(keycloakId);
     }

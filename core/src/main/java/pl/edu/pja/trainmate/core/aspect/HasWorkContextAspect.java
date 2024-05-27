@@ -18,6 +18,7 @@ import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
+import pl.edu.pja.trainmate.core.domain.user.UserRepository;
 
 @Slf4j
 @Aspect
@@ -28,6 +29,7 @@ import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 class HasWorkContextAspect {
 
     private final LoggedUserDataProvider userProvider;
+    private final UserRepository userRepository;
 
     @Around("@within(pl.edu.pja.trainmate.core.annotation.HasRole) && execution(* *(..))")
     public Object authorizeClass(ProceedingJoinPoint point) throws Throwable {

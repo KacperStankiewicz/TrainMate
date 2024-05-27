@@ -52,6 +52,7 @@ public class WorkoutPlanController {
         description = "created workout plan",
         content = @Content(mediaType = "application/json")
     )
+    @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/create")
     public void createWorkoutPlan(@RequestBody WorkoutPlanCreateDto workoutPlanCreateDto) {
         workoutPlanFacade.create(workoutPlanCreateDto);
@@ -63,6 +64,7 @@ public class WorkoutPlanController {
         description = "updated workout plan",
         content = @Content(mediaType = "application/json")
     )
+    @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{workoutPlanId}/update")
     public void updateWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody WorkoutPlanDto workoutPlanDto) {
         validateId(workoutPlanId, workoutPlanDto.getId());
