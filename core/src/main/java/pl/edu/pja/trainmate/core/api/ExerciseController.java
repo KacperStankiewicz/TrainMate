@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +26,7 @@ import pl.edu.pja.trainmate.core.domain.exercise.ExerciseFacade;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseSearchCriteria;
 
 @RestController
@@ -48,6 +50,20 @@ public class ExerciseController {
         log.debug("REST request to search exercises by criteria");
         var result = facade.searchByCriteria(criteria, pageable);
         log.debug("Successfully found exercises");
+        return result;
+    }
+
+    @Operation(summary = "Get exercise by id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got exercise by Id",
+        content = @Content(mediaType = "application/json")
+    )
+    @GetMapping("/{exerciseId}")
+    public ExerciseProjection getExerciseById(@PathVariable Long exerciseId) {
+        log.debug("REST request to get exercise by id");
+        var result = facade.getById(exerciseId);
+        log.debug("Successfully got exercise");
         return result;
     }
 
