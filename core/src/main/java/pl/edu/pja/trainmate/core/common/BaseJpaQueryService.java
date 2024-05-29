@@ -65,6 +65,10 @@ public class BaseJpaQueryService {
         return filterBy(searchCriteria, () -> field.eq(searchCriteria));
     }
 
+    protected <T extends Comparable> Predicate isMemberOf(ComparableExpression<T> field, Collection<T> containedBy) {
+        return filterBy(containedBy, () -> field.in(containedBy));
+    }
+
     protected <T> List<T> fetch(JPAQuery<T> query, Consumer<List<T>> additionalFunction) {
         List<T> list = query.fetch();
         additionalFunction.accept(list);

@@ -65,10 +65,10 @@ public class ReportController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = TRAINED_PERSON)
-    @PostMapping("/exercise/{id}/report")
-    public void createReport(@PathVariable Long id, @RequestBody ReportCreateDto reportCreateDto) {
+    @PostMapping("/exercise/{exerciseId}/report")
+    public void createReport(@PathVariable Long exerciseId, @RequestBody ReportCreateDto reportCreateDto) {
         log.debug("Request to CREATE report for exercise item with id: {}", reportCreateDto.getExerciseItemId());
-        validateId(id, reportCreateDto.getExerciseItemId());
+        validateId(exerciseId, reportCreateDto.getExerciseItemId());
         trainingUnitFacade.addReport(reportCreateDto);
         log.debug("CREATED report for exercise item with id: {}", reportCreateDto.getExerciseItemId());
     }
@@ -80,11 +80,11 @@ public class ReportController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PostMapping("/exercise/{id}/review-report")
-    public void reviewReport(@PathVariable Long id) {
-        log.debug("Request to review report for exercise item with id: {}", id);
-        trainingUnitFacade.reviewReport(id);
-        log.debug("Reviewed report for exercise item with id: {}", id);
+    @PostMapping("/exercise/{exerciseId}/review")
+    public void reviewReport(@PathVariable Long exerciseId) {
+        log.debug("Request to review report for exercise item with id: {}", exerciseId);
+        trainingUnitFacade.reviewReport(exerciseId);
+        log.debug("Reviewed report for exercise item with id: {}", exerciseId);
     }
 
     private void validateId(Long bodyId, Long id) {

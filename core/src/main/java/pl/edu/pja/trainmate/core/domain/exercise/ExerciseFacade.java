@@ -12,6 +12,7 @@ import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseData;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseQueryService;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseSearchCriteria;
 
@@ -25,6 +26,10 @@ public class ExerciseFacade {
     public Page<ExerciseListItemProjection> searchByCriteria(ExerciseSearchCriteria criteria, Pageable pageable) {
         validateSearchCriteria(criteria);
         return queryService.searchByCriteria(criteria, pageable);
+    }
+
+    public ExerciseProjection getById(Long id) {
+        return queryService.getExerciseProjectionById(id);
     }
 
     public ResultDto<Long> create(ExerciseCreateDto dto) {

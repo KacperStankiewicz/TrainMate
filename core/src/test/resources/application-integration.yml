@@ -2,17 +2,16 @@ spring:
   liquibase:
     change-log: classpath:db/changelog-master.xml
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         format-sql: true
         enable_lazy_load_no_trans: true
         show-sql: true
+    hibernate:
+      ddl-auto: create
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:db
+    url: jdbc:h2:mem:MODE=PostgreSQL
     username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true
+    password: # default Spring approach

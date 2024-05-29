@@ -9,16 +9,20 @@ import pl.edu.pja.trainmate.core.common.Muscle;
 
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
-public class ExerciseListItemProjection {
+public class ExerciseProjection {
 
     Long id;
     String name;
+    String description;
+    String url;
     Muscle muscleInvolved;
 
     @QueryProjection
-    public ExerciseListItemProjection(Long id, String name, Muscle muscleInvolved) {
+    public ExerciseProjection(Long id, String name, String description, String url, Muscle muscleInvolved) {
         this.id = id;
         this.name = name;
+        this.description = description;
+        this.url = url;
         this.muscleInvolved = muscleInvolved;
     }
 }
