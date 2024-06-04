@@ -5,7 +5,6 @@ import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WA
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_NOT_REPORTED;
 
 import io.vavr.control.Option;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
@@ -13,8 +12,10 @@ import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
+import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 
 @RequiredArgsConstructor
 @Service
@@ -25,12 +26,11 @@ class TrainingUnitService {
 
     public ResultDto<Long> create(TrainingUnitDto dto) {
         Long trainingUnitId = dto.getId();
-        if (Objects.nonNull(trainingUnitId)) {
+        if (trainingUnitId == null) {
             trainingUnitId = buildTrainingUnitEntityAndSave(dto).getId();
         }
-        var buildExerciseItemEntity = buildExerciseItemEntity(dto, trainingUnitId);
-        var exerciseItemEntity = exerciseItemRepository.save(buildExerciseItemEntity);
-        return ResultDto.ofValueOrError(exerciseItemEntity.getId(), COULD_NOT_CREATE_EXERCISE_ITEM);
+        buildAndSaveExerciseItemEntity(dto, trainingUnitId);
+        return ResultDto.ofValueOrError(trainingUnitId, COULD_NOT_CREATE_EXERCISE_ITEM);
     }
 
     public void deleteTrainingUnit(Long trainingUnitId) {
@@ -42,13 +42,13 @@ class TrainingUnitService {
         exerciseItemRepository.deleteById(exerciseItemId);
     }
 
-    public void updateTrainingUnit(TrainingUnitDto dto) {
+    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
         var trainingUnit = trainingUnitRepository.findExactlyOneById(dto.getId());
         trainingUnit.update(dto);
         trainingUnitRepository.saveAndFlush(trainingUnit);
     }
 
-    public void updateExerciseItem(TrainingUnitDto dto) {
+    public void updateExerciseItem(ExerciseItemUpdateDto dto) {
         var exerciseItem = exerciseItemRepository.findExactlyOneById(dto.getId());
         exerciseItem.update(dto);
         exerciseItemRepository.saveAndFlush(exerciseItem);
@@ -66,7 +66,7 @@ class TrainingUnitService {
         return trainingUnitRepository.save(entity);
     }
 
-    private ExerciseItemEntity buildExerciseItemEntity(TrainingUnitDto dto, Long trainingUnitId) {
+    private ExerciseItemEntity buildAndSaveExerciseItemEntity(TrainingUnitDto dto, Long trainingUnitId) {
         return exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseId(dto.getExerciseId())
             .trainingUnitId(trainingUnitId)
@@ -93,7 +93,6 @@ class TrainingUnitService {
         }
 
         exerciseItem.addReport(reportCreateDto);
-
         exerciseItemRepository.saveAndFlush(exerciseItem);
     }
 

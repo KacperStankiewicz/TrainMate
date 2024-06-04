@@ -1,7 +1,8 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.dto;
+package pl.edu.pja.trainmate.core.domain.training.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import java.time.DayOfWeek;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,9 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE, force = true)
-public class WorkoutPlanDto {
+public class TrainingUnitUpdateDto {
 
     Long id;
-    String name;
-    String category;
+    DayOfWeek dayOfWeek;
+    Long weekNumber;
 }

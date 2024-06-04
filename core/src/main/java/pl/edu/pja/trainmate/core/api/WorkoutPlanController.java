@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanFacade;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
@@ -54,8 +55,8 @@ public class WorkoutPlanController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/create")
-    public void createWorkoutPlan(@RequestBody WorkoutPlanCreateDto workoutPlanCreateDto) {
-        workoutPlanFacade.create(workoutPlanCreateDto);
+    public ResultDto<Long> createWorkoutPlan(@RequestBody WorkoutPlanCreateDto workoutPlanCreateDto) {
+        return workoutPlanFacade.create(workoutPlanCreateDto);
     }
 
     @Operation(summary = "update workout plan")

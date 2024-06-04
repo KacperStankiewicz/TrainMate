@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.DigestUtils;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
-import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
+import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 
 @Getter
 @Builder
@@ -46,7 +46,7 @@ public class TrainingUnitEntity extends BaseEntity {
     private Long weekNumber;
 
     @Column(name = "completed")
-    private Boolean completed = false; //todo: completed
+    private Boolean completed = false;
 
     @JsonIgnore
     @Column(name = "unique_hash", unique = true, nullable = false)
@@ -62,7 +62,7 @@ public class TrainingUnitEntity extends BaseEntity {
         this.completed = false;
     }
 
-    public void update(TrainingUnitDto trainingUnitDto) {
+    public void update(TrainingUnitUpdateDto trainingUnitDto) {
         this.dayOfWeek = trainingUnitDto.getDayOfWeek();
         this.weekNumber = trainingUnitDto.getWeekNumber();
         calculateHash();

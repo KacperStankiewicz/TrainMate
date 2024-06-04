@@ -9,4 +9,6 @@ public interface ExerciseItemRepository extends BaseRepository<ExerciseItemEntit
     void deleteByTrainingUnitId(Long id);
 
     void deleteByWorkoutPlanId(Long id);
+
+    ExerciseItemEntity getExerciseItemEntityByTrainingUnitId(Long trainingUnitId);
 }

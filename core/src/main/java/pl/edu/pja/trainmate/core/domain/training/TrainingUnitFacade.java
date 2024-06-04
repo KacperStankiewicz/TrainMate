@@ -3,8 +3,10 @@ package pl.edu.pja.trainmate.core.domain.training;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
+import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +18,11 @@ public class TrainingUnitFacade {
         return service.create(dto);
     }
 
-    public void updateTrainingUnit(TrainingUnitDto dto) {
+    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
         service.updateTrainingUnit(dto);
     }
 
-    public void updateExerciseItem(TrainingUnitDto dto) {
+    public void updateExerciseItem(ExerciseItemUpdateDto dto) {
         service.updateExerciseItem(dto);
     }
 

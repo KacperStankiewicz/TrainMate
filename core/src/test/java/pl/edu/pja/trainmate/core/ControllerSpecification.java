@@ -1,20 +1,21 @@
 package pl.edu.pja.trainmate.core;
 
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
+import static pl.edu.pja.trainmate.core.config.objectmapper.CustomObjectMapperConfig.createObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -29,10 +30,10 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 
 @ActiveProfiles(INTEGRATION)
 @RunWith(SpringRunner.class)
-@TestInstance(Lifecycle.PER_METHOD)
+@TestInstance(PER_METHOD)
 public abstract class ControllerSpecification {
 
-    private static final UserId EXISTING_USER_ID = UserId.valueOf("208d35f7-2c9a-447c-84f0-2566560dc78e");
+    public static final UserId EXISTING_USER_ID = UserId.valueOf("208d35f7-2c9a-447c-84f0-2566560dc78e");
 
     @MockBean
     UserIdProvider userIdProvider;
@@ -43,15 +44,15 @@ public abstract class ControllerSpecification {
     @Autowired
     protected MockMvc mockMvc;
 
-    protected static final ObjectMapper objectMapper = new ObjectMapper();
+    protected static final ObjectMapper objectMapper = createObjectMapper();
 
     @BeforeEach
     private void setup() {
-        Mockito.when(userIdProvider.getLoggedUserId()).thenReturn(EXISTING_USER_ID);
+        when(userIdProvider.getLoggedUserId()).thenReturn(EXISTING_USER_ID);
     }
 
     public void userWithRole(RoleType roleType) {
-        Mockito.when(queryService.getUserByKeycloakId(anyString()))
+        when(queryService.getUserByKeycloakId(anyString()))
             .thenReturn(new LoggedUserDataDto(EXISTING_USER_ID, roleType));
     }
 
