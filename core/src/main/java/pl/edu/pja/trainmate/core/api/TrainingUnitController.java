@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
+import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,8 +39,8 @@ public class TrainingUnitController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/create")
-    public void createTrainingUnit(@RequestBody TrainingUnitDto trainingUnitDto) {
-        trainingUnitFacade.create(trainingUnitDto);
+    public ResultDto<Long> createTrainingUnit(@RequestBody TrainingUnitDto trainingUnitDto) {
+        return trainingUnitFacade.create(trainingUnitDto);
     }
 
     @Operation(summary = "update training unit")
@@ -48,7 +51,7 @@ public class TrainingUnitController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{id}/update")
-    public void updateTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitDto trainingUnitDto) {
+    public void updateTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
         validateId(id, trainingUnitDto.getId());
         trainingUnitFacade.updateTrainingUnit(trainingUnitDto);
     }
@@ -73,9 +76,9 @@ public class TrainingUnitController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/exercise/{id}/update")
-    public void updateExerciseItem(@PathVariable Long id, @RequestBody TrainingUnitDto trainingUnitDto) {
-        validateId(id, trainingUnitDto.getId());
-        trainingUnitFacade.updateExerciseItem(trainingUnitDto);
+    public void updateExerciseItem(@PathVariable Long id, @RequestBody ExerciseItemUpdateDto exerciseItemUpdateDto) {
+        validateId(id, exerciseItemUpdateDto.getId());
+        trainingUnitFacade.updateExerciseItem(exerciseItemUpdateDto);
     }
 
     @Operation(summary = "delete exercise item")

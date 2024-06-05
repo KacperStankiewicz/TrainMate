@@ -36,7 +36,7 @@ public class ReportController {
     )
     @HasRole(roleType = TRAINED_PERSON)
     @PostMapping("/workout-plan/{workoutPlanId}/report")
-    public ResultDto<Long> createReport(@PathVariable Long workoutPlanId, @RequestBody PeriodicalReportCreateDto reportCreateDto) {
+    public ResultDto<Long> createPeriodicalReport(@PathVariable Long workoutPlanId, @RequestBody PeriodicalReportCreateDto reportCreateDto) {
         validateId(workoutPlanId, reportCreateDto.getWorkoutPlanId());
         log.debug("Request to CREATE periodical report for workout plan with id: {}", reportCreateDto.getWorkoutPlanId());
         var result = reportFacade.createPeriodicalReport(reportCreateDto);

@@ -11,5 +11,6 @@ public final class ExerciseEndpoints {
     public static final String UPDATE = "/exercise/%s";
     public static final String DELETE = "/exercise/%s";
     public static final String CREATE = "/exercise/create";
+    public static final String GET = "/exercise/%s";
 
 }

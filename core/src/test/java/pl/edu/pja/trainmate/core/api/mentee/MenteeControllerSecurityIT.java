@@ -1,6 +1,8 @@
 package pl.edu.pja.trainmate.core.api.mentee;
 
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getSamplePeriodicalReportCreateDto;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.mentee.MenteeEndpoints.ACTIVATE;
 import static pl.edu.pja.trainmate.core.api.mentee.MenteeEndpoints.DEACTIVATE;
 import static pl.edu.pja.trainmate.core.api.mentee.MenteeEndpoints.INITIAL_REPORT;
@@ -10,11 +12,9 @@ import static pl.edu.pja.trainmate.core.common.Gender.FEMALE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
 import pl.edu.pja.trainmate.core.common.NumberRange;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
@@ -31,7 +31,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
         var response = performPost(SEARCH, criteria);
 
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -41,17 +41,17 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
         var response = performPost(INVITE, "email", email);
 
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
     void shouldAllowAccessForPersonalTrainerWhenCreatingInitialReport() {
         userWithRole(PERSONAL_TRAINER);
-        var dto = getSamplePeriodicalReportCreateDto();
+        var dto = getSamplePeriodicalReportCreateDtoBuilder().build();
         var response = performPost(INITIAL_REPORT, dto);
 
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -61,7 +61,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
         var response = performPost(String.format(DEACTIVATE, id));
 
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -71,6 +71,6 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
         var response = performPost(String.format(ACTIVATE, id));
 
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 }

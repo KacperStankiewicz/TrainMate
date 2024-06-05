@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.domain.workoutplan.dto;
+package pl.edu.pja.trainmate.core.domain.exercise.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -11,9 +11,14 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE, force = true)
-public class WorkoutPlanDto {
+public class ExerciseItemUpdateDto {
 
     Long id;
-    String name;
-    String category;
+    Long trainingUnitId;
+    Long exerciseId;
+    Integer repetitions;
+    String tempo;
+    Integer weight;
+    Integer rir;
+    Integer sets;
 }

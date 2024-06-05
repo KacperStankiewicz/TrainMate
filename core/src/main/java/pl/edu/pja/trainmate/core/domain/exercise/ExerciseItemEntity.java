@@ -14,8 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
-import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 
 @Getter
 @Builder
@@ -47,13 +47,15 @@ public class ExerciseItemEntity extends BaseEntity {
     private Volume volume;
 
     @Embedded
-    private ExerciseReport exerciseReport;
+    @Builder.Default
+    private ExerciseReport exerciseReport = new ExerciseReport();
 
+    @Builder.Default
     private boolean reported = false;
 
-    public void update(TrainingUnitDto dto) {
+    public void update(ExerciseItemUpdateDto dto) {
         this.exerciseId = dto.getExerciseId();
-        this.trainingUnitId = dto.getId();
+        this.trainingUnitId = dto.getTrainingUnitId();
         this.volume = Volume.builder()
             .repetitions(dto.getRepetitions())
             .tempo(dto.getTempo())
@@ -71,6 +73,7 @@ public class ExerciseItemEntity extends BaseEntity {
             .reportedSets(dto.getSets())
             .remarks(dto.getRemarks())
             .build();
+        this.reported = true;
     }
 }
 

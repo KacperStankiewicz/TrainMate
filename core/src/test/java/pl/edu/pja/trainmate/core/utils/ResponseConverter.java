@@ -1,8 +1,8 @@
 package pl.edu.pja.trainmate.core.utils;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
-import static pl.edu.pja.trainmate.core.utils.CustomObjectMapperConfig.createObjectMapper;
-import static pl.edu.pja.trainmate.core.utils.CustomObjectMapperConfig.createPageObjectMapper;
+import static pl.edu.pja.trainmate.core.config.objectmapper.CustomObjectMapperConfig.createObjectMapper;
+import static pl.edu.pja.trainmate.core.config.objectmapper.CustomObjectMapperConfig.createPageObjectMapper;
 
 import java.io.IOException;
 import org.springframework.data.domain.Page;

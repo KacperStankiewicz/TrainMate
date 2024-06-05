@@ -1,8 +1,14 @@
 package pl.edu.pja.trainmate.core.api.exercise;
 
+import static org.junit.Assert.assertEquals;
 import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getExerciseDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.CREATE;
+import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.DELETE;
+import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.GET;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.SEARCH;
+import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.UPDATE;
+import static pl.edu.pja.trainmate.core.common.Muscle.BICEPS;
 import static pl.edu.pja.trainmate.core.common.Muscle.GLUTES;
 import static pl.edu.pja.trainmate.core.common.Muscle.MIDDLE_CHEST;
 import static pl.edu.pja.trainmate.core.common.Muscle.MIDDLE_DELTOID;
@@ -13,7 +19,7 @@ import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
 import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseToPage;
 
 import io.vavr.collection.List;
-import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +29,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseSearchCriteria;
 
 @SpringBootTest
@@ -32,8 +39,13 @@ class ExerciseControllerIT extends ControllerSpecification {
     @Autowired
     private ExerciseRepository exerciseRepository;
 
+    @AfterEach
+    private void clean() {
+        exerciseRepository.deleteAll();
+    }
+
     @Test
-    void shouldCreateExercise() {
+    void shouldCreateAndGetExercise() {
         //given
         userWithRole(PERSONAL_TRAINER);
         var createDto = getCreateDtoBuilder().build();
@@ -43,20 +55,126 @@ class ExerciseControllerIT extends ControllerSpecification {
 
         //then
         var responseBody = castResponseTo(response, ResultDto.class);
-        Assert.assertEquals(SUCCESS, responseBody.getStatus());
+        assertEquals(SUCCESS, responseBody.getStatus());
 
         //and
-        var entity = exerciseRepository.findExactlyOneById((Long) responseBody.getValue());
-        Assert.assertEquals(createDto.getDescription(), entity.getDescription());
-        Assert.assertEquals(createDto.getUrl(), entity.getUrl());
-        Assert.assertEquals(createDto.getName(), entity.getName());
-        Assert.assertEquals(createDto.getMuscleInvolved(), entity.getMuscleInvolved());
+        var getResponse = performGet(String.format(GET, responseBody.getValue())).getResponse();
+        var exercise = castResponseTo(getResponse, ExerciseProjection.class);
+        assertEquals(createDto.getDescription(), exercise.getDescription());
+        assertEquals(createDto.getUrl(), exercise.getUrl());
+        assertEquals(createDto.getName(), exercise.getName());
+        assertEquals(createDto.getMuscleInvolved(), exercise.getMuscleInvolved());
+    }
+
+    @Test
+    void shouldUpdateExercise() {
+        //given
+        var entity = ExerciseEntity.builder()
+            .name("name")
+            .description("desc")
+            .url("url")
+            .muscleInvolved(BICEPS)
+            .build();
+        entity = exerciseRepository.save(entity);
+
+        userWithRole(PERSONAL_TRAINER);
+        var updateDto = getExerciseDtoBuilder()
+            .id(entity.getId())
+            .build();
+
+        //when
+        var response = performPut(String.format(UPDATE, entity.getId()), updateDto).getResponse();
+
+        //then
+        assertEquals(200, response.getStatus());
+
+        //and
+        var updated = exerciseRepository.findExactlyOneById(entity.getId());
+        assertEquals(updateDto.getName(), updated.getName());
+        assertEquals(updateDto.getUrl(), updated.getUrl());
+        assertEquals(updateDto.getDescription(), updated.getDescription());
+        assertEquals(updateDto.getMuscleInvolved(), updated.getMuscleInvolved());
+    }
+
+    @Test
+    void shouldDeleteExercise() {
+        //given
+        var entity = ExerciseEntity.builder()
+            .name("name")
+            .description("desc")
+            .url("url")
+            .muscleInvolved(BICEPS)
+            .build();
+        entity = exerciseRepository.save(entity);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performDelete(String.format(DELETE, entity.getId())).getResponse();
+
+        //then
+        assertEquals(200, response.getStatus());
+
+        //and
+        assertEquals(0, exerciseRepository.findAll().size());
     }
 
     @Test
     void shouldSearchExercisesByMuscleGroupCriteria() {
         //given
+        createSampleEntities();
+        var criteria = ExerciseSearchCriteria.builder()
+            .muscleGroup(LEGS)
+            .build();
         userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(SEARCH, criteria).getResponse();
+
+        //then
+        var result = castResponseToPage(response, ExerciseListItemProjection.class);
+        assertEquals(1, result.getTotalElements());
+        var entity = result.getContent().get(0);
+        assertEquals(GLUTES, entity.getMuscleInvolved());
+        assertEquals("third", entity.getName());
+    }
+
+    @Test
+    void shouldSearchExercisesByNameCriteria() {
+        //given
+        createSampleEntities();
+        var criteria = ExerciseSearchCriteria.builder()
+            .name("first")
+            .build();
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(SEARCH, criteria).getResponse();
+
+        //then
+        var result = castResponseToPage(response, ExerciseListItemProjection.class);
+        assertEquals(1, result.getTotalElements());
+        var entity = result.getContent().get(0);
+        assertEquals(MIDDLE_CHEST, entity.getMuscleInvolved());
+        assertEquals("first", entity.getName());
+    }
+
+    @Test
+    void shouldSearchAllExercisesWhenEmptyCriteria() {
+        //given
+        createSampleEntities();
+        var criteria = ExerciseSearchCriteria.builder()
+            .build();
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(SEARCH, criteria).getResponse();
+
+        //then
+        var result = castResponseToPage(response, ExerciseListItemProjection.class);
+        assertEquals(3, result.getTotalElements());
+    }
+
+    private void createSampleEntities() {
         var firstExercise = ExerciseEntity.builder()
             .name("first")
             .description("first desc")
@@ -66,7 +184,7 @@ class ExerciseControllerIT extends ControllerSpecification {
 
         var secondExercise = ExerciseEntity.builder()
             .name("second")
-            .description("third desc")
+            .description("second desc")
             .url("www.google.com")
             .muscleInvolved(MIDDLE_DELTOID)
             .build();
@@ -79,21 +197,5 @@ class ExerciseControllerIT extends ControllerSpecification {
             .build();
 
         exerciseRepository.saveAll(List.of(firstExercise, secondExercise, thirdExercise));
-
-        var criteria = ExerciseSearchCriteria.builder()
-            .muscleGroup(LEGS)
-            .build();
-
-        //when
-        var response = performPost(SEARCH, criteria).getResponse();
-
-        //then
-        var result = castResponseToPage(response, ExerciseListItemProjection.class);
-        Assert.assertEquals(1, result.getTotalElements());
-        var entity = result.getContent().get(0);
-        Assert.assertEquals(thirdExercise.getMuscleInvolved(), entity.getMuscleInvolved());
-        Assert.assertEquals(thirdExercise.getName(), entity.getName());
     }
-
-
 }

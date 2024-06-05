@@ -1,5 +1,7 @@
 package pl.edu.pja.trainmate.core.api.exercise;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getExerciseDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getSearchCriteriaBuilder;
@@ -9,11 +11,9 @@ import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.SEARCH;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.UPDATE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 
@@ -32,7 +32,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
 
         //then
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -46,7 +46,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
 
         //then
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -61,7 +61,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
 
         //then
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
     @Test
@@ -75,7 +75,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
 
         //then
         var exception = (SecurityException) response.getResolvedException();
-        Assertions.assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+        assertEquals(FORBIDDEN, exception.getStatus());
     }
 
 }

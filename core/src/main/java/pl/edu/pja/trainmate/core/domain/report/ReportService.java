@@ -50,6 +50,7 @@ class ReportService {
             .workoutPlanId(reportCreateDto.getWorkoutPlanId())
             .userId(userId)
             .weight(reportCreateDto.getWeight())
+            .bodyFat(reportCreateDto.getBodyFat())
             .circumferences(BodyCircumferences.builder()
                 .rightBiceps(reportCreateDto.getRightBiceps())
                 .leftBiceps(reportCreateDto.getLeftBiceps())
@@ -68,6 +69,8 @@ class ReportService {
     }
 
     public void markReportAsReviewed(Long reportId) {
-        repository.findExactlyOneById(reportId).markAsReviewed();
+        var entity = repository.findExactlyOneById(reportId);
+        entity.markAsReviewed();
+        repository.saveAndFlush(entity);
     }
 }

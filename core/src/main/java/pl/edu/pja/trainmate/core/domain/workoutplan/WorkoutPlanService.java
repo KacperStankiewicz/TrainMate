@@ -41,6 +41,7 @@ class WorkoutPlanService {
             .name(workoutPlanCreateDto.getName())
             .userId(UserId.valueOf(workoutPlanCreateDto.getUserId()))
             .category(workoutPlanCreateDto.getCategory())
+            .dateRange(workoutPlanCreateDto.getDateRange())
             .build();
     }
 }
