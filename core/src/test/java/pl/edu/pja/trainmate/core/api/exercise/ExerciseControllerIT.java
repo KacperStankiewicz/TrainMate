@@ -121,33 +121,11 @@ class ExerciseControllerIT extends ControllerSpecification {
     @Test
     void shouldSearchExercisesByMuscleGroupCriteria() {
         //given
-        userWithRole(PERSONAL_TRAINER);
-        var firstExercise = ExerciseEntity.builder()
-            .name("first")
-            .description("first desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_CHEST)
-            .build();
-
-        var secondExercise = ExerciseEntity.builder()
-            .name("second")
-            .description("second desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_DELTOID)
-            .build();
-
-        var thirdExercise = ExerciseEntity.builder()
-            .name("third")
-            .description("third desc")
-            .url("www.google.com")
-            .muscleInvolved(GLUTES)
-            .build();
-
-        exerciseRepository.saveAll(List.of(firstExercise, secondExercise, thirdExercise));
-
+        createSampleEntities();
         var criteria = ExerciseSearchCriteria.builder()
             .muscleGroup(LEGS)
             .build();
+        userWithRole(PERSONAL_TRAINER);
 
         //when
         var response = performPost(SEARCH, criteria).getResponse();
@@ -156,40 +134,18 @@ class ExerciseControllerIT extends ControllerSpecification {
         var result = castResponseToPage(response, ExerciseListItemProjection.class);
         assertEquals(1, result.getTotalElements());
         var entity = result.getContent().get(0);
-        assertEquals(thirdExercise.getMuscleInvolved(), entity.getMuscleInvolved());
-        assertEquals(thirdExercise.getName(), entity.getName());
+        assertEquals(GLUTES, entity.getMuscleInvolved());
+        assertEquals("third", entity.getName());
     }
 
     @Test
     void shouldSearchExercisesByNameCriteria() {
         //given
-        userWithRole(PERSONAL_TRAINER);
-        var firstExercise = ExerciseEntity.builder()
-            .name("first")
-            .description("first desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_CHEST)
-            .build();
-
-        var secondExercise = ExerciseEntity.builder()
-            .name("second")
-            .description("second desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_DELTOID)
-            .build();
-
-        var thirdExercise = ExerciseEntity.builder()
-            .name("third")
-            .description("third desc")
-            .url("www.google.com")
-            .muscleInvolved(GLUTES)
-            .build();
-
-        exerciseRepository.saveAll(List.of(firstExercise, secondExercise, thirdExercise));
-
+        createSampleEntities();
         var criteria = ExerciseSearchCriteria.builder()
             .name("first")
             .build();
+        userWithRole(PERSONAL_TRAINER);
 
         //when
         var response = performPost(SEARCH, criteria).getResponse();
@@ -198,39 +154,17 @@ class ExerciseControllerIT extends ControllerSpecification {
         var result = castResponseToPage(response, ExerciseListItemProjection.class);
         assertEquals(1, result.getTotalElements());
         var entity = result.getContent().get(0);
-        assertEquals(firstExercise.getMuscleInvolved(), entity.getMuscleInvolved());
-        assertEquals(firstExercise.getName(), entity.getName());
+        assertEquals(MIDDLE_CHEST, entity.getMuscleInvolved());
+        assertEquals("first", entity.getName());
     }
 
     @Test
     void shouldSearchAllExercisesWhenEmptyCriteria() {
         //given
-        userWithRole(PERSONAL_TRAINER);
-        var firstExercise = ExerciseEntity.builder()
-            .name("first")
-            .description("first desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_CHEST)
-            .build();
-
-        var secondExercise = ExerciseEntity.builder()
-            .name("second")
-            .description("second desc")
-            .url("www.google.com")
-            .muscleInvolved(MIDDLE_DELTOID)
-            .build();
-
-        var thirdExercise = ExerciseEntity.builder()
-            .name("third")
-            .description("third desc")
-            .url("www.google.com")
-            .muscleInvolved(GLUTES)
-            .build();
-
-        exerciseRepository.saveAll(List.of(firstExercise, secondExercise, thirdExercise));
-
+        createSampleEntities();
         var criteria = ExerciseSearchCriteria.builder()
             .build();
+        userWithRole(PERSONAL_TRAINER);
 
         //when
         var response = performPost(SEARCH, criteria).getResponse();
@@ -240,5 +174,28 @@ class ExerciseControllerIT extends ControllerSpecification {
         assertEquals(3, result.getTotalElements());
     }
 
+    private void createSampleEntities() {
+        var firstExercise = ExerciseEntity.builder()
+            .name("first")
+            .description("first desc")
+            .url("www.google.com")
+            .muscleInvolved(MIDDLE_CHEST)
+            .build();
 
+        var secondExercise = ExerciseEntity.builder()
+            .name("second")
+            .description("second desc")
+            .url("www.google.com")
+            .muscleInvolved(MIDDLE_DELTOID)
+            .build();
+
+        var thirdExercise = ExerciseEntity.builder()
+            .name("third")
+            .description("third desc")
+            .url("www.google.com")
+            .muscleInvolved(GLUTES)
+            .build();
+
+        exerciseRepository.saveAll(List.of(firstExercise, secondExercise, thirdExercise));
+    }
 }

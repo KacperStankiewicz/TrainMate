@@ -21,12 +21,12 @@ import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 @AutoConfigureMockMvc
 class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
 
-    private static final Long id = 1L;
+    private static final Long ID = 1L;
 
     @Test
     void shouldNotAllowAccessForPersonWithoutRoleWhenSearchingExercises() {
         //given
-        var response = performGet(format(GET, id));
+        var response = performGet(format(GET, ID));
 
         //when
         var exception = (SecurityException) response.getResolvedException();
@@ -56,7 +56,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
         var dto = getSampleWorkoutPlanDtoBuilder().build();
 
         //when
-        var response = performPut(format(UPDATE, id), dto);
+        var response = performPut(format(UPDATE, ID), dto);
 
         //then
         var exception = (SecurityException) response.getResolvedException();
@@ -69,7 +69,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
         userWithRole(TRAINED_PERSON);
 
         //when
-        var response = performDelete(format(DELETE, id));
+        var response = performDelete(format(DELETE, ID));
 
         //then
         var exception = (SecurityException) response.getResolvedException();

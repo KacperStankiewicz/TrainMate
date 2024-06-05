@@ -21,7 +21,7 @@ import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 @AutoConfigureMockMvc
 class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
-    private static final Long id = 1L;
+    private static final Long ID = 1L;
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenCreatingTraining() {
@@ -36,7 +36,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingTraining() {
         userWithRole(TRAINED_PERSON);
-        var response = performPut(format(UPDATE, id), getSampleTrainingUnitDtoBuilder().build());
+        var response = performPut(format(UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -45,7 +45,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingTraining() {
         userWithRole(TRAINED_PERSON);
-        var response = performDelete(format(DELETE, id));
+        var response = performDelete(format(DELETE, ID));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -54,7 +54,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingExerciseItem() {
         userWithRole(TRAINED_PERSON);
-        var response = performPut(format(EXERCISE_ITEM_UPDATE, id), getSampleTrainingUnitDtoBuilder().build());
+        var response = performPut(format(EXERCISE_ITEM_UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -63,7 +63,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingExerciseItem() {
         userWithRole(TRAINED_PERSON);
-        var response = performDelete(format(EXERCISE_ITEM_DELETE, id));
+        var response = performDelete(format(EXERCISE_ITEM_DELETE, ID));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());

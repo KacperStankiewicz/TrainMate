@@ -22,12 +22,12 @@ import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 @AutoConfigureMockMvc
 class ReportControllerSecurityIT extends ControllerSpecification {
 
-    private static final Long id = 1L;
+    private static final Long ID = 1L;
 
     @Test
     void shouldNotAllowAccessForPersonalTrainerWhenCreatingReport() {
         userWithRole(PERSONAL_TRAINER);
-        var response = performPost(format(WORKOUT_PLAN_REPORT, id), getSamplePeriodicalReportCreateDtoBuilder().build());
+        var response = performPost(format(WORKOUT_PLAN_REPORT, ID), getSamplePeriodicalReportCreateDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -36,7 +36,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForPersonalTrainerWhenCreatingExerciseReport() {
         userWithRole(PERSONAL_TRAINER);
-        var response = performPost(format(EXERCISE_REPORT, id), getExerciseReportSampleDataBuilder().build());
+        var response = performPost(format(EXERCISE_REPORT, ID), getExerciseReportSampleDataBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -45,7 +45,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenReviewingReport() {
         userWithRole(TRAINED_PERSON);
-        var response = performPost(format(WORKOUT_PLAN_REPORT_REVIEW, id));
+        var response = performPost(format(WORKOUT_PLAN_REPORT_REVIEW, ID));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -54,7 +54,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenReviewingExerciseReport() {
         userWithRole(TRAINED_PERSON);
-        var response = performPost(format(EXERCISE_REPORT_REVIEW, id));
+        var response = performPost(format(EXERCISE_REPORT_REVIEW, ID));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
