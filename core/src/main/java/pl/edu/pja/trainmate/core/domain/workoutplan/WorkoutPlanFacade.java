@@ -6,7 +6,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 
 @Service
@@ -27,7 +27,7 @@ public class WorkoutPlanFacade {
         return service.create(dto);
     }
 
-    public void update(WorkoutPlanDto dto) {
+    public void update(WorkoutPlanUpdateDto dto) {
         service.update(dto);
     }
 

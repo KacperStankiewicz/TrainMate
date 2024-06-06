@@ -1,19 +1,16 @@
 package pl.edu.pja.trainmate.core.domain.training;
 
-import static java.util.Locale.ENGLISH;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseItemErrorCode.COULD_NOT_CREATE_EXERCISE_ITEM;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_ALREADY_REPORTED;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_NOT_REPORTED;
 
 import io.vavr.control.Option;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.pja.trainmate.core.common.DateRange;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
+import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
@@ -32,11 +29,16 @@ class TrainingUnitService {
     private final TrainingUnitRepository trainingUnitRepository;
     private final ExerciseItemRepository exerciseItemRepository;
     private final TrainingUnitQueryService queryService;
+    private final WeekNumberCalculator weekNumberCalculator;
 
     public List<TrainingUnitProjection> getTrainingUnitsForCurrentWeekForLoggedUser(WorkoutPlanProjection workoutPlan) {
-        var weekNumber = calculateWeekNumber(workoutPlan.getDateRange());
+        var weekNumber = weekNumberCalculator.calculate(workoutPlan.getDateRange().getFrom());
 
-        return queryService.getTrainingUnitsForCurrentWeek(workoutPlan.getId(), weekNumber);
+        return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlan.getId(), weekNumber);
+    }
+
+    public List<TrainingUnitProjection> getTrainingUnitsByWorkoutPlanIdAndWeek(Long workoutPlanId, Long week) {
+        return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlanId, week);
     }
 
     public ResultDto<Long> create(TrainingUnitDto dto) {
@@ -67,16 +69,6 @@ class TrainingUnitService {
         var exerciseItem = exerciseItemRepository.findExactlyOneById(dto.getId());
         exerciseItem.update(dto);
         exerciseItemRepository.saveAndFlush(exerciseItem);
-    }
-
-    private Long calculateWeekNumber(DateRange dateRange) {
-        var today = LocalDate.now();
-        var workoutPlanStartDate = dateRange.getFrom();
-
-        var todayWeekOfYear = today.get(WeekFields.of(ENGLISH).weekOfYear());
-        var workoutStartWeekOfYear = workoutPlanStartDate.get(WeekFields.of(ENGLISH).weekOfYear());
-
-        return (long) (todayWeekOfYear - workoutStartWeekOfYear + 1);
     }
 
     private TrainingUnitEntity buildTrainingUnitEntityAndSave(TrainingUnitDto dto) {

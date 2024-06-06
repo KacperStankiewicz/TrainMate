@@ -1,16 +1,23 @@
 package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.COULD_NOT_CREATE_WORKOUT_PLAN;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.START_DATE_MUST_NOT_BE_BEFORE_TODAY;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_DURATION;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_START_DATE;
 
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.DateRange;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
@@ -32,20 +39,42 @@ class WorkoutPlanService {
     }
 
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
+        validateDto(workoutPlanCreateDto);
+
         var entity = buildWorkoutPlanEntity(workoutPlanCreateDto);
         return ResultDto.ofValueOrError(workoutPlanRepository.save(entity).getId(), COULD_NOT_CREATE_WORKOUT_PLAN);
     }
 
-    public void update(WorkoutPlanDto workoutPlanDto) {
-        var workoutPlan = workoutPlanRepository.findExactlyOneById(workoutPlanDto.getId());
-        workoutPlan.update(workoutPlanDto);
+    public void update(WorkoutPlanUpdateDto workoutPlanUpdateDto) {
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(workoutPlanUpdateDto.getId());
+        workoutPlan.checkIfModificationAllowed();
+        validateDto(workoutPlanUpdateDto);
+
+        workoutPlan.update(workoutPlanUpdateDto);
         workoutPlanRepository.saveAndFlush(workoutPlan);
     }
 
     public void delete(Long id) {
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(id);
+        workoutPlan.checkIfModificationAllowed();
+
         workoutPlanRepository.deleteById(id);
         exerciseItemRepository.deleteByWorkoutPlanId(id);
         trainingUnitRepository.deleteByWorkoutPlanId(id);
+    }
+
+    private void validateDto(WorkoutPlanDto dto) {
+        if (dto.getDurationInWeeks() == null) {
+            throw new CommonException(WORKOUT_PLAN_MUST_HAVE_DURATION);
+        }
+
+        if (dto.getStartDate() == null) {
+            throw new CommonException(WORKOUT_PLAN_MUST_HAVE_START_DATE);
+        }
+
+        if (LocalDate.now().isAfter(dto.getStartDate())) {
+            throw new CommonException(START_DATE_MUST_NOT_BE_BEFORE_TODAY);
+        }
     }
 
     private WorkoutPlanEntity buildWorkoutPlanEntity(WorkoutPlanCreateDto workoutPlanCreateDto) {
@@ -53,7 +82,8 @@ class WorkoutPlanService {
             .name(workoutPlanCreateDto.getName())
             .userId(UserId.valueOf(workoutPlanCreateDto.getUserId()))
             .category(workoutPlanCreateDto.getCategory())
-            .dateRange(workoutPlanCreateDto.getDateRange())
+            .dateRange(
+                new DateRange(workoutPlanCreateDto.getStartDate(), workoutPlanCreateDto.getStartDate().plusWeeks(workoutPlanCreateDto.getDurationInWeeks())))
             .build();
     }
 }

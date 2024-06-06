@@ -8,14 +8,14 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
+@Value
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE, force = true)
-@Value
-public class WorkoutPlanCreateDto implements WorkoutPlanDto{
+public class WorkoutPlanUpdateDto implements WorkoutPlanDto {
 
+    Long id;
     String name;
-    String userId;
     String category;
     LocalDate startDate;
     Long durationInWeeks;

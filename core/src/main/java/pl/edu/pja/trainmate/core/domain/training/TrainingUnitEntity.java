@@ -22,7 +22,7 @@ import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

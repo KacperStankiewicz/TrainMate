@@ -1,10 +1,11 @@
 package pl.edu.pja.trainmate.core.api.data;
 
+import java.time.LocalDate;
 import pl.edu.pja.trainmate.core.common.DateRange;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanEntity;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
 
 public class WorkoutPlanSampleData {
 
@@ -13,21 +14,30 @@ public class WorkoutPlanSampleData {
             .name("name")
             .userId("userId")
             .category("category")
-            .dateRange(DateRange.fromNow());
+            .startDate(LocalDate.now())
+            .durationInWeeks(1L);
     }
 
-    public static WorkoutPlanDto.WorkoutPlanDtoBuilder getSampleWorkoutPlanDtoBuilder() {
-        return WorkoutPlanDto.builder()
+    public static WorkoutPlanUpdateDto.WorkoutPlanUpdateDtoBuilder getSampleWorkoutPlanDtoBuilder() {
+        return WorkoutPlanUpdateDto.builder()
             .name("name")
             .id(1L)
             .category("category");
     }
 
-    public static WorkoutPlanEntity.WorkoutPlanEntityBuilder getSampleWorkoutPlanEntityBuilder() {
+    public static WorkoutPlanEntity.WorkoutPlanEntityBuilder getSampleActiveWorkoutPlanEntityBuilder() {
         return WorkoutPlanEntity.builder()
             .name("name")
             .userId(UserId.valueOf("userId"))
             .category("category")
-            .dateRange(DateRange.fromNow());
+            .dateRange(new DateRange(LocalDate.now(), LocalDate.now().plusWeeks(8)));
+    }
+
+    public static WorkoutPlanEntity.WorkoutPlanEntityBuilder getSampleInActiveWorkoutPlanEntityBuilder() {
+        return WorkoutPlanEntity.builder()
+            .name("name")
+            .userId(UserId.valueOf("userId"))
+            .category("category")
+            .dateRange(new DateRange(LocalDate.now().plusDays(1), LocalDate.now().plusWeeks(8)));
     }
 }

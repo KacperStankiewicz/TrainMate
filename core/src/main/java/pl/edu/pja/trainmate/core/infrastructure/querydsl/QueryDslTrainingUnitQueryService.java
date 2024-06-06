@@ -25,7 +25,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
     private static final QExerciseEntity exercise = QExerciseEntity.exerciseEntity;
 
     @Override
-    public List<TrainingUnitProjection> getTrainingUnitsForCurrentWeek(Long workoutPlanId, Long weekNumber) {
+    public List<TrainingUnitProjection> getTrainingUnitsByWorkoutPlanIdAndWeekNumber(Long workoutPlanId, Long weekNumber) {
         var trainingUnits = queryFactory()
             .select(new QTrainingUnitProjection(
                 trainingUnit.id,
@@ -39,6 +39,10 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
             )
             .fetch();
 
+        return setReferencesForTrainingUnits(trainingUnits);
+    }
+
+    private List<TrainingUnitProjection> setReferencesForTrainingUnits(List<TrainingUnitProjection> trainingUnits) {
         var ids = trainingUnits.stream()
             .map(TrainingUnitProjection::getId)
             .collect(Collectors.toList());

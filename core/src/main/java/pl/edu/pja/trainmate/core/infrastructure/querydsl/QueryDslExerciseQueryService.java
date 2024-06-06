@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
-import pl.edu.pja.trainmate.core.common.OrderByBuilder;
+import pl.edu.pja.trainmate.core.common.utils.OrderByBuilder;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseProjection;

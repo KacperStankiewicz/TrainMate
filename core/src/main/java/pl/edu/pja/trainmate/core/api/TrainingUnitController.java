@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.ResultDto;
@@ -45,8 +46,28 @@ public class TrainingUnitController {
         TRAINED_PERSON
     })
     @GetMapping("/current")
-    public List<TrainingUnitProjection> getCurrentWorkoutPlanData() {
-        return trainingUnitFacade.getCurrentTraining();
+    public List<TrainingUnitProjection> getCurrentTrainingUnits() {
+        log.debug("Request to GET training units for current week for logged user");
+        var result = trainingUnitFacade.getCurrentTrainingUnits();
+        log.debug("Successfully GOT training units");
+        return result;
+    }
+
+    @Operation(summary = "get training units for given week by workout plan id and week number")
+    @ApiResponse(
+        responseCode = "200",
+        description = "get training units for given week by workout plan id and week number",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        PERSONAL_TRAINER
+    })
+    @GetMapping("/{workoutPlanId}/get-for-week")
+    public List<TrainingUnitProjection> getTrainingsByWorkoutPlanIdAndWeek(@PathVariable Long workoutPlanId, @RequestParam Long week) {
+        log.debug("Request to GET training units from workout plan with id: {} and week: {}", workoutPlanId, week);
+        var result = trainingUnitFacade.getTrainingUnitsByWorkoutPlanIdAndWeek(workoutPlanId, week);
+        log.debug("Successfully GOT training units from workout plan with id: {} and week: {}", workoutPlanId, week);
+        return result;
     }
 
     @Operation(summary = "create training unit")
@@ -58,7 +79,10 @@ public class TrainingUnitController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/create")
     public ResultDto<Long> createTrainingUnit(@RequestBody TrainingUnitDto trainingUnitDto) {
-        return trainingUnitFacade.create(trainingUnitDto);
+        log.debug("Request to CREATE training unit");
+        var result = trainingUnitFacade.create(trainingUnitDto);
+        log.debug("CREATED training unit with id: {}", result.getValue());
+        return result;
     }
 
     @Operation(summary = "update training unit")
@@ -70,8 +94,10 @@ public class TrainingUnitController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{id}/update")
     public void updateTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
+        log.debug("Request to UPDATE training unit with id: {}", id);
         validateId(id, trainingUnitDto.getId());
         trainingUnitFacade.updateTrainingUnit(trainingUnitDto);
+        log.debug("UPDATED training unit with id: {}", id);
     }
 
     @Operation(summary = "delete training unit")
@@ -83,7 +109,9 @@ public class TrainingUnitController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @DeleteMapping("/{id}/delete")
     public void deleteTrainingUnit(@PathVariable Long id) {
+        log.debug("Request to DELETE training unit with id: {}", id);
         trainingUnitFacade.deleteTrainingUnit(id);
+        log.debug("DELETED training unit");
     }
 
     @Operation(summary = "update exercise item")
@@ -95,8 +123,11 @@ public class TrainingUnitController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/exercise/{id}/update")
     public void updateExerciseItem(@PathVariable Long id, @RequestBody ExerciseItemUpdateDto exerciseItemUpdateDto) {
+        log.debug("Request to UPDATE exercise item with id: {}", id);
         validateId(id, exerciseItemUpdateDto.getId());
         trainingUnitFacade.updateExerciseItem(exerciseItemUpdateDto);
+        log.debug("UPDATED exercise item with id: {}", id);
+
     }
 
     @Operation(summary = "delete exercise item")
@@ -108,7 +139,9 @@ public class TrainingUnitController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @DeleteMapping("/exercise/{id}/delete")
     public void deleteExerciseItem(@PathVariable Long id) {
+        log.debug("Request to DELETE exercise item with id: {}", id);
         trainingUnitFacade.deleteExerciseItem(id);
+        log.debug("DELETED exercise item");
     }
 
     private void validateId(Long applicationId, Long idFromDto) {

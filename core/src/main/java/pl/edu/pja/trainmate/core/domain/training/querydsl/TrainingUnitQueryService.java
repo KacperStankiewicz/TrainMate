@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface TrainingUnitQueryService {
 
-    List<TrainingUnitProjection> getTrainingUnitsForCurrentWeek(Long workoutPlanId, Long weekNumber);
+    List<TrainingUnitProjection> getTrainingUnitsByWorkoutPlanIdAndWeekNumber(Long workoutPlanId, Long weekNumber);
 }

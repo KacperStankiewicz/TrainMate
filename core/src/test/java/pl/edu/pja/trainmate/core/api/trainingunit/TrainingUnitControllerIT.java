@@ -1,22 +1,30 @@
 package pl.edu.pja.trainmate.core.api.trainingunit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.TUESDAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.OK;
+import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getExerciseEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleExerciseItemEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleExerciseItemUpdateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitEntity;
+import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitUpdateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_UPDATE;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_CURRENT_WEEK;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
+import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseToList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +35,10 @@ import org.springframework.util.DigestUtils;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
+import pl.edu.pja.trainmate.core.domain.exercise.ExerciseRepository;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
+import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,10 +50,20 @@ class TrainingUnitControllerIT extends ControllerSpecification {
     @Autowired
     private ExerciseItemRepository exerciseItemRepository;
 
+    @Autowired
+    private WorkoutPlanRepository workoutPlanRepository;
+
+    @Autowired
+    private ExerciseRepository exerciseRepository;
+
+    private Long existingWorkoutPlanId;
+
     @AfterEach
     private void clean() {
         repository.deleteAll();
         exerciseItemRepository.deleteAll();
+        workoutPlanRepository.deleteAll();
+        exerciseRepository.deleteAll();
     }
 
     @Test
@@ -166,6 +187,90 @@ class TrainingUnitControllerIT extends ControllerSpecification {
 
         //and
         assertEquals(0, repository.findAll().size());
+    }
+
+    @Test
+    void shouldGetTrainingUnitsForCurrentWeek() {
+        //given
+        userWithRole(TRAINED_PERSON);
+        createWorkoutPlanWithTraining();
+
+        //when
+        var response = performGet(GET_FOR_CURRENT_WEEK).getResponse();
+
+        //then
+        assertEquals(OK.value(), response.getStatus());
+
+        //and
+        var responseBody = castResponseToList(response, TrainingUnitProjection.class);
+
+        assertEquals(1, responseBody.size());
+        var first = responseBody.get(0);
+
+        assertEquals(MONDAY, first.getDayOfWeek());
+        assertEquals(1L, first.getWeekNumber());
+        assertEquals(1, first.getExercises().size());
+
+        var firstExercise = first.getExercises().get(0);
+        assertEquals("Bench Press", firstExercise.getName());
+        assertEquals(1, firstExercise.getSets());
+    }
+
+    @Test
+    void shouldGetTrainingUnitsForGivenWorkoutPlanIdAndWeekNumber() {
+        //given
+        userWithRole(PERSONAL_TRAINER);
+        createWorkoutPlanWithTraining();
+
+        var secondTrainingUnit = getSampleTrainingUnitEntityBuilder()
+            .workoutPlanId(1L)
+            .weekNumber(2L)
+            .build();
+        secondTrainingUnit.calculateHash();
+        repository.save(secondTrainingUnit);
+
+        //when
+        var response = performGet(String.format(GET_FOR_WEEK, existingWorkoutPlanId, 1L)).getResponse();
+
+        //then
+        assertEquals(OK.value(), response.getStatus());
+
+        //and
+        var responseBody = castResponseToList(response, TrainingUnitProjection.class);
+
+        assertEquals(1, responseBody.size());
+        var first = responseBody.get(0);
+
+        assertEquals(MONDAY, first.getDayOfWeek());
+        assertEquals(1L, first.getWeekNumber());
+        assertEquals(1, first.getExercises().size());
+
+        var firstExercise = first.getExercises().get(0);
+        assertEquals("Bench Press", firstExercise.getName());
+        assertEquals(1, firstExercise.getSets());
+    }
+
+    private void createWorkoutPlanWithTraining() {
+        var exercise = exerciseRepository.save(getExerciseEntityBuilder().build());
+        var workoutPlan = workoutPlanRepository.save(
+            getSampleActiveWorkoutPlanEntityBuilder()
+                .userId(EXISTING_USER_ID)
+                .build()
+        );
+        existingWorkoutPlanId = workoutPlan.getId();
+        var trainingUnit = repository.save(
+            getSampleTrainingUnitEntityBuilder()
+                .workoutPlanId(workoutPlan.getId())
+                .build()
+        );
+
+        exerciseItemRepository.save(
+            getSampleExerciseItemEntityBuilder()
+                .exerciseId(exercise.getId())
+                .trainingUnitId(trainingUnit.getId())
+                .workoutPlanId(workoutPlan.getId())
+                .build()
+        );
     }
 
 }
