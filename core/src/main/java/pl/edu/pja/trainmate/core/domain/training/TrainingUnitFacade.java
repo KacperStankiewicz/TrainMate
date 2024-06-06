@@ -22,7 +22,6 @@ public class TrainingUnitFacade {
 
     public List<TrainingUnitProjection> getCurrentTraining() {
         var userId = userProvider.getLoggedUserId();
-        //todo: get active workoutplan for user,and calculate weeknumber
         var workoutPlan = workoutPlanFacade.getCurrentPlan(userId);
 
         return service.getTrainingUnitsForCurrentWeekForLoggedUser(workoutPlan);
