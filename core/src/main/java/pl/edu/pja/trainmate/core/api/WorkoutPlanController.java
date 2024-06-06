@@ -44,7 +44,7 @@ public class WorkoutPlanController {
     })
     @GetMapping("/{id}")
     public AllWorkoutData getWorkoutPlanData(@PathVariable Long id) {
-        return workoutPlanFacade.get(id);
+        return workoutPlanFacade.getById(id);
     }
 
     @Operation(summary = "create workout plan")

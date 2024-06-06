@@ -8,8 +8,11 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +21,15 @@ class WorkoutPlanService {
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseItemRepository exerciseItemRepository;
     private final TrainingUnitRepository trainingUnitRepository;
+    private final WorkoutPlanQueryService queryService;
+
+    public AllWorkoutData getWorkoutPlanData(Long id) {
+        return queryService.getWorkoutPlanData(id);
+    }
+
+    public WorkoutPlanProjection getCurrentWorkoutPlanProjection(UserId userId) {
+        return queryService.getCurrentWorkoutPlan(userId);
+    }
 
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
         var entity = buildWorkoutPlanEntity(workoutPlanCreateDto);

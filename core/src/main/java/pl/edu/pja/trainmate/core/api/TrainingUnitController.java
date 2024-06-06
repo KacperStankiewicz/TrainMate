@@ -2,13 +2,16 @@ package pl.edu.pja.trainmate.core.api;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.INVALID_ID;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +25,7 @@ import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
+import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +34,20 @@ import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
 public class TrainingUnitController {
 
     private final TrainingUnitFacade trainingUnitFacade;
+
+    @Operation(summary = "get training units for current week")
+    @ApiResponse(
+        responseCode = "200",
+        description = "get training units for current week",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        TRAINED_PERSON
+    })
+    @GetMapping("/current")
+    public List<TrainingUnitProjection> getCurrentWorkoutPlanData() {
+        return trainingUnitFacade.getCurrentTraining();
+    }
 
     @Operation(summary = "create training unit")
     @ApiResponse(
