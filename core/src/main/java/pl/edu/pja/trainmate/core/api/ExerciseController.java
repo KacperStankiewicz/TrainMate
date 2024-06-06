@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.api;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.INVALID_ID;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -59,6 +60,10 @@ public class ExerciseController {
         description = "Got exercise by Id",
         content = @Content(mediaType = "application/json")
     )
+    @HasRole(roleType = {
+        PERSONAL_TRAINER,
+        TRAINED_PERSON
+    })
     @GetMapping("/{exerciseId}")
     public ExerciseProjection getExerciseById(@PathVariable Long exerciseId) {
         log.debug("REST request to get exercise by id");
