@@ -1,10 +1,13 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
+import com.querydsl.core.BooleanBuilder;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
+import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseItemProjection;
@@ -15,10 +18,12 @@ import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection
 import pl.edu.pja.trainmate.core.domain.workoutplan.QWorkoutPlanEntity;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.QAllWorkoutData;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.QWorkoutPlanProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
 @Service
-public class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements WorkoutPlanQueryService {
+class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements WorkoutPlanQueryService {
 
     private static final QWorkoutPlanEntity workoutPlan = QWorkoutPlanEntity.workoutPlanEntity;
     private static final QTrainingUnitEntity trainingUnit = QTrainingUnitEntity.trainingUnitEntity;
@@ -42,6 +47,24 @@ public class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService impleme
         return workoutData;
     }
 
+    @Override
+    public WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId) {
+        return queryFactory()
+            .select(new QWorkoutPlanProjection(
+                workoutPlan.id,
+                workoutPlan.name,
+                workoutPlan.category,
+                workoutPlan.dateRange
+            ))
+            .from(workoutPlan)
+            .where(new BooleanBuilder()
+                .and(workoutPlan.userId.eq(loggedUserId))
+                .and(workoutPlan.dateRange.from.loe(LocalDate.now()))
+                .and(workoutPlan.dateRange.to.goe(LocalDate.now()))
+            )
+            .fetchOne();
+    }
+
     private List<TrainingUnitProjection> fetchTrainingUnitsProjection(Long workoutPlanId) {
         var trainingUnits = queryFactory()
             .select(new QTrainingUnitProjection(
@@ -54,11 +77,9 @@ public class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService impleme
             .fetchAll();
 
         var exerciseItems = fetchExerciseItemsProjection(workoutPlanId);
+
         return trainingUnits.stream()
-            .peek(it -> {
-                var exercises = exerciseItems.get(it.getId());
-                it.addExercises(exercises);
-            })
+            .peek(it -> it.addExercises(exerciseItems.get(it.getId())))
             .collect(Collectors.toList());
     }
 

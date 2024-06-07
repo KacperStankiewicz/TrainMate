@@ -8,7 +8,10 @@ import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.C
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_UPDATE;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_CURRENT_WEEK;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import org.junit.jupiter.api.Test;
@@ -64,6 +67,24 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     void shouldNotAllowAccessForTrainedPersonWhenDeletingExerciseItem() {
         userWithRole(TRAINED_PERSON);
         var response = performDelete(format(EXERCISE_ITEM_DELETE, ID));
+
+        var exception = (SecurityException) response.getResolvedException();
+        assertEquals(FORBIDDEN, exception.getStatus());
+    }
+
+    @Test
+    void shouldNotAllowAccessForTrainedPersonWhenGettingTrainingUnitsByWorkoutPlanIdAndWeekNumber() {
+        userWithRole(TRAINED_PERSON);
+        var response = performGet(format(GET_FOR_WEEK, ID, 1L));
+
+        var exception = (SecurityException) response.getResolvedException();
+        assertEquals(FORBIDDEN, exception.getStatus());
+    }
+
+    @Test
+    void shouldNotAllowAccessForPersonalTrainerWhenGettingTrainingUnitsForCurrentWeek() {
+        userWithRole(PERSONAL_TRAINER);
+        var response = performGet(GET_FOR_CURRENT_WEEK);
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());

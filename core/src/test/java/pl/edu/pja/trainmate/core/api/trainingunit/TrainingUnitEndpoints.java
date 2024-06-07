@@ -12,4 +12,6 @@ public final class TrainingUnitEndpoints {
     public static final String DELETE = "/training/%s/delete";
     public static final String EXERCISE_ITEM_UPDATE = "/training/exercise/%s/update";
     public static final String EXERCISE_ITEM_DELETE = "/training/exercise/%s/delete";
+    public static final String GET_FOR_WEEK = "/training/%s/get-for-week?week=%s";
+    public static final String GET_FOR_CURRENT_WEEK = "/training/current";
 }

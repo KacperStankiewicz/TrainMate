@@ -27,12 +27,4 @@ public class DateRange {
         this.from = from;
         this.to = to;
     }
-
-    public static DateRange fromNow() {
-        return new DateRange(LocalDate.now(), null);
-    }
-
-    public void end() {
-        this.to = LocalDate.now();
-    }
 }

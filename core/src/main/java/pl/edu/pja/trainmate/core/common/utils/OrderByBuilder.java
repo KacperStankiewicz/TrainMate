@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.common;
+package pl.edu.pja.trainmate.core.common.utils;
 
 
 import static com.querydsl.core.types.Order.ASC;

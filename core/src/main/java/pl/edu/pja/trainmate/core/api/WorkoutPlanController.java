@@ -22,7 +22,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanFacade;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
-import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class WorkoutPlanController {
     })
     @GetMapping("/{id}")
     public AllWorkoutData getWorkoutPlanData(@PathVariable Long id) {
-        return workoutPlanFacade.get(id);
+        return workoutPlanFacade.getById(id);
     }
 
     @Operation(summary = "create workout plan")
@@ -67,9 +67,9 @@ public class WorkoutPlanController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{workoutPlanId}/update")
-    public void updateWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody WorkoutPlanDto workoutPlanDto) {
-        validateId(workoutPlanId, workoutPlanDto.getId());
-        workoutPlanFacade.update(workoutPlanDto);
+    public void updateWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody WorkoutPlanUpdateDto workoutPlanUpdateDto) {
+        validateId(workoutPlanId, workoutPlanUpdateDto.getId());
+        workoutPlanFacade.update(workoutPlanUpdateDto);
     }
 
     @Operation(summary = "delete workout plan")

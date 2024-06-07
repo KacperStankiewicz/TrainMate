@@ -36,6 +36,17 @@ public class TrainingUnitSampleData {
         return entity;
     }
 
+    public static TrainingUnitEntity.TrainingUnitEntityBuilder getSampleTrainingUnitEntityBuilder() {
+        var entity = TrainingUnitEntity.builder()
+            .workoutPlanId(1L)
+            .dayOfWeek(MONDAY)
+            .weekNumber(1L)
+            .build();
+
+        entity.calculateHash();
+        return entity.toBuilder();
+    }
+
     public static TrainingUnitUpdateDto.TrainingUnitUpdateDtoBuilder getSampleTrainingUnitUpdateDtoBuilder() {
         return TrainingUnitUpdateDto.builder()
             .id(1L)

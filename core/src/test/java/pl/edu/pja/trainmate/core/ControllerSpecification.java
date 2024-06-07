@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_METHOD;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -18,12 +19,14 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
+import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.config.security.RoleType;
 import pl.edu.pja.trainmate.core.config.security.UserIdProvider;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
@@ -41,6 +44,9 @@ public abstract class ControllerSpecification {
     @MockBean
     UserQueryService queryService;
 
+    @SpyBean
+    LoggedUserDataProvider loggedUserDataProvider;
+
     @Autowired
     protected MockMvc mockMvc;
 
@@ -49,6 +55,7 @@ public abstract class ControllerSpecification {
     @BeforeEach
     private void setup() {
         when(userIdProvider.getLoggedUserId()).thenReturn(EXISTING_USER_ID);
+        doReturn(EXISTING_USER_ID).when(loggedUserDataProvider).getLoggedUserId();
     }
 
     public void userWithRole(RoleType roleType) {

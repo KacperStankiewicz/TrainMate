@@ -5,10 +5,12 @@ import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WA
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_NOT_REPORTED;
 
 import io.vavr.control.Option;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
+import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
@@ -16,6 +18,9 @@ import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
+import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection;
+import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitQueryService;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +28,18 @@ class TrainingUnitService {
 
     private final TrainingUnitRepository trainingUnitRepository;
     private final ExerciseItemRepository exerciseItemRepository;
+    private final TrainingUnitQueryService queryService;
+    private final WeekNumberCalculator weekNumberCalculator;
+
+    public List<TrainingUnitProjection> getTrainingUnitsForCurrentWeekForLoggedUser(WorkoutPlanProjection workoutPlan) {
+        var weekNumber = weekNumberCalculator.calculate(workoutPlan.getDateRange().getFrom());
+
+        return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlan.getId(), weekNumber);
+    }
+
+    public List<TrainingUnitProjection> getTrainingUnitsByWorkoutPlanIdAndWeek(Long workoutPlanId, Long week) {
+        return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlanId, week);
+    }
 
     public ResultDto<Long> create(TrainingUnitDto dto) {
         Long trainingUnitId = dto.getId();
