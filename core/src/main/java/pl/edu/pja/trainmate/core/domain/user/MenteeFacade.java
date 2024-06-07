@@ -21,9 +21,9 @@ public class MenteeFacade {
         return service.searchByCriteria(criteria, pageable);
     }
 
-    public ResultDto<Long> invite(String email) {
+    public ResultDto<Long> invite(String email, boolean activate) {
         var user = keycloakService.createUser(email);
-        return service.createMentee(user);
+        return service.createMentee(user, activate);
     }
 
     public void updatePersonalData(MenteeUpdateDto menteeUpdateDto) {
