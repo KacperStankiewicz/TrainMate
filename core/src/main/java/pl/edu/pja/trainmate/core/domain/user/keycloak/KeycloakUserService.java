@@ -21,6 +21,8 @@ import pl.edu.pja.trainmate.core.common.generator.RandomPasswordGenerator;
 @RequiredArgsConstructor
 class KeycloakUserService implements KeycloakService {
 
+    private static final List<String> DEFAULT_REQUIRED_ACTIONS = List.of("VERIFY_EMAIL", "UPDATE_PASSWORD");
+
     @Value("${keycloak.realm}")
     private String realm;
 
@@ -75,7 +77,7 @@ class KeycloakUserService implements KeycloakService {
         user.setUsername(email);
         user.setEmail(email);
         user.setEmailVerified(false);
-        user.setRequiredActions(List.of("VERIFY_EMAIL", "UPDATE_PASSWORD", "UPDATE_PROFILE"));
+        user.setRequiredActions(DEFAULT_REQUIRED_ACTIONS);
 
         return user;
     }

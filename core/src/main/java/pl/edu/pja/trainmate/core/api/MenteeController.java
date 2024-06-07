@@ -46,9 +46,11 @@ public class MenteeController {
 
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/invite")
-    public ResultDto<Long> inviteMentee(@RequestParam String email) {
+    public ResultDto<Long> inviteMentee(
+        @RequestParam String email,
+        @RequestParam(required = false, defaultValue = "true") boolean activate) {
         log.debug("Request to invite user with email: {}", email);
-        var userId = menteeFacade.invite(email);
+        var userId = menteeFacade.invite(email, activate);
         log.debug("User with email: {} was invited", email);
         return userId;
     }

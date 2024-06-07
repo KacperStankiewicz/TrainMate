@@ -30,8 +30,8 @@ class UserService {
         return queryService.searchMenteeByCriteria(criteria, pageable);
     }
 
-    public ResultDto<Long> createMentee(UserRepresentation userRepresentation) {
-        var mentee = buildUserEntity(userRepresentation);
+    public ResultDto<Long> createMentee(UserRepresentation userRepresentation, boolean activate) {
+        var mentee = buildUserEntity(userRepresentation, activate);
 
         return ResultDto.ofValueOrError(userRepository.save(mentee).getId(), COULD_NOT_CREATE_MENTEE);
     }
@@ -69,9 +69,10 @@ class UserService {
         return userRepository.getUserByKeycloakId(keycloakId);
     }
 
-    private UserEntity buildUserEntity(UserRepresentation userRepresentation) {
+    private UserEntity buildUserEntity(UserRepresentation userRepresentation, boolean activate) {
         return UserEntity.builder()
             .userId(UserId.valueOf(userRepresentation.getId()))
+            .active(activate)
             .personalInfo(PersonalInfo.builder()
                 .firstname(userRepresentation.getFirstName())
                 .lastname(userRepresentation.getLastName())

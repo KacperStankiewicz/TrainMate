@@ -53,7 +53,10 @@ public class WorkoutPlanEntity extends BaseEntity {
     public void update(WorkoutPlanUpdateDto workoutPlanUpdateDto) {
         this.name = workoutPlanUpdateDto.getName();
         this.category = workoutPlanUpdateDto.getCategory();
-        this.dateRange = new DateRange(workoutPlanUpdateDto.getStartDate(), workoutPlanUpdateDto.getStartDate().plusWeeks(workoutPlanUpdateDto.getDurationInWeeks()));
+        this.dateRange = new DateRange(
+            workoutPlanUpdateDto.getStartDate(),
+            workoutPlanUpdateDto.getStartDate().plusWeeks(workoutPlanUpdateDto.getDurationInWeeks())
+        );
     }
 
     public void checkIfModificationAllowed() {
