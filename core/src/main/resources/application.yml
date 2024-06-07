@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/tm_core
     username: postgres
-    password: postgres
+    password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
 
   liquibase:
@@ -44,7 +44,19 @@ keycloak:
 keycloak-admin:
   server-url: http://localhost:8123
   client-id: admin-cli
-  secret: cIxS7m4WPIsG6hd1UfCBqs4yi0Fkl0s4
+  secret: ${KEYCLOAK_ADMIN_SECRET}
 logging:
   level:
     web: debug
+
+email-sender:
+  host: smtp.gmail.com
+  port: 587
+  username: inzynierka.trainmate@gmail.com
+  protocol: smtp
+  password: ${EMAIL_SENDER_PASSWORD}
+  from: no-reply@trainmate.com
+
+email-scheduler:
+  periodical-report: "0 0 8 * * 0"
+  weekly-report: "0 0 8 * * 0"

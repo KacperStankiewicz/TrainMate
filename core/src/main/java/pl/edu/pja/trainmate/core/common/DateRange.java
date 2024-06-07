@@ -19,6 +19,7 @@ public class DateRange {
 
     @NotNull
     private LocalDate from;
+    @NotNull
     private LocalDate to;
 
     @PersistenceConstructor

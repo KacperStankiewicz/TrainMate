@@ -14,4 +14,21 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:MODE=PostgreSQL
     username: sa
-    password: # default Spring approach
+    password: postgres
+
+keycloak-admin:
+  server-url: http://localhost:8123
+  client-id: admin-cli
+  secret: secret
+
+email-sender:
+  host: smtp.gmail.com
+  port: 587
+  username: inzynierka.trainmate@gmail.com
+  protocol: smtp
+  password: password
+  from: no-reply@trainmate.com
+
+email-scheduler:
+  periodical-report: ""
+  weekly-report: ""

@@ -15,8 +15,8 @@ import static pl.edu.pja.trainmate.core.common.Muscle.MIDDLE_DELTOID;
 import static pl.edu.pja.trainmate.core.common.Muscle.MuscleGroup.LEGS;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseToPage;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseToPage;
 
 import io.vavr.collection.List;
 import org.junit.jupiter.api.AfterEach;

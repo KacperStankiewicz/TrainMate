@@ -14,7 +14,7 @@ import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.UPD
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.MUST_NOT_CHANGE_ACTIVE_WORKOUT_PLAN;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
