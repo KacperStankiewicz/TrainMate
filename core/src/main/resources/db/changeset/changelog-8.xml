@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm59 change exercise item report to have clob" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="exercise_item"/>
+        </preConditions>
+
+        <dropColumn tableName="exercise_item" columnName="reported_rir"/>
+        <dropColumn tableName="exercise_item" columnName="reported_repetitions"/>
+        <dropColumn tableName="exercise_item" columnName="reported_weight"/>
+        <dropColumn tableName="exercise_item" columnName="reported_sets"/>
+
+        <addColumn tableName="exercise_item">
+            <column name="reported_sets" type="text"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

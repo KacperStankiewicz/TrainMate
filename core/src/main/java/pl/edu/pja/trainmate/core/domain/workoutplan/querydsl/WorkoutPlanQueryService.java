@@ -10,5 +10,7 @@ public interface WorkoutPlanQueryService {
 
     WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId);
 
-    List<String> getUserEmailsForEndedWorkoutPlanWithoutReport();
+    List<String> getUsersEmailsForEndedWorkoutPlanWithoutReport();
+
+    List<String> getUsersEmailsWithActiveWorkoutPlan();
 }

@@ -30,5 +30,5 @@ email-sender:
   from: no-reply@trainmate.com
 
 email-scheduler:
-  periodical-report: ""
-  weekly-report: ""
+  periodical-report: "0/1 * * * * *"
+  weekly-report: "0/1 * * * * *"

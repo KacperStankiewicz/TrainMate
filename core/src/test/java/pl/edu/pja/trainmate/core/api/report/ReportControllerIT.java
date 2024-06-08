@@ -96,10 +96,12 @@ class ReportControllerIT extends ControllerSpecification {
 
         //and
         var entity = exerciseItemRepository.findExactlyOneById(exercise.getId());
-        assertEquals(dto.getRepetitions(), entity.getExerciseReport().getReportedRepetitions());
-        assertEquals(dto.getWeight(), entity.getExerciseReport().getReportedWeight());
-        assertEquals(dto.getSets(), entity.getExerciseReport().getReportedSets());
-        assertEquals(dto.getRir(), entity.getExerciseReport().getReportedRir());
+        var savedSet = entity.getExerciseReport().getReportedSets().get(0);
+        var dtoSet = dto.getSets().get(0);
+        assertEquals(dtoSet.getReportedRepetitions(), savedSet.getReportedRepetitions());
+        assertEquals(dtoSet.getReportedWeight(), savedSet.getReportedWeight());
+        assertEquals(dtoSet.getReportedRir(), savedSet.getReportedRir());
+        assertEquals(dto.getSets().size(), entity.getExerciseReport().getReportedSets().size());
         assertEquals(dto.getRemarks(), entity.getExerciseReport().getRemarks());
         assertTrue(entity.isReported());
     }
@@ -110,7 +112,7 @@ class ReportControllerIT extends ControllerSpecification {
         var report = getExerciseReportBuilder().build();
         var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseReport(report)
-                .reported(true)
+            .reported(true)
             .build());
         userWithRole(PERSONAL_TRAINER);
 

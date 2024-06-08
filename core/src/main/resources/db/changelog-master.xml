@@ -13,7 +13,8 @@
     <include file="db/changeset/changelog-5.xml"/>
     <include file="db/changeset/changelog-6.xml"/>
     <include file="db/changeset/changelog-7.xml"/>
+    <include file="db/changeset/changelog-8.xml"/>
 
 
-    <!--    <include file="db/changeset/initial-data.xml"/>-->
+    <include file="db/changeset/initial-data.xml"/>
 </databaseChangeLog>

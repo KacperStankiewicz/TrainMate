@@ -72,14 +72,34 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
     }
 
     @Override
-    public List<String> getUserEmailsForEndedWorkoutPlanWithoutReport() {
+    public List<String> getUsersEmailsForEndedWorkoutPlanWithoutReport() {
         return queryFactory()
             .select(user.personalInfo.email)
             .from(workoutPlan)
             .where(new BooleanBuilder()
                 .and(workoutPlan.dateRange.to.loe(LocalDate.now()))
                 .and(selectFrom(report).where(report.workoutPlanId.eq(workoutPlan.id)).notExists())
-            ).fetch();
+            )
+            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
+            .fetch();
+    }
+
+    @Override
+    public List<String> getUsersEmailsWithActiveWorkoutPlan() {
+        return queryFactory()
+            .select(user.personalInfo.email)
+            .from(workoutPlan)
+            .where(new BooleanBuilder()
+                .and(workoutPlan.dateRange.to.goe(LocalDate.now()))
+                .and(workoutPlan.dateRange.from.loe(LocalDate.now()))
+                .and(selectFrom(trainingUnit)
+                    .where(new BooleanBuilder()
+                        .and(trainingUnit.completed.isTrue())
+                    ).exists())
+            )
+            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
+            .leftJoin(trainingUnit).on(trainingUnit.workoutPlanId.eq(workoutPlan.id))
+            .fetch();
     }
 
     private List<TrainingUnitProjection> fetchTrainingUnitsProjection(Long workoutPlanId) {

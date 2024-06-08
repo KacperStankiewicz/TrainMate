@@ -22,11 +22,4 @@ public class ReportFacade {
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {
         return reportService.createInitialReport(reportCreateDto);
     }
-
-    /* todo:
-        ----------------------------------
-        przesylanie raportu po zakonczeniu planu treningowego (okresowego)
-        wysylanie przypomnienia mailem o uzupelnieniu raportu (okresowego)
-        wysylanie przypomnienia mailowego o uzupelnieniu raporty tygodniowego, na koniec tygodnia
-    */
 }
