@@ -1,9 +1,9 @@
 package pl.edu.pja.trainmate.core.api.workoutplan;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
 import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleInActiveWorkoutPlanEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleWorkoutPlanCreateDtoBuilder;
@@ -16,8 +16,8 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.MUST_N
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,8 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldThrowMustNotUpdateActiveWorkoutPlan() throws UnsupportedEncodingException {
+    @SneakyThrows
+    void shouldThrowMustNotUpdateActiveWorkoutPlan() {
         //given
         userWithRole(PERSONAL_TRAINER);
         var entity = repository.save(getSampleActiveWorkoutPlanEntityBuilder().build());
@@ -102,7 +103,7 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
         var response = performPut(String.format(UPDATE, dto.getId()), dto).getResponse();
 
         //then
-        assertEquals(OK.value(), response.getStatus());
+        assertEquals(200, response.getStatus());
 
         //and
         var savedEntity = repository.findExactlyOneById(dto.getId());
@@ -111,6 +112,36 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
         assertEquals(entity.getUserId().toString(), savedEntity.getUserId().toString());
         assertEquals(dto.getStartDate(), savedEntity.getDateRange().getFrom());
         assertEquals(dto.getStartDate().plusWeeks(dto.getDurationInWeeks()), savedEntity.getDateRange().getTo());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenUpdatingWorkoutPlan() {
+        //given
+        userWithRole(PERSONAL_TRAINER);
+        var entity = repository.save(getSampleInActiveWorkoutPlanEntityBuilder().build());
+        var dto = getSampleWorkoutPlanDtoBuilder()
+            .id(entity.getId())
+            .name("name2")
+            .category("category2")
+            .durationInWeeks(8L)
+            .startDate(LocalDate.now().plusDays(10))
+            .version(9999L)
+            .build();
+
+        //when
+        var response = performPut(String.format(UPDATE, dto.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+
+        //and
+        var savedEntity = repository.findExactlyOneById(dto.getId());
+        assertNotEquals(dto.getName(), savedEntity.getName());
+        assertNotEquals(dto.getCategory(), savedEntity.getCategory());
+        assertNotEquals(dto.getStartDate(), savedEntity.getDateRange().getFrom());
+        assertNotEquals(dto.getStartDate().plusWeeks(dto.getDurationInWeeks()), savedEntity.getDateRange().getTo());
     }
 
     @Test
@@ -124,14 +155,34 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
         var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
 
         //then
-        assertEquals(OK.value(), response.getStatus());
+        assertEquals(200, response.getStatus());
 
         //and
         assertEquals(0, repository.findAll().size());
     }
 
     @Test
-    void shouldThrowMustNotUpdateActiveWorkoutPlanWhenDeleting() throws UnsupportedEncodingException {
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenDeletingWorkoutPlan() {
+        //given
+        userWithRole(PERSONAL_TRAINER);
+        var entity = repository.save(getSampleInActiveWorkoutPlanEntityBuilder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), 99999L);
+
+        //when
+        var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+
+        //and
+        assertNotEquals(0, repository.findAll().size());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldThrowMustNotUpdateActiveWorkoutPlanWhenDeleting() {
         //given
         userWithRole(PERSONAL_TRAINER);
         var entity = repository.save(getSampleActiveWorkoutPlanEntityBuilder().build());

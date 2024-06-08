@@ -92,7 +92,7 @@ public class WorkoutPlanController {
     public void deleteWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody BasicAuditDto dto) {
         log.debug("REST request to DELETE workout plan with id: {}", workoutPlanId);
         validateId(workoutPlanId, dto.getId());
-        workoutPlanFacade.delete(workoutPlanId);
+        workoutPlanFacade.delete(dto);
         log.debug("Successfully deleted workout plan");
     }
 

@@ -15,6 +15,7 @@ import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINE
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,23 @@ class ReportControllerIT extends ControllerSpecification {
     }
 
     @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenMarkingReportAsReviewed() {
+        //given
+        var entity = reportRepository.save(ReportEntity.builder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), 9999L);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+        assertFalse(reportRepository.findExactlyOneById(entity.getId()).isReviewed());
+    }
+
+    @Test
     void shouldCreateExerciseItemReport() {
         //given
         var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder().build());
@@ -124,7 +142,27 @@ class ReportControllerIT extends ControllerSpecification {
         //then
         assertEquals(200, response.getStatus());
         assertTrue(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
+    }
 
+    @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenReviewingExerciseItemReport() {
+        //given
+        var report = getExerciseReportBuilder().build();
+        var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
+            .exerciseReport(report)
+            .reported(true)
+            .build());
+        var dto = BasicAuditDto.ofValue(exercise.getId(), 99999L);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+        assertFalse(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
     }
 
 }

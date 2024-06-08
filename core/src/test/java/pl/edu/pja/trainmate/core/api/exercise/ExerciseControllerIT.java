@@ -1,13 +1,15 @@
 package pl.edu.pja.trainmate.core.api.exercise;
 
 import static org.junit.Assert.assertEquals;
-import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getCreateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getExerciseDtoBuilder;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.GET;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.SEARCH;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.UPDATE;
+import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getExerciseDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.Muscle.BICEPS;
 import static pl.edu.pja.trainmate.core.common.Muscle.GLUTES;
 import static pl.edu.pja.trainmate.core.common.Muscle.MIDDLE_CHEST;
@@ -19,6 +21,7 @@ import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponse
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseToPage;
 
 import io.vavr.collection.List;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +102,38 @@ class ExerciseControllerIT extends ControllerSpecification {
     }
 
     @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenUpdatingExercise() {
+        //given
+        var entity = ExerciseEntity.builder()
+            .name("name")
+            .description("desc")
+            .url("urlurl")
+            .muscleInvolved(BICEPS)
+            .build();
+        entity = exerciseRepository.save(entity);
+
+        userWithRole(PERSONAL_TRAINER);
+        var updateDto = getExerciseDtoBuilder()
+            .id(entity.getId())
+            .version(9999L)
+            .build();
+
+        //when
+        var response = performPut(String.format(UPDATE, entity.getId()), updateDto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+        //and
+        var updated = exerciseRepository.findExactlyOneById(entity.getId());
+        assertNotEquals(updateDto.getName(), updated.getName());
+        assertNotEquals(updateDto.getUrl(), updated.getUrl());
+        assertNotEquals(updateDto.getDescription(), updated.getDescription());
+        assertNotEquals(updateDto.getMuscleInvolved(), updated.getMuscleInvolved());
+    }
+
+    @Test
     void shouldDeleteExercise() {
         //given
         var entity = ExerciseEntity.builder()
@@ -119,6 +154,31 @@ class ExerciseControllerIT extends ControllerSpecification {
 
         //and
         assertEquals(0, exerciseRepository.findAll().size());
+    }
+
+    @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenDeletingExercise() {
+        //given
+        var entity = ExerciseEntity.builder()
+            .name("name")
+            .description("desc")
+            .url("url")
+            .muscleInvolved(BICEPS)
+            .build();
+        entity = exerciseRepository.save(entity);
+        var dto = BasicAuditDto.ofValue(entity.getId(), 999L);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+
+        //and
+        assertNotEquals(0, exerciseRepository.findAll().size());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
     }
 
     @Test
