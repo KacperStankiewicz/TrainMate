@@ -5,14 +5,14 @@ import static java.time.DayOfWeek.MONDAY;
 import static java.time.DayOfWeek.TUESDAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.OK;
-import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getExerciseEntityBuilder;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleExerciseItemEntityBuilder;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleExerciseItemUpdateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitEntity;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitEntityBuilder;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitUpdateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getExerciseEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleExerciseItemEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleExerciseItemUpdateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitEntity;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitUpdateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
@@ -33,6 +33,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.DigestUtils;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseRepository;
@@ -105,6 +106,7 @@ class TrainingUnitControllerIT extends ControllerSpecification {
             .id(existingEntityId)
             .weekNumber(2L)
             .dayOfWeek(TUESDAY)
+            .version(getTrainingUnitActualVersion(existingEntityId))
             .build();
 
         //when
@@ -126,10 +128,11 @@ class TrainingUnitControllerIT extends ControllerSpecification {
     void shouldDeleteTrainingUnit() {
         //given
         userWithRole(PERSONAL_TRAINER);
-        var existingEntityId = repository.save(getSampleTrainingUnitEntity()).getId();
+        var existingEntity = repository.save(getSampleTrainingUnitEntity());
+        var dto = BasicAuditDto.ofValue(existingEntity.getId(), existingEntity.getVersion());
 
         //when
-        var response = performDelete(String.format(DELETE, existingEntityId)).getResponse();
+        var response = performDelete(String.format(DELETE, existingEntity.getId()), dto).getResponse();
 
         //then
         assertEquals(OK.value(), response.getStatus());
@@ -154,6 +157,7 @@ class TrainingUnitControllerIT extends ControllerSpecification {
         var dto = getSampleExerciseItemUpdateDtoBuilder()
             .id(exerciseItemId)
             .trainingUnitId((Long) responseBody.getValue())
+            .version(getExerciseItemActualVersion(exerciseItemId))
             .build();
 
         //when
@@ -177,16 +181,17 @@ class TrainingUnitControllerIT extends ControllerSpecification {
     void shouldDeleteTrainingUnitExerciseItem() {
         //given
         userWithRole(PERSONAL_TRAINER);
-        var existingEntityId = exerciseItemRepository.save(getSampleExerciseItemEntityBuilder().build()).getId();
+        var existingEntity = exerciseItemRepository.save(getSampleExerciseItemEntityBuilder().build());
+        var dto = BasicAuditDto.ofValue(existingEntity.getId(), existingEntity.getVersion());
 
         //when
-        var response = performDelete(String.format(EXERCISE_ITEM_DELETE, existingEntityId)).getResponse();
+        var response = performDelete(String.format(EXERCISE_ITEM_DELETE, dto.getId()), dto).getResponse();
 
         //then
         assertEquals(OK.value(), response.getStatus());
 
         //and
-        assertEquals(0, repository.findAll().size());
+        assertEquals(0, exerciseRepository.findAll().size());
     }
 
     @Test
@@ -273,4 +278,11 @@ class TrainingUnitControllerIT extends ControllerSpecification {
         );
     }
 
+    Long getExerciseItemActualVersion(Long id) {
+        return exerciseItemRepository.findExactlyOneById(id).getVersion();
+    }
+
+    Long getTrainingUnitActualVersion(Long id) {
+        return repository.findExactlyOneById(id).getVersion();
+    }
 }

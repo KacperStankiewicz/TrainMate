@@ -19,4 +19,5 @@ public class ExerciseDto implements ExerciseData {
     String description;
     String url;
     Muscle muscleInvolved;
+    Long version;
 }

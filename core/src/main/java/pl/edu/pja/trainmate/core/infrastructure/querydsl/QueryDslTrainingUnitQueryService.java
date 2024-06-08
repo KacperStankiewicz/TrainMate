@@ -29,6 +29,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         var trainingUnits = queryFactory()
             .select(new QTrainingUnitProjection(
                 trainingUnit.id,
+                trainingUnit.version,
                 trainingUnit.dayOfWeek,
                 trainingUnit.weekNumber
             ))
@@ -67,6 +68,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
                 exercise.name,
                 exercise.description,
                 exercise.url,
+                exerciseItem.reported,
                 exerciseItem.trainingUnitId
             ))
             .from(exerciseItem)

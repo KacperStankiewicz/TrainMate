@@ -16,13 +16,15 @@ import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseItemProjection
 public class TrainingUnitProjection {
 
     Long id;
+    Long version;
     DayOfWeek dayOfWeek;
     Long weekNumber;
     List<ExerciseItemProjection> exercises = new ArrayList<>();
 
     @QueryProjection
-    public TrainingUnitProjection(Long id, DayOfWeek dayOfWeek, Long weekNumber) {
+    public TrainingUnitProjection(Long id, Long version, DayOfWeek dayOfWeek, Long weekNumber) {
         this.id = id;
+        this.version = version;
         this.dayOfWeek = dayOfWeek;
         this.weekNumber = weekNumber;
     }

@@ -16,13 +16,15 @@ public class ExerciseProjection {
     String description;
     String url;
     Muscle muscleInvolved;
+    Long version;
 
     @QueryProjection
-    public ExerciseProjection(Long id, String name, String description, String url, Muscle muscleInvolved) {
+    public ExerciseProjection(Long id, String name, String description, String url, Muscle muscleInvolved, Long version) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.url = url;
         this.muscleInvolved = muscleInvolved;
+        this.version = version;
     }
 }

@@ -47,6 +47,7 @@ class WorkoutPlanService {
 
     public void update(WorkoutPlanUpdateDto workoutPlanUpdateDto) {
         var workoutPlan = workoutPlanRepository.findExactlyOneById(workoutPlanUpdateDto.getId());
+        workoutPlan.validateVersion(workoutPlanUpdateDto.getVersion());
         workoutPlan.checkIfModificationAllowed();
         validateDto(workoutPlanUpdateDto);
 

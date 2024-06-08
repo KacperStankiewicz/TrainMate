@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.api.data;
+package pl.edu.pja.trainmate.core.api.sampledata;
 
 import static pl.edu.pja.trainmate.core.common.Muscle.MIDDLE_CHEST;
 import static pl.edu.pja.trainmate.core.common.Muscle.MuscleGroup.CHEST;

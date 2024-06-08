@@ -18,4 +18,61 @@
             <column name="reported_sets" type="text"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="Tm61 add version to entities" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="email_template" columnName="version"/>
+                <columnExists tableName="exercise" columnName="version"/>
+                <columnExists tableName="exercise_item" columnName="version"/>
+                <columnExists tableName="report" columnName="version"/>
+                <columnExists tableName="training_unit" columnName="version"/>
+                <columnExists tableName="user" columnName="version"/>
+                <columnExists tableName="workout_plan" columnName="version"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="email_template">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="exercise">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="exercise_item">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="report">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="training_unit">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="user">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="workout_plan">
+            <column name="version" type="bigint" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
 </databaseChangeLog>

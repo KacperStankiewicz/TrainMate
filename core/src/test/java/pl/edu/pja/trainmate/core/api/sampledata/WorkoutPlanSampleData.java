@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.api.data;
+package pl.edu.pja.trainmate.core.api.sampledata;
 
 import java.time.LocalDate;
 import pl.edu.pja.trainmate.core.common.DateRange;

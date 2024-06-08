@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.report.ReportFacade;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
@@ -52,9 +53,10 @@ public class ReportController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/workout-plan/report/{reportId}/review")
-    public void reviewPeriodicalReport(@PathVariable Long reportId) {
+    public void reviewPeriodicalReport(@PathVariable Long reportId, @RequestBody BasicAuditDto dto) {
         log.debug("Request to review periodical report with id: {}", reportId);
-        reportFacade.reviewReport(reportId);
+        validateId(reportId, dto.getId());
+        reportFacade.reviewReport(dto);
         log.debug("Reviewed periodical report with id: {}", reportId);
     }
 
@@ -81,9 +83,10 @@ public class ReportController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/exercise/{exerciseId}/review")
-    public void reviewReport(@PathVariable Long exerciseId) {
+    public void reviewReport(@PathVariable Long exerciseId, @RequestBody BasicAuditDto dto) {
         log.debug("Request to review report for exercise item with id: {}", exerciseId);
-        trainingUnitFacade.reviewReport(exerciseId);
+        validateId(exerciseId, dto.getId());
+        trainingUnitFacade.reviewReport(dto);
         log.debug("Reviewed report for exercise item with id: {}", exerciseId);
     }
 

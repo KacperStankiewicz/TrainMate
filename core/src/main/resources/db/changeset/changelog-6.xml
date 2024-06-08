@@ -25,7 +25,7 @@
             <column name="reported_weight" type="int"/>
             <column name="reported_repetitions" type="int"/>
             <column name="reported_sets" type="int"/>
-            <column name="reviewed" type="boolean"/>
+            <column name="reviewed" type="boolean" defaultValue="false"/>
         </addColumn>
     </changeSet>
 

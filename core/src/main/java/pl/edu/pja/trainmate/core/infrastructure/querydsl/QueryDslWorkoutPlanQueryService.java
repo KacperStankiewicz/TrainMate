@@ -41,6 +41,7 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         var workoutData = queryFactory()
             .select(new QAllWorkoutData(
                 workoutPlan.id,
+                workoutPlan.version,
                 workoutPlan.name,
                 workoutPlan.category
             ))
@@ -106,6 +107,7 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         var trainingUnits = queryFactory()
             .select(new QTrainingUnitProjection(
                 trainingUnit.id,
+                trainingUnit.version,
                 trainingUnit.dayOfWeek,
                 trainingUnit.weekNumber
             ))
@@ -133,6 +135,7 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                 exercise.name,
                 exercise.description,
                 exercise.url,
+                exerciseItem.reported,
                 exerciseItem.trainingUnitId
             ))
             .from(exerciseItem)

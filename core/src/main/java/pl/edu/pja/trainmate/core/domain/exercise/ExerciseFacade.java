@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
@@ -39,8 +40,8 @@ public class ExerciseFacade {
         service.update(dto);
     }
 
-    public void delete(Long exerciseId) {
-        service.deleteById(exerciseId);
+    public void delete(BasicAuditDto dto) {
+        service.deleteById(dto);
     }
 
     private void validateSearchCriteria(ExerciseSearchCriteria criteria) {

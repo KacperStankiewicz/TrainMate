@@ -3,8 +3,8 @@ package pl.edu.pja.trainmate.core.api.workoutplan;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleWorkoutPlanCreateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleWorkoutPlanDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleWorkoutPlanCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleWorkoutPlanDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.GET;
@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 
 @SpringBootTest
@@ -69,7 +70,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
         userWithRole(TRAINED_PERSON);
 
         //when
-        var response = performDelete(format(DELETE, ID));
+        var response = performDelete(format(DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
         //then
         var exception = (SecurityException) response.getResolvedException();
