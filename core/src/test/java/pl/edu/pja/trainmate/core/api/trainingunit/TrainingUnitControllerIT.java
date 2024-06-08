@@ -23,8 +23,8 @@ import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.U
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseToList;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseToList;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

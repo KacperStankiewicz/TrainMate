@@ -52,8 +52,6 @@ public class TrainingUnitEntity extends BaseEntity {
     @Column(name = "unique_hash", unique = true, nullable = false)
     private String uniqueHash;
 
-    //todo: dodac training duration
-
     public void markAsCompleted() {
         this.completed = true;
     }

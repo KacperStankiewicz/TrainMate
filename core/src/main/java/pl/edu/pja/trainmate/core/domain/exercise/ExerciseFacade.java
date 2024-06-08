@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseCreateDto;
-import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseData;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseListItemProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseProjection;
@@ -33,13 +32,10 @@ public class ExerciseFacade {
     }
 
     public ResultDto<Long> create(ExerciseCreateDto dto) {
-        validateDto(dto);
         return service.create(dto);
     }
 
     public void update(ExerciseDto dto) {
-        validateDto(dto);
-
         service.update(dto);
     }
 
@@ -51,9 +47,5 @@ public class ExerciseFacade {
         if (criteria.getMuscle() != null && (criteria.getMuscleGroup() != null && !criteria.getMuscle().isInGroup(criteria.getMuscleGroup()))) {
             throw new CommonException(INVALID_SEARCH_CRITERIA);
         }
-    }
-
-    private void validateDto(ExerciseData data) {
-        //todo trzeba wymyslic jakis posob na walidowanie takich rzeczy
     }
 }
