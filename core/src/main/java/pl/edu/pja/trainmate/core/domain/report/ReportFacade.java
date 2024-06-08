@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.report;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
 
@@ -15,8 +16,8 @@ public class ReportFacade {
         return reportService.createPeriodicalReport(reportCreateDto);
     }
 
-    public void reviewReport(Long reportId) {
-        reportService.markReportAsReviewed(reportId);
+    public void reviewReport(BasicAuditDto dto) {
+        reportService.markReportAsReviewed(dto);
     }
 
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {

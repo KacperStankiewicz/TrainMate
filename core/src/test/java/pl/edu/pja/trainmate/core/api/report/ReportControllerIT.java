@@ -3,13 +3,13 @@ package pl.edu.pja.trainmate.core.api.report;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getExerciseReportBuilder;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getExerciseReportSampleDataBuilder;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT_REVIEW;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT_REVIEW;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportSampleDataBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
@@ -68,15 +69,15 @@ class ReportControllerIT extends ControllerSpecification {
     void shouldMarkReportAsReviewed() {
         //given
         var entity = reportRepository.save(ReportEntity.builder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), entity.getVersion());
         userWithRole(PERSONAL_TRAINER);
 
         //when
-        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId())).getResponse();
+        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId()), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());
         assertTrue(reportRepository.findExactlyOneById(entity.getId()).isReviewed());
-
     }
 
     @Test
@@ -103,7 +104,7 @@ class ReportControllerIT extends ControllerSpecification {
         assertEquals(dtoSet.getReportedRir(), savedSet.getReportedRir());
         assertEquals(dto.getSets().size(), entity.getExerciseReport().getReportedSets().size());
         assertEquals(dto.getRemarks(), entity.getExerciseReport().getRemarks());
-        assertTrue(entity.isReported());
+        assertTrue(entity.getReported());
     }
 
     @Test
@@ -114,10 +115,11 @@ class ReportControllerIT extends ControllerSpecification {
             .exerciseReport(report)
             .reported(true)
             .build());
+        var dto = BasicAuditDto.ofValue(exercise.getId(), exercise.getVersion());
         userWithRole(PERSONAL_TRAINER);
 
         //when
-        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId())).getResponse();
+        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());

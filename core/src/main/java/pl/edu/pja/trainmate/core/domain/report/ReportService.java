@@ -6,6 +6,7 @@ import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.WORKOUT_PLA
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
@@ -45,6 +46,14 @@ class ReportService {
         return ResultDto.ofValueOrError(repository.save(entity).getId(), COULD_NOT_CREATE_REPORT);
     }
 
+    public void markReportAsReviewed(BasicAuditDto dto) {
+        var entity = repository.findExactlyOneById(dto.getId());
+        entity.validateVersion(dto.getVersion());
+
+        entity.markAsReviewed();
+        repository.saveAndFlush(entity);
+    }
+
     private ReportEntity.ReportEntityBuilder buildReportEntity(PeriodicalReportCreateDto reportCreateDto, UserId userId) {
         return ReportEntity.builder()
             .workoutPlanId(reportCreateDto.getWorkoutPlanId())
@@ -66,11 +75,5 @@ class ReportService {
                 .abdomen(reportCreateDto.getAbdomen())
                 .hips(reportCreateDto.getHips())
                 .build());
-    }
-
-    public void markReportAsReviewed(Long reportId) {
-        var entity = repository.findExactlyOneById(reportId);
-        entity.markAsReviewed();
-        repository.saveAndFlush(entity);
     }
 }

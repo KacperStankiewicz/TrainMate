@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
@@ -107,10 +108,11 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/{id}/delete")
-    public void deleteTrainingUnit(@PathVariable Long id) {
-        log.debug("Request to DELETE training unit with id: {}", id);
-        trainingUnitFacade.deleteTrainingUnit(id);
+    @DeleteMapping("/{trainingUnitId}/delete")
+    public void deleteTrainingUnit(@PathVariable Long trainingUnitId, @RequestBody BasicAuditDto dto) {
+        log.debug("Request to DELETE training unit with id: {}", trainingUnitId);
+        validateId(trainingUnitId, dto.getId());
+        trainingUnitFacade.deleteTrainingUnit(dto);
         log.debug("DELETED training unit");
     }
 
@@ -137,10 +139,11 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/exercise/{id}/delete")
-    public void deleteExerciseItem(@PathVariable Long id) {
-        log.debug("Request to DELETE exercise item with id: {}", id);
-        trainingUnitFacade.deleteExerciseItem(id);
+    @DeleteMapping("/exercise/{exerciseItemId}/delete")
+    public void deleteExerciseItem(@PathVariable Long exerciseItemId, @RequestBody BasicAuditDto dto) {
+        log.debug("Request to DELETE exercise item with id: {}", exerciseItemId);
+        validateId(exerciseItemId, dto.getId());
+        trainingUnitFacade.deleteExerciseItem(dto);
         log.debug("DELETED exercise item");
     }
 

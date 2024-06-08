@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleInActiveWorkoutPlanEntityBuilder;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleWorkoutPlanCreateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.WorkoutPlanSampleData.getSampleWorkoutPlanDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleInActiveWorkoutPlanEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleWorkoutPlanCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleWorkoutPlanDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.UPDATE;
@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
 
@@ -70,6 +71,7 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
             .id(entity.getId())
             .name("name2")
             .category("category2")
+            .version(getActualVersion(entity.getId()))
             .build();
 
         //when
@@ -93,6 +95,7 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
             .category("category2")
             .durationInWeeks(8L)
             .startDate(LocalDate.now().plusDays(1))
+            .version(getActualVersion(entity.getId()))
             .build();
 
         //when
@@ -115,9 +118,10 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
         //given
         userWithRole(PERSONAL_TRAINER);
         var entity = repository.save(getSampleInActiveWorkoutPlanEntityBuilder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), entity.getVersion());
 
         //when
-        var response = performDelete(String.format(DELETE, entity.getId())).getResponse();
+        var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
 
         //then
         assertEquals(OK.value(), response.getStatus());
@@ -131,14 +135,19 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
         //given
         userWithRole(PERSONAL_TRAINER);
         var entity = repository.save(getSampleActiveWorkoutPlanEntityBuilder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), entity.getVersion());
 
         //when
-        var response = performDelete(String.format(DELETE, entity.getId())).getResponse();
+        var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
 
         //then
         assertEquals(BAD_REQUEST.value(), response.getStatus());
 
         //and
         assertTrue(response.getContentAsString().contains(MUST_NOT_CHANGE_ACTIVE_WORKOUT_PLAN.toString()));
+    }
+
+    Long getActualVersion(Long id) {
+        return repository.findExactlyOneById(id).getVersion();
     }
 }

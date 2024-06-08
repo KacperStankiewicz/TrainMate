@@ -56,7 +56,8 @@ class QueryDslExerciseQueryService extends BaseJpaQueryService implements Exerci
                 exercise.name,
                 exercise.description,
                 exercise.url,
-                exercise.muscleInvolved
+                exercise.muscleInvolved,
+                exercise.version
             ))
             .from(exercise)
             .where(exercise.id.eq(id))

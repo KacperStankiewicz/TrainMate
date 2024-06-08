@@ -51,7 +51,7 @@ public class ExerciseItemEntity extends BaseEntity {
     private ExerciseReport exerciseReport = new ExerciseReport();
 
     @Builder.Default
-    private boolean reported = false;
+    private Boolean reported = false;
 
     public void update(ExerciseItemUpdateDto dto) {
         this.exerciseId = dto.getExerciseId();

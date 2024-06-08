@@ -14,6 +14,7 @@ import lombok.Value;
 public class ExerciseItemUpdateDto {
 
     Long id;
+    Long version;
     Long trainingUnitId;
     Long exerciseId;
     Integer repetitions;

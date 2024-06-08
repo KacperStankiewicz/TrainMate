@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.api.data;
+package pl.edu.pja.trainmate.core.api.sampledata;
 
 import static java.time.DayOfWeek.MONDAY;
 

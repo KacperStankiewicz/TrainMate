@@ -15,6 +15,7 @@ import lombok.Value;
 public class WorkoutPlanUpdateDto implements WorkoutPlanDto {
 
     Long id;
+    Long version;
     String name;
     String category;
     LocalDate startDate;

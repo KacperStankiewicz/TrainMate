@@ -1,8 +1,8 @@
 package pl.edu.pja.trainmate.core.api.exercise;
 
 import static org.junit.Assert.assertEquals;
-import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getCreateDtoBuilder;
-import static pl.edu.pja.trainmate.core.api.data.ExerciseSampleData.getExerciseDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ExerciseSampleData.getExerciseDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.GET;
@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseRepository;
@@ -80,6 +81,7 @@ class ExerciseControllerIT extends ControllerSpecification {
         userWithRole(PERSONAL_TRAINER);
         var updateDto = getExerciseDtoBuilder()
             .id(entity.getId())
+            .version(entity.getVersion())
             .build();
 
         //when
@@ -106,10 +108,11 @@ class ExerciseControllerIT extends ControllerSpecification {
             .muscleInvolved(BICEPS)
             .build();
         entity = exerciseRepository.save(entity);
+        var dto = BasicAuditDto.ofValue(entity.getId(), entity.getVersion());
         userWithRole(PERSONAL_TRAINER);
 
         //when
-        var response = performDelete(String.format(DELETE, entity.getId())).getResponse();
+        var response = performDelete(String.format(DELETE, entity.getId()), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());

@@ -15,6 +15,7 @@ import lombok.Value;
 public class TrainingUnitUpdateDto {
 
     Long id;
+    Long version;
     DayOfWeek dayOfWeek;
     Long weekNumber;
 }

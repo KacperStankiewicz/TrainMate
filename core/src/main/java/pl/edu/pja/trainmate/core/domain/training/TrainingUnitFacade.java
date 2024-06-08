@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
@@ -48,19 +49,19 @@ public class TrainingUnitFacade {
         service.updateExerciseItem(dto);
     }
 
-    public void deleteTrainingUnit(Long id) {
-        service.deleteTrainingUnit(id);
+    public void deleteTrainingUnit(BasicAuditDto dto) {
+        service.deleteTrainingUnit(dto);
     }
 
-    public void deleteExerciseItem(Long id) {
-        service.deleteExerciseItem(id);
+    public void deleteExerciseItem(BasicAuditDto dto) {
+        service.deleteExerciseItem(dto);
     }
 
     public void addReport(ReportCreateDto reportCreateDto) {
         service.addExerciseItemReport(reportCreateDto);
     }
 
-    public void reviewReport(Long exerciseItemId) {
-        service.reviewReport(exerciseItemId);
+    public void reviewReport(BasicAuditDto dto) {
+        service.reviewReport(dto);
     }
 }

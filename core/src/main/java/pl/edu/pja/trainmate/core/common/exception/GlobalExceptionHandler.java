@@ -1,5 +1,7 @@
 package pl.edu.pja.trainmate.core.common.exception;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +28,13 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    List<ErrorMessageDto> handleUnmappedException(Exception ex) {
+    ResponseEntity<List<ErrorMessageDto>> handleUnmappedException(Exception ex) {
 
         log.error(ex.getMessage());
         log.debug(ex.getMessage(), ex);
 
-        return List.of(ErrorMessageDto.withDescription("INTERNAL_SERVER_ERROR", ex.getMessage()));
+        var errorMessages = List.of(ErrorMessageDto.withDescription("INTERNAL_SERVER_ERROR", ex.getMessage()));
+
+        return new ResponseEntity<>(errorMessages, INTERNAL_SERVER_ERROR);
     }
 }
