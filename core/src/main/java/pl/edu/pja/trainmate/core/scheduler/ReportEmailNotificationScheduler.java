@@ -18,15 +18,14 @@ public class ReportEmailNotificationScheduler {
 
     @Scheduled(cron = "${email-scheduler.periodical-report}")
     public void sendPeriodicalReportEmailNotification() {
-        var emails = queryService.getUserEmailsForEndedWorkoutPlanWithoutReport();
+        var emails = queryService.getUsersEmailsForEndedWorkoutPlanWithoutReport();
 
         emails.forEach(it -> emailService.sendEmail(it, PERIODICAL_REPORT_NOTIFICATION));
     }
 
     @Scheduled(cron = "${email-scheduler.weekly-report}")
     public void sendWeeklyReportEmailNotification() {
-        // todo: zmienic linie nizej
-        var emails = queryService.getUserEmailsForEndedWorkoutPlanWithoutReport();
+        var emails = queryService.getUsersEmailsWithActiveWorkoutPlan();
 
         emails.forEach(it -> emailService.sendEmail(it, WEEKLY_REPORT_NOTIFICATION));
     }
