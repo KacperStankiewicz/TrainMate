@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ public class CustomObjectMapperConfig {
         objectMapper.registerModule(javaTimeModule);
 
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.setDateFormat(DateFormat.getDateInstance());
         objectMapper.configure(USE_LONG_FOR_INTS, true);
         return objectMapper;
     }
