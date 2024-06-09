@@ -77,11 +77,11 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         return queryFactory()
             .select(user.personalInfo.email)
             .from(workoutPlan)
+            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
             .where(new BooleanBuilder()
                 .and(workoutPlan.dateRange.to.loe(LocalDate.now()))
                 .and(selectFrom(report).where(report.workoutPlanId.eq(workoutPlan.id)).notExists())
             )
-            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
             .fetch();
     }
 
@@ -90,6 +90,8 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         return queryFactory()
             .select(user.personalInfo.email)
             .from(workoutPlan)
+            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
+            .leftJoin(trainingUnit).on(trainingUnit.workoutPlanId.eq(workoutPlan.id))
             .where(new BooleanBuilder()
                 .and(workoutPlan.dateRange.to.goe(LocalDate.now()))
                 .and(workoutPlan.dateRange.from.loe(LocalDate.now()))
@@ -98,8 +100,6 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                         .and(trainingUnit.completed.isTrue())
                     ).exists())
             )
-            .leftJoin(user).on(user.userId.keycloakId.eq(workoutPlan.userId.keycloakId))
-            .leftJoin(trainingUnit).on(trainingUnit.workoutPlanId.eq(workoutPlan.id))
             .fetch();
     }
 

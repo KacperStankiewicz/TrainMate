@@ -6,6 +6,7 @@ import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.report.ReportFacade;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
+import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 
 @RestController
@@ -28,6 +30,21 @@ public class ReportController {
 
     private final ReportFacade reportFacade;
     private final TrainingUnitFacade trainingUnitFacade;
+
+    @Operation(summary = "get all periodical reports for logged user")
+    @ApiResponse(
+        responseCode = "200",
+        description = "got all periodical reports for logged user",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = TRAINED_PERSON)
+    @PostMapping("/workout-plan/all-reports")
+    public List<PeriodicalReportProjection> getAllPeriodicalReportsForLoggedUser() {
+        log.debug("Request to GET all periodical reports for logged user");
+        var result = reportFacade.getAllReportsForLoggedUser();
+        log.debug("Successfully GOT all periodical reports for logged user");
+        return result;
+    }
 
     @Operation(summary = "create periodical report")
     @ApiResponse(
