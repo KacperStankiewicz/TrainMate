@@ -6,8 +6,8 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
-import static pl.edu.pja.trainmate.core.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
-import static pl.edu.pja.trainmate.core.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.TestPropertySource;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
-import pl.edu.pja.trainmate.core.email.EmailService;
+import pl.edu.pja.trainmate.core.domain.email.EmailService;
 
 @Profile({INTEGRATION})
 @SpringBootTest

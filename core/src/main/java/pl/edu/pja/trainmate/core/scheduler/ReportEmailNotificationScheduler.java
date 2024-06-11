@@ -1,13 +1,13 @@
 package pl.edu.pja.trainmate.core.scheduler;
 
-import static pl.edu.pja.trainmate.core.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
-import static pl.edu.pja.trainmate.core.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
-import pl.edu.pja.trainmate.core.email.EmailService;
+import pl.edu.pja.trainmate.core.domain.email.EmailService;
 
 @Component
 @RequiredArgsConstructor

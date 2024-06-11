@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.email;
+package pl.edu.pja.trainmate.core.domain.email;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 

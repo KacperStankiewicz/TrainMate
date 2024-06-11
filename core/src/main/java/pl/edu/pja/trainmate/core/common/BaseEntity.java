@@ -8,6 +8,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PreUpdate;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -25,6 +26,7 @@ public abstract class BaseEntity {
     @CreatedDate
     private LocalDateTime creationDateTime;
 
+    @Setter
     @CreatedBy
     @Embedded
     @AttributeOverride(name = "keycloakId", column = @Column(name = "created_by"))
