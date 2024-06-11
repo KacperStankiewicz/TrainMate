@@ -317,7 +317,7 @@
 
                 <configuration>
                     <violationSeverity>warning</violationSeverity>
-                    <configLocation>config/checkstyle.xml</configLocation>
+                    <configLocation>codestyleconfig/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
