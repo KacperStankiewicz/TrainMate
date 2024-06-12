@@ -117,4 +117,12 @@ public abstract class ControllerSpecification {
             .andReturn();
     }
 
+    @SneakyThrows
+    public MvcResult performDelete(String url) {
+        return mockMvc.perform(
+                delete(url)
+            )
+            .andReturn();
+    }
+
 }

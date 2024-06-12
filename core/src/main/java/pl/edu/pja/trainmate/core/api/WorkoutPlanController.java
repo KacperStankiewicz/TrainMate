@@ -36,7 +36,7 @@ public class WorkoutPlanController {
     @Operation(summary = "get workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "get workout plan",
+        description = "Got workout plan",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
@@ -54,7 +54,7 @@ public class WorkoutPlanController {
     @Operation(summary = "create workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "created workout plan",
+        description = "workout plan created",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -69,7 +69,7 @@ public class WorkoutPlanController {
     @Operation(summary = "update workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "updated workout plan",
+        description = "workout plan updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -84,7 +84,7 @@ public class WorkoutPlanController {
     @Operation(summary = "delete workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted workout plan",
+        description = "workout plan deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)

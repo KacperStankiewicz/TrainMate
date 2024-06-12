@@ -24,7 +24,6 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <sonar.scaner.version>3.9.1.2184</sonar.scaner.version>
         <keycloak-security-adapter.version>24.0.1</keycloak-security-adapter.version>
         <vavr.version>0.10.4</vavr.version>
         <keycloak.version>16.1.0</keycloak.version>
@@ -47,7 +46,6 @@
         <spotbugs-annotations.version>4.7.2</spotbugs-annotations.version>
         <spotbugs-maven-plugin.version>4.5.0.0</spotbugs-maven-plugin.version>
         <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
-        <greenmail-spring.version>1.6.10</greenmail-spring.version>
         <fastinfoset.version>2.1.1</fastinfoset.version>
         <awaitility.version>4.1.0</awaitility.version>
     </properties>
@@ -215,12 +213,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>${spring-cloud-starter-openfeign.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
@@ -317,7 +309,7 @@
 
                 <configuration>
                     <violationSeverity>warning</violationSeverity>
-                    <configLocation>config/checkstyle.xml</configLocation>
+                    <configLocation>codestyleconfig/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>

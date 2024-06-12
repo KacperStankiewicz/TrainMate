@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.email;
+package pl.edu.pja.trainmate.core.domain.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

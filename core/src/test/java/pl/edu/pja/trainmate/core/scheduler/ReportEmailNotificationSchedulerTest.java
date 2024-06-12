@@ -6,8 +6,8 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
-import static pl.edu.pja.trainmate.core.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
-import static pl.edu.pja.trainmate.core.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.PERIODICAL_REPORT_NOTIFICATION;
+import static pl.edu.pja.trainmate.core.domain.email.TemplateType.WEEKLY_REPORT_NOTIFICATION;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.TestPropertySource;
+import pl.edu.pja.trainmate.core.domain.email.EmailService;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
-import pl.edu.pja.trainmate.core.email.EmailService;
 
 @Profile({INTEGRATION})
 @SpringBootTest
@@ -39,7 +39,7 @@ class ReportEmailNotificationSchedulerTest {
     private EmailService emailService;
 
     @Test
-    void testSendPeriodicalReportEmailNotificationTriggered() {
+    void shouldTriggerSendPeriodicalReportEmailNotification() {
         when(queryService.getUsersEmailsForEndedWorkoutPlanWithoutReport()).thenReturn(List.of("test@test.com"));
 
         Awaitility.await().atMost(3, TimeUnit.SECONDS).untilAsserted(() ->
@@ -47,11 +47,10 @@ class ReportEmailNotificationSchedulerTest {
     }
 
     @Test
-    void testSendWeeklyReportEmailNotificationTriggered() {
+    void shouldSendWeeklyReportEmailNotification() {
         when(queryService.getUsersEmailsWithActiveWorkoutPlan()).thenReturn(List.of("test@test.com"));
 
-        Awaitility.await().atMost(3, TimeUnit.SECONDS).untilAsserted(() -> {
-            verify(emailService, atLeastOnce()).sendEmail(anyString(), eq(WEEKLY_REPORT_NOTIFICATION));
-        });
+        Awaitility.await().atMost(3, TimeUnit.SECONDS).untilAsserted(() ->
+            verify(emailService, atLeastOnce()).sendEmail(anyString(), eq(WEEKLY_REPORT_NOTIFICATION)));
     }
 }

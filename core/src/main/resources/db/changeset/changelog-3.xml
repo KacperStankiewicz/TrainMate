@@ -38,26 +38,4 @@
 
     </changeSet>
 
-    <changeSet id="Tm12- create medical info entity" author="kstankiewicz">
-        <preConditions>
-            <not>
-                <tableExists tableName="medical_info"/>
-            </not>
-        </preConditions>
-
-        <createTable tableName="medical_info">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_medical_info_id"/>
-            </column>
-            <column name="user_id" type="bigint"/>
-            <column name="injuries" type="text"/>
-            <column name="created_by" type="varchar(36)"/>
-            <column name="modified_by" type="varchar(36)"/>
-            <column name="creation_date_time" type="timestamp"/>
-            <column name="modification_date_time" type="timestamp"/>
-        </createTable>
-
-        <createSequence sequenceName="seq_medical_info"/>
-    </changeSet>
-
 </databaseChangeLog>
