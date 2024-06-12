@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm63 update all sequences" author="kstankiewicz" dbms="postgresql">
+        <preConditions>
+            <sequenceExists sequenceName="seq_exercise_item"/>
+            <sequenceExists sequenceName="seq_exercise"/>
+            <sequenceExists sequenceName="seq_training_unit"/>
+            <sequenceExists sequenceName="seq_workout_plan"/>
+            <sequenceExists sequenceName="seq_email_template"/>
+            <sequenceExists sequenceName="seq_user"/>
+        </preConditions>
+
+        <sql>
+            select setval('seq_exercise_item', (select count(*) from exercise_item), true);
+            select setval('seq_exercise', (select count(*) from exercise), true);
+            select setval('seq_training_unit', (select count(*) from training_unit), true);
+            select setval('seq_workout_plan', (select count(*) from workout_plan), true);
+            select setval('seq_email_template', (select count(*) from email_template), true);
+            select setval('seq_user', (select count(*) from user), true);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

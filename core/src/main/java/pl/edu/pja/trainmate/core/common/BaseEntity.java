@@ -58,6 +58,11 @@ public abstract class BaseEntity {
     }
 
     private String getEntityName() {
-        return this.getClass().getSimpleName();
+        String className = this.getClass().getSimpleName();
+        if (className.endsWith("Entity")) {
+            return className.substring(0, className.length() - "Entity".length());
+        } else {
+            return className;
+        }
     }
 }

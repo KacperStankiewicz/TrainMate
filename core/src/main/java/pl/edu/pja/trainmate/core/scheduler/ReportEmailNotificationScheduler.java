@@ -6,8 +6,8 @@ import static pl.edu.pja.trainmate.core.domain.email.TemplateType.WEEKLY_REPORT_
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 import pl.edu.pja.trainmate.core.domain.email.EmailService;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
 @Component
 @RequiredArgsConstructor

@@ -40,7 +40,7 @@ public class TrainingUnitController {
     @Operation(summary = "get training units for current week")
     @ApiResponse(
         responseCode = "200",
-        description = "get training units for current week",
+        description = "Got training units for current week",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
@@ -57,7 +57,7 @@ public class TrainingUnitController {
     @Operation(summary = "get training units for given week by workout plan id and week number")
     @ApiResponse(
         responseCode = "200",
-        description = "get training units for given week by workout plan id and week number",
+        description = "Got training units for given week by workout plan id and week number",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
@@ -74,7 +74,7 @@ public class TrainingUnitController {
     @Operation(summary = "create training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "created training unit",
+        description = "Training unit created",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -89,7 +89,7 @@ public class TrainingUnitController {
     @Operation(summary = "update training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "updated training unit",
+        description = "training unit updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -104,7 +104,7 @@ public class TrainingUnitController {
     @Operation(summary = "delete training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted training unit",
+        description = "training unit deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -119,7 +119,7 @@ public class TrainingUnitController {
     @Operation(summary = "update exercise item")
     @ApiResponse(
         responseCode = "200",
-        description = "updated exercise item",
+        description = "exercise item updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -135,7 +135,7 @@ public class TrainingUnitController {
     @Operation(summary = "delete exercise item")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted exercise item",
+        description = "exercise item deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)

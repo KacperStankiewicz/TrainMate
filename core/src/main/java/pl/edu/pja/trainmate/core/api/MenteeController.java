@@ -37,13 +37,27 @@ public class MenteeController {
     private final MenteeFacade menteeFacade;
     private final ReportFacade reportFacade;
 
+    @Operation(summary = "Search mentees by criteria")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Searched mentees by criteria",
+        content = @Content(mediaType = "application/json")
+    )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/search")
     public Page<MenteeProjection> searchMenteesByCriteria(@RequestBody MenteeSearchCriteria criteria, @Parameter(hidden = true) Pageable pageable) {
         log.debug("Request to search mentees");
-        return menteeFacade.search(criteria, pageable);
+        var result = menteeFacade.search(criteria, pageable);
+        log.debug("Successfully searched mentees");
+        return result;
     }
 
+    @Operation(summary = "Send invitation email")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Sent invitation email",
+        content = @Content(mediaType = "application/json")
+    )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/invite")
     public ResultDto<Long> inviteMentee(
@@ -55,6 +69,12 @@ public class MenteeController {
         return userId;
     }
 
+    @Operation(summary = "Update user personal data")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Updated user's personal data",
+        content = @Content(mediaType = "application/json")
+    )
     @HasRole(roleType = {
         PERSONAL_TRAINER,
         TRAINED_PERSON
@@ -63,6 +83,7 @@ public class MenteeController {
     public void updateMenteePersonalData(@RequestBody MenteeUpdateDto menteeUpdateDto) {
         log.debug("Request to UPDATE mentee personal data");
         menteeFacade.updatePersonalData(menteeUpdateDto);
+        log.debug("Successfully updated mentee personal data");
     }
 
     @Operation(summary = "create initial report")
@@ -80,6 +101,12 @@ public class MenteeController {
         return result;
     }
 
+    @Operation(summary = "Deactivate user account")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Deactivated user's account",
+        content = @Content(mediaType = "application/json")
+    )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/{userId}/deactivate")
     public void deactivateAccount(@PathVariable String userId) {
@@ -88,6 +115,12 @@ public class MenteeController {
         log.debug("Successfully deactivated mentee account with id: {}", userId);
     }
 
+    @Operation(summary = "add file to report")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Added file to report",
+        content = @Content(mediaType = "application/json")
+    )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/{userId}/activate")
     public void deleteAccount(@PathVariable String userId) {

@@ -18,4 +18,5 @@
 
 
     <include file="db/changeset/initial-data.xml"/>
+    <include file="db/changeset/update-sequences.xml"/>
 </databaseChangeLog>

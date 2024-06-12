@@ -126,8 +126,8 @@ class TrainingUnitControllerIT extends ControllerSpecification {
         assertEquals(dtoHash, entity.getUniqueHash());
     }
 
-    @Test
     @SneakyThrows
+    @Test
     void shouldThrowOptimisticLockExceptionWhenUpdatingTrainingUnit() {
         //given
         userWithRole(PERSONAL_TRAINER);
