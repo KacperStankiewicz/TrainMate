@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
-import pl.edu.pja.trainmate.core.domain.user.UserRepository;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,8 +22,6 @@ import pl.edu.pja.trainmate.core.domain.user.UserRepository;
 public class UserController {
 
     private final LoggedUserDataProvider loggedUserDataProvider;
-
-    private final UserRepository userRepository;
 
     @Operation(summary = "Get currently logged user info")
     @ApiResponse(

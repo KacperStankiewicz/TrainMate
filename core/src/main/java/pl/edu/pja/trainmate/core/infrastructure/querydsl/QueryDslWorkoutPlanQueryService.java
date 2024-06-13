@@ -1,15 +1,20 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
+import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseItemProjection;
@@ -27,6 +32,7 @@ import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjecti
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
 @Service
+@RequiredArgsConstructor
 class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements WorkoutPlanQueryService {
 
     private static final QWorkoutPlanEntity workoutPlan = QWorkoutPlanEntity.workoutPlanEntity;
@@ -36,8 +42,12 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
     private static final QReportEntity report = QReportEntity.reportEntity;
     private static final QUserEntity user = QUserEntity.userEntity;
 
+    private final LoggedUserDataProvider userDataProvider;
+
     @Override
     public AllWorkoutData getWorkoutPlanData(Long workoutPlanId) {
+        var userDetails = userDataProvider.getUserDetails();
+
         var workoutData = queryFactory()
             .select(new QAllWorkoutData(
                 workoutPlan.id,
@@ -46,12 +56,25 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                 workoutPlan.category
             ))
             .from(workoutPlan)
-            .where(workoutPlan.id.eq(workoutPlanId))
+            .where(new BooleanBuilder()
+                .and(workoutPlan.id.eq(workoutPlanId))
+                .and(prepareUserPredicate(userDetails))
+            )
             .fetchOne();
 
         var trainingUnits = fetchTrainingUnitsProjection(workoutPlanId);
         workoutData.addTrainingUnits(trainingUnits);
         return workoutData;
+    }
+
+    private Predicate prepareUserPredicate(LoggedUserDataDto userDetails) {
+        var predicate = new BooleanBuilder();
+
+        if (PERSONAL_TRAINER.equals(userDetails.getRole())) {
+            return predicate;
+        }
+
+        return predicate.and(workoutPlan.userId.keycloakId.eq(userDetails.getUserId().getKeycloakId()));
     }
 
     @Override
