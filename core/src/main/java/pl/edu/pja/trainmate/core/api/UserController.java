@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
-import pl.edu.pja.trainmate.core.domain.user.UserEntity;
 import pl.edu.pja.trainmate.core.domain.user.UserRepository;
 
 @Slf4j
@@ -36,10 +36,9 @@ public class UserController {
         PERSONAL_TRAINER, TRAINED_PERSON
     })
     @GetMapping("/get-current-user-info")
-    public UserEntity getLoggedUserInfo() {
+    public LoggedUserDataDto getLoggedUserInfo() {
         log.debug("Request to GET currently logged user info");
-        String keycloakId = loggedUserDataProvider.getUserDetails().getUserId().getKeycloakId();
-        var result = userRepository.getUserByKeycloakId(keycloakId);
+        var result = loggedUserDataProvider.getUserDetails();
         log.debug("Request to GET currently logged user info");
         return result;
     }

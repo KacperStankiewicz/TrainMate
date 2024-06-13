@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+
+    <changeSet id="Tm65 add first login field to user entity" author="kstankiewicz">
+        <preConditions>
+            <tableExists tableName="user"/>
+            <not>
+                <columnExists tableName="user" columnName="first_login"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="user">
+            <column name="first_login" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>

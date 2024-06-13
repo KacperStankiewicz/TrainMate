@@ -50,6 +50,7 @@ public class UserEntity extends BaseEntity {
     private RoleType role;
 
     private boolean active = true;
+    private boolean firstLogin = true;
 
     public void updatePersonalInfo(PersonalInfo personalInfo) {
         this.personalInfo = personalInfo;

@@ -63,7 +63,9 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
         return queryFactory()
             .select(new QLoggedUserDataDto(
                 user.userId,
-                user.role
+                user.role,
+                user.personalInfo,
+                user.firstLogin
             ))
             .from(user)
             .where(new BooleanBuilder()

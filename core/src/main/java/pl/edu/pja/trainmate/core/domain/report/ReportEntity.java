@@ -51,6 +51,4 @@ public class ReportEntity extends BaseEntity {
     public void markAsReviewed() {
         this.reviewed = true;
     }
-
-    //todo: dodac pole na zdjecia sylwetki
 }
