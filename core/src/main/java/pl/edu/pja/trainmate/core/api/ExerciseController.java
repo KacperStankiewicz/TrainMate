@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseFacade;
@@ -110,14 +111,15 @@ public class ExerciseController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @DeleteMapping("/{exerciseId}")
-    public void deleteExercise(@PathVariable Long exerciseId) {
+    public void deleteExercise(@PathVariable Long exerciseId, @RequestBody BasicAuditDto dto) {
         log.debug("REST request to DELETE exercise with id: {}", exerciseId);
-        facade.delete(exerciseId);
+        validateId(exerciseId, dto.getId());
+        facade.delete(dto);
         log.debug("Successfully DELETED exercise");
     }
 
-    private void validateId(Long applicationId, Long idFromDto) {
-        if (!applicationId.equals(idFromDto)) {
+    private void validateId(Long id, Long idFromDto) {
+        if (!id.equals(idFromDto)) {
             throw new CommonException(INVALID_ID);
         }
     }

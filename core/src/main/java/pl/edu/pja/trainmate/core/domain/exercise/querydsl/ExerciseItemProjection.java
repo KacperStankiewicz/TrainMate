@@ -22,12 +22,13 @@ public class ExerciseItemProjection {
     String name;
     String description;
     String url;
+    boolean reported;
     @JsonIgnore
     Long trainingUnitId;
 
     @QueryProjection
     public ExerciseItemProjection(Long id, Integer repetitions, String tempo, Integer weight, Integer rir, Integer sets,
-        Muscle muscleInvolved, String name, String description, String url, Long trainingUnitId) {
+        Muscle muscleInvolved, String name, String description, String url, boolean reported, Long trainingUnitId) {
         this.id = id;
         this.repetitions = repetitions;
         this.tempo = tempo;
@@ -38,6 +39,7 @@ public class ExerciseItemProjection {
         this.name = name;
         this.description = description;
         this.url = url;
+        this.reported = reported;
         this.trainingUnitId = trainingUnitId;
     }
 }

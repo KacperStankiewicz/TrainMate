@@ -3,24 +3,26 @@ package pl.edu.pja.trainmate.core.api.report;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getExerciseReportBuilder;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getExerciseReportSampleDataBuilder;
-import static pl.edu.pja.trainmate.core.api.data.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT_REVIEW;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT_REVIEW;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportSampleDataBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
-import static pl.edu.pja.trainmate.core.utils.ResponseConverter.castResponseTo;
+import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
@@ -68,15 +70,32 @@ class ReportControllerIT extends ControllerSpecification {
     void shouldMarkReportAsReviewed() {
         //given
         var entity = reportRepository.save(ReportEntity.builder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), entity.getVersion());
         userWithRole(PERSONAL_TRAINER);
 
         //when
-        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId())).getResponse();
+        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId()), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());
         assertTrue(reportRepository.findExactlyOneById(entity.getId()).isReviewed());
+    }
 
+    @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenMarkingReportAsReviewed() {
+        //given
+        var entity = reportRepository.save(ReportEntity.builder().build());
+        var dto = BasicAuditDto.ofValue(entity.getId(), 9999L);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(String.format(WORKOUT_PLAN_REPORT_REVIEW, entity.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+        assertFalse(reportRepository.findExactlyOneById(entity.getId()).isReviewed());
     }
 
     @Test
@@ -96,12 +115,14 @@ class ReportControllerIT extends ControllerSpecification {
 
         //and
         var entity = exerciseItemRepository.findExactlyOneById(exercise.getId());
-        assertEquals(dto.getRepetitions(), entity.getExerciseReport().getReportedRepetitions());
-        assertEquals(dto.getWeight(), entity.getExerciseReport().getReportedWeight());
-        assertEquals(dto.getSets(), entity.getExerciseReport().getReportedSets());
-        assertEquals(dto.getRir(), entity.getExerciseReport().getReportedRir());
+        var savedSet = entity.getExerciseReport().getReportedSets().get(0);
+        var dtoSet = dto.getSets().get(0);
+        assertEquals(dtoSet.getReportedRepetitions(), savedSet.getReportedRepetitions());
+        assertEquals(dtoSet.getReportedWeight(), savedSet.getReportedWeight());
+        assertEquals(dtoSet.getReportedRir(), savedSet.getReportedRir());
+        assertEquals(dto.getSets().size(), entity.getExerciseReport().getReportedSets().size());
         assertEquals(dto.getRemarks(), entity.getExerciseReport().getRemarks());
-        assertTrue(entity.isReported());
+        assertTrue(entity.getReported());
     }
 
     @Test
@@ -110,17 +131,38 @@ class ReportControllerIT extends ControllerSpecification {
         var report = getExerciseReportBuilder().build();
         var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseReport(report)
-                .reported(true)
+            .reported(true)
             .build());
+        var dto = BasicAuditDto.ofValue(exercise.getId(), exercise.getVersion());
         userWithRole(PERSONAL_TRAINER);
 
         //when
-        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId())).getResponse();
+        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());
         assertTrue(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
+    }
 
+    @Test
+    @SneakyThrows
+    void shouldThrowOptimisticLockExceptionWhenReviewingExerciseItemReport() {
+        //given
+        var report = getExerciseReportBuilder().build();
+        var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
+            .exerciseReport(report)
+            .reported(true)
+            .build());
+        var dto = BasicAuditDto.ofValue(exercise.getId(), 99999L);
+        userWithRole(PERSONAL_TRAINER);
+
+        //when
+        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
+
+        //then
+        assertEquals(409, response.getStatus());
+        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
+        assertFalse(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
     }
 
 }

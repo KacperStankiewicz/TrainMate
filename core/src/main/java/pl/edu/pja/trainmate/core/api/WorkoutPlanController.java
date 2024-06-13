@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanFacade;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
@@ -35,53 +36,64 @@ public class WorkoutPlanController {
     @Operation(summary = "get workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "get workout plan",
+        description = "Got workout plan",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
         PERSONAL_TRAINER,
         TRAINED_PERSON
     })
-    @GetMapping("/{id}")
-    public AllWorkoutData getWorkoutPlanData(@PathVariable Long id) {
-        return workoutPlanFacade.getById(id);
+    @GetMapping("/{workoutPlanId}")
+    public AllWorkoutData getWorkoutPlanData(@PathVariable Long workoutPlanId) {
+        log.debug("REST request to GET all workout data by id: {}", workoutPlanId);
+        var result = workoutPlanFacade.getById(workoutPlanId);
+        log.debug("Successfully got workout plan data");
+        return result;
     }
 
     @Operation(summary = "create workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "created workout plan",
+        description = "workout plan created",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/create")
     public ResultDto<Long> createWorkoutPlan(@RequestBody WorkoutPlanCreateDto workoutPlanCreateDto) {
-        return workoutPlanFacade.create(workoutPlanCreateDto);
+        log.debug("REST request to CREATE workout plan");
+        var result = workoutPlanFacade.create(workoutPlanCreateDto);
+        log.debug("Successfully created workout plan");
+        return result;
     }
 
     @Operation(summary = "update workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "updated workout plan",
+        description = "workout plan updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{workoutPlanId}/update")
     public void updateWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody WorkoutPlanUpdateDto workoutPlanUpdateDto) {
+        log.debug("REST request to UPDATE workout plan with id: {}", workoutPlanId);
         validateId(workoutPlanId, workoutPlanUpdateDto.getId());
         workoutPlanFacade.update(workoutPlanUpdateDto);
+        log.debug("Successfully updated workout plan");
     }
 
     @Operation(summary = "delete workout plan")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted workout plan",
+        description = "workout plan deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/{id}/delete")
-    public void deleteWorkoutPlan(@PathVariable Long id) {
-        workoutPlanFacade.delete(id);
+    @DeleteMapping("/{workoutPlanId}/delete")
+    public void deleteWorkoutPlan(@PathVariable Long workoutPlanId, @RequestBody BasicAuditDto dto) {
+        log.debug("REST request to DELETE workout plan with id: {}", workoutPlanId);
+        validateId(workoutPlanId, dto.getId());
+        workoutPlanFacade.delete(dto);
+        log.debug("Successfully deleted workout plan");
     }
 
     private void validateId(Long bodyId, Long id) {

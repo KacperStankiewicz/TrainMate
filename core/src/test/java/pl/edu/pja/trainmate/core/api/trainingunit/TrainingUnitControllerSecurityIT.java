@@ -3,7 +3,7 @@ package pl.edu.pja.trainmate.core.api.trainingunit;
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static pl.edu.pja.trainmate.core.api.data.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 
 @SpringBootTest
@@ -48,7 +49,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingTraining() {
         userWithRole(TRAINED_PERSON);
-        var response = performDelete(format(DELETE, ID));
+        var response = performDelete(format(DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());
@@ -66,7 +67,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingExerciseItem() {
         userWithRole(TRAINED_PERSON);
-        var response = performDelete(format(EXERCISE_ITEM_DELETE, ID));
+        var response = performDelete(format(EXERCISE_ITEM_DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());

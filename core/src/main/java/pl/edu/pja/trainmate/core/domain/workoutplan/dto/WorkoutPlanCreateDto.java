@@ -12,7 +12,7 @@ import lombok.Value;
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE, force = true)
 @Value
-public class WorkoutPlanCreateDto implements WorkoutPlanDto{
+public class WorkoutPlanCreateDto implements WorkoutPlanDto {
 
     String name;
     String userId;

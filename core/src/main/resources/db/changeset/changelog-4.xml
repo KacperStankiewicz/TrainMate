@@ -15,15 +15,6 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="Tm33-change dish entity column types to varchar" author="kstankiewicz">
-        <preConditions onFail="MARK_RAN">
-            <columnExists tableName="dish" columnName="instruction"/>
-            <columnExists tableName="dish" columnName="instruction_video_url"/>
-        </preConditions>
-        <modifyDataType tableName="dish" columnName="instruction" newDataType="varchar(1024)"/>
-        <modifyDataType tableName="dish" columnName="instruction_video_url" newDataType="varchar(1024)"/>
-    </changeSet>
-
     <changeSet id="Tm33-change exercise entity column types to varchar" author="kstankiewicz">
         <preConditions onFail="MARK_RAN">
             <columnExists tableName="exercise" columnName="url"/>
@@ -41,14 +32,6 @@
         <addColumn tableName="user">
             <column name="role" type="varchar(255)"/>
         </addColumn>
-    </changeSet>
-
-    <changeSet id="uber_fix change column types" author="kstankiewicz">
-        <preConditions>
-            <columnExists tableName="diet_plan" columnName="user_id"/>
-        </preConditions>
-
-        <modifyDataType tableName="diet_plan" columnName="user_id" newDataType="bigint"/>
     </changeSet>
 
     <changeSet id="uber_fix change workout_plan column types" author="kstankiewicz">

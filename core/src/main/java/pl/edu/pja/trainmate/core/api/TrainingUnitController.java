@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
@@ -39,7 +40,7 @@ public class TrainingUnitController {
     @Operation(summary = "get training units for current week")
     @ApiResponse(
         responseCode = "200",
-        description = "get training units for current week",
+        description = "Got training units for current week",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
@@ -56,7 +57,7 @@ public class TrainingUnitController {
     @Operation(summary = "get training units for given week by workout plan id and week number")
     @ApiResponse(
         responseCode = "200",
-        description = "get training units for given week by workout plan id and week number",
+        description = "Got training units for given week by workout plan id and week number",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
@@ -73,7 +74,7 @@ public class TrainingUnitController {
     @Operation(summary = "create training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "created training unit",
+        description = "Training unit created",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -88,7 +89,7 @@ public class TrainingUnitController {
     @Operation(summary = "update training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "updated training unit",
+        description = "training unit updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -103,21 +104,22 @@ public class TrainingUnitController {
     @Operation(summary = "delete training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted training unit",
+        description = "training unit deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/{id}/delete")
-    public void deleteTrainingUnit(@PathVariable Long id) {
-        log.debug("Request to DELETE training unit with id: {}", id);
-        trainingUnitFacade.deleteTrainingUnit(id);
+    @DeleteMapping("/{trainingUnitId}/delete")
+    public void deleteTrainingUnit(@PathVariable Long trainingUnitId, @RequestBody BasicAuditDto dto) {
+        log.debug("Request to DELETE training unit with id: {}", trainingUnitId);
+        validateId(trainingUnitId, dto.getId());
+        trainingUnitFacade.deleteTrainingUnit(dto);
         log.debug("DELETED training unit");
     }
 
     @Operation(summary = "update exercise item")
     @ApiResponse(
         responseCode = "200",
-        description = "updated exercise item",
+        description = "exercise item updated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
@@ -133,14 +135,15 @@ public class TrainingUnitController {
     @Operation(summary = "delete exercise item")
     @ApiResponse(
         responseCode = "200",
-        description = "deleted exercise item",
+        description = "exercise item deleted",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @DeleteMapping("/exercise/{id}/delete")
-    public void deleteExerciseItem(@PathVariable Long id) {
-        log.debug("Request to DELETE exercise item with id: {}", id);
-        trainingUnitFacade.deleteExerciseItem(id);
+    @DeleteMapping("/exercise/{exerciseItemId}/delete")
+    public void deleteExerciseItem(@PathVariable Long exerciseItemId, @RequestBody BasicAuditDto dto) {
+        log.debug("Request to DELETE exercise item with id: {}", exerciseItemId);
+        validateId(exerciseItemId, dto.getId());
+        trainingUnitFacade.deleteExerciseItem(dto);
         log.debug("DELETED exercise item");
     }
 

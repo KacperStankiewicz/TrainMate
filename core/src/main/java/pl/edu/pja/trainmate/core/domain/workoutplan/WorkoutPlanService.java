@@ -8,6 +8,7 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOU
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.DateRange;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
@@ -47,6 +48,7 @@ class WorkoutPlanService {
 
     public void update(WorkoutPlanUpdateDto workoutPlanUpdateDto) {
         var workoutPlan = workoutPlanRepository.findExactlyOneById(workoutPlanUpdateDto.getId());
+        workoutPlan.validateVersion(workoutPlanUpdateDto.getVersion());
         workoutPlan.checkIfModificationAllowed();
         validateDto(workoutPlanUpdateDto);
 
@@ -54,13 +56,14 @@ class WorkoutPlanService {
         workoutPlanRepository.saveAndFlush(workoutPlan);
     }
 
-    public void delete(Long id) {
-        var workoutPlan = workoutPlanRepository.findExactlyOneById(id);
+    public void delete(BasicAuditDto dto) {
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(dto.getId());
+        workoutPlan.validateVersion(dto.getVersion());
         workoutPlan.checkIfModificationAllowed();
 
-        workoutPlanRepository.deleteById(id);
-        exerciseItemRepository.deleteByWorkoutPlanId(id);
-        trainingUnitRepository.deleteByWorkoutPlanId(id);
+        workoutPlanRepository.delete(workoutPlan);
+        exerciseItemRepository.deleteByWorkoutPlanId(dto.getId());
+        trainingUnitRepository.deleteByWorkoutPlanId(dto.getId());
     }
 
     private void validateDto(WorkoutPlanDto dto) {

@@ -94,18 +94,22 @@ public abstract class ControllerSpecification {
     }
 
     @SneakyThrows
-    public MvcResult performPost(String url) {
+    public MvcResult performPut(String url, Object body) {
+        var json = objectMapper.writeValueAsString(body);
         return mockMvc.perform(
-                post(url)
+                put(url)
+                    .contentType(APPLICATION_JSON)
+                    .content(json)
+                    .accept(APPLICATION_JSON)
             )
             .andReturn();
     }
 
     @SneakyThrows
-    public MvcResult performPut(String url, Object body) {
+    public MvcResult performDelete(String url, Object body) {
         var json = objectMapper.writeValueAsString(body);
         return mockMvc.perform(
-                put(url)
+                delete(url)
                     .contentType(APPLICATION_JSON)
                     .content(json)
                     .accept(APPLICATION_JSON)

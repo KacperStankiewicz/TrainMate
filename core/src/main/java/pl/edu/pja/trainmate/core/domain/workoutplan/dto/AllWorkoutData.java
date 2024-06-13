@@ -14,13 +14,15 @@ import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection
 public class AllWorkoutData {
 
     Long id;
+    Long version;
     String name;
     String category;
     List<TrainingUnitProjection> trainingUnits = new ArrayList<>();
 
     @QueryProjection
-    public AllWorkoutData(Long id, String name, String category) {
+    public AllWorkoutData(Long id, Long version, String name, String category) {
         this.id = id;
+        this.version = version;
         this.name = name;
         this.category = category;
     }

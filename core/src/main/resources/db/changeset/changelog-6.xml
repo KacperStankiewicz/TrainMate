@@ -25,32 +25,8 @@
             <column name="reported_weight" type="int"/>
             <column name="reported_repetitions" type="int"/>
             <column name="reported_sets" type="int"/>
-            <column name="reviewed" type="boolean"/>
+            <column name="reviewed" type="boolean" defaultValue="false"/>
         </addColumn>
-    </changeSet>
-
-    <changeSet id="Tm46 delete diet plan domain entities" author="kstankiewicz">
-        <preConditions>
-            <tableExists tableName="dish"/>
-            <tableExists tableName="ingredient"/>
-            <tableExists tableName="ingredient_item"/>
-            <tableExists tableName="meal"/>
-            <tableExists tableName="diet_plan"/>
-        </preConditions>
-
-        <dropTable tableName="ingredient_item"/>
-        <dropTable tableName="ingredient"/>
-        <dropTable tableName="dish"/>
-        <dropTable tableName="meal"/>
-        <dropTable tableName="diet_plan"/>
-    </changeSet>
-
-    <changeSet id="Tm46 delete medical info entity" author="kstankiewicz">
-        <preConditions>
-            <tableExists tableName="medical_info"/>
-        </preConditions>
-
-        <dropTable tableName="medical_info"/>
     </changeSet>
 
     <changeSet id="Tm46 delete weight from user entity" author="kstankiewicz">

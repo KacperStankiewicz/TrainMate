@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
@@ -31,7 +32,7 @@ public class WorkoutPlanFacade {
         service.update(dto);
     }
 
-    public void delete(Long id) {
-        service.delete(id);
+    public void delete(BasicAuditDto dto) {
+        service.delete(dto);
     }
 }

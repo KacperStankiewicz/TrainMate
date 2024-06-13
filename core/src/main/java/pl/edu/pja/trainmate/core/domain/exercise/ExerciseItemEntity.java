@@ -51,7 +51,7 @@ public class ExerciseItemEntity extends BaseEntity {
     private ExerciseReport exerciseReport = new ExerciseReport();
 
     @Builder.Default
-    private boolean reported = false;
+    private Boolean reported = false;
 
     public void update(ExerciseItemUpdateDto dto) {
         this.exerciseId = dto.getExerciseId();
@@ -67,9 +67,6 @@ public class ExerciseItemEntity extends BaseEntity {
 
     public void addReport(ReportCreateDto dto) {
         this.exerciseReport = ExerciseReport.builder()
-            .reportedRepetitions(dto.getRepetitions())
-            .reportedWeight(dto.getWeight())
-            .reportedRir(dto.getRir())
             .reportedSets(dto.getSets())
             .remarks(dto.getRemarks())
             .build();

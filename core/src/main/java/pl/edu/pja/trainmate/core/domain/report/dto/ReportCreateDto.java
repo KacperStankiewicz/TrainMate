@@ -2,10 +2,12 @@ package pl.edu.pja.trainmate.core.domain.report.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import pl.edu.pja.trainmate.core.domain.exercise.SetParams;
 
 @Value
 @AllArgsConstructor
@@ -14,9 +16,6 @@ import lombok.Value;
 public class ReportCreateDto {
 
     Long exerciseItemId;
-    Integer repetitions;
-    Integer weight;
-    Integer rir;
-    Integer sets;
+    List<SetParams> sets;
     String remarks;
 }

@@ -1,4 +1,4 @@
-package pl.edu.pja.trainmate.core.utils;
+package pl.edu.pja.trainmate.core.testutils;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
 import static pl.edu.pja.trainmate.core.config.objectmapper.CustomObjectMapperConfig.createObjectMapper;

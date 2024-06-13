@@ -45,7 +45,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
                 .and(isLike(personalInfo.firstname, criteria.getFirstname()))
                 .and(isLike(personalInfo.lastname, criteria.getLastname()))
                 .and(isLike(personalInfo.email, criteria.getEmail()))
-                .and(personalInfo.gender.eq(criteria.getGender()))
+                .and(equals(personalInfo.gender, criteria.getGender()))
             )
             .orderBy(OrderByBuilder.with(pageable.getSort())
                 .whenPropertyIs("age").thenSortBy(personalInfo.dateOfBirth)

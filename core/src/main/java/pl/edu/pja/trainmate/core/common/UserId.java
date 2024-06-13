@@ -9,10 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.PersistenceConstructor;
 
-@FieldNameConstants
 @Embeddable
 @Value
 @NoArgsConstructor(access = PRIVATE, force = true)
