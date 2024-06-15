@@ -1,5 +1,7 @@
 package pl.edu.pja.trainmate.core.domain.report;
 
+import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,12 +9,14 @@ import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
+import pl.edu.pja.trainmate.core.domain.user.MenteeFacade;
 
 @Service
 @RequiredArgsConstructor
 public class ReportFacade {
 
     private final ReportService reportService;
+    private final MenteeFacade menteeFacade;
 
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
         return reportService.getAllReportsForLoggedUser();
@@ -27,6 +31,12 @@ public class ReportFacade {
     }
 
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {
-        return reportService.createInitialReport(reportCreateDto);
+        var result = reportService.createInitialReport(reportCreateDto);
+
+        if (SUCCESS.equals(result.getStatus())) {
+            menteeFacade.unsetFirstLoginFlag();
+        }
+
+        return result;
     }
 }

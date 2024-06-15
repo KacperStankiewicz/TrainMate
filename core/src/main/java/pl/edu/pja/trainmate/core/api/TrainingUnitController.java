@@ -43,9 +43,7 @@ public class TrainingUnitController {
         description = "Got training units for current week",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = {
-        TRAINED_PERSON
-    })
+    @HasRole(roleType = TRAINED_PERSON)
     @GetMapping("/current")
     public List<TrainingUnitProjection> getCurrentTrainingUnits() {
         log.debug("Request to GET training units for current week for logged user");

@@ -50,6 +50,8 @@ public class UserEntity extends BaseEntity {
     private RoleType role;
 
     private boolean active = true;
+
+    @Builder.Default
     private boolean firstLogin = true;
 
     public void updatePersonalInfo(PersonalInfo personalInfo) {
@@ -61,5 +63,9 @@ public class UserEntity extends BaseEntity {
             throw new CommonException(active ? MENTEE_ACCOUNT_IS_ALREADY_ACTIVE : MENTEE_ACCOUNT_IS_ALREADY_INACTIVE);
         }
         this.active = active;
+    }
+
+    public void unsetFirstLoginFlag() {
+        this.firstLogin = false;
     }
 }

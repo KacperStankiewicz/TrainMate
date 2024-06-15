@@ -10,6 +10,7 @@ public enum MenteeErrorCode implements BaseErrorCode {
 
     COULD_NOT_CREATE_MENTEE("Mentee was not created", BAD_REQUEST),
     COULD_NOT_FIND_MENTEE("Could not find mentee with id: %s", BAD_REQUEST),
+    MENTEE_WITH_PROVIDED_EMAIL_ALREADY_EXISTS("Mentee with email: %s already exists", BAD_REQUEST),
     MENTEE_ACCOUNT_IS_ALREADY_ACTIVE("Mentee account is already active", BAD_REQUEST),
     MENTEE_ACCOUNT_IS_ALREADY_INACTIVE("Mentee account is already inactive", BAD_REQUEST),
     EMAIL_MUST_NOT_BE_NULL("Email address must not be null", BAD_REQUEST),

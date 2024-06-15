@@ -111,14 +111,14 @@ public class MenteeController {
     @PostMapping("/{userId}/deactivate")
     public void deactivateAccount(@PathVariable String userId) {
         log.debug("Request to deactivate mentee account with id: {}", userId);
-        menteeFacade.deleteAccount(userId);
+        menteeFacade.deactivateAccount(userId);
         log.debug("Successfully deactivated mentee account with id: {}", userId);
     }
 
-    @Operation(summary = "add file to report")
+    @Operation(summary = "Activate user account")
     @ApiResponse(
         responseCode = "200",
-        description = "Added file to report",
+        description = "User account activated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)

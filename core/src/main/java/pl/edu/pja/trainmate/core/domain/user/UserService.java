@@ -65,18 +65,33 @@ class UserService {
             .height(menteeUpdateDto.getHeight())
             .build());
 
-        userRepository.saveAndFlush(mentee);
+        userRepository.save(mentee);
     }
 
     public void changeAccountActivity(String userId, boolean active) {
-        var mentee = userRepository.getUserByKeycloakId(userId);
+        var mentee = userRepository.getActiveOrInactiveUserByKeycloakId(userId);
         mentee.setActive(active);
 
         keycloakService.enableOrDisableAccount(mentee.getUserId().getKeycloakId(), active);
+
+        userRepository.save(mentee);
+    }
+
+    public void unsetFirstLoginFlag() {
+        var userId = userProvider.getLoggedUserId();
+        var user = getUserByKeycloakId(userId.getKeycloakId());
+        user.unsetFirstLoginFlag();
+
+        userRepository.save(user);
     }
 
     private UserEntity getUserByKeycloakId(String keycloakId) {
         return userRepository.getUserByKeycloakId(keycloakId);
+    }
+
+    public boolean checkIfUserExistsByEmail(String email) {
+        return userRepository.userExistsByEmailAddress(email);
+
     }
 
     private UserEntity buildUserEntity(UserRepresentation userRepresentation, boolean activate) {
