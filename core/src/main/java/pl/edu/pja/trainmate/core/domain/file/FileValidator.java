@@ -1,6 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.file;
 
-import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.CANNOT_UPLOAD_MORE_THAN_3_FILES;
+import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.CANNOT_UPLOAD_MORE_THAN_4_FILES;
 import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.FILE_TOO_LARGE;
 import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.INCORRECT_EXTENSION_IN_FILE_NAME;
 import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.INCORRECT_FORMAT;
@@ -18,7 +18,7 @@ public class FileValidator {
     public void validateFile(FileStorageDto dto, Long reportFilesCount) {
 
         if (reportFilesCount > 4) {
-            throw new CommonException(CANNOT_UPLOAD_MORE_THAN_3_FILES);
+            throw new CommonException(CANNOT_UPLOAD_MORE_THAN_4_FILES);
         }
 
         if (dto != null && isFormatPermitted(dto.getType())) {
@@ -34,7 +34,7 @@ public class FileValidator {
         }
 
         if (dto != null && !validateFileEncoding(dto.getContent())) {
-            throw new CommonException(CANNOT_UPLOAD_MORE_THAN_3_FILES);
+            throw new CommonException(CANNOT_UPLOAD_MORE_THAN_4_FILES);
         }
     }
 

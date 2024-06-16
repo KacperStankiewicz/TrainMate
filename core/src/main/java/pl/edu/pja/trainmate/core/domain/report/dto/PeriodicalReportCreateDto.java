@@ -2,10 +2,12 @@ package pl.edu.pja.trainmate.core.domain.report.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import pl.edu.pja.trainmate.core.domain.file.dto.FileStorageDto;
 
 @Value
 @Builder
@@ -30,4 +32,5 @@ public class PeriodicalReportCreateDto {
     Double waist;
     Double abdomen;
     Double hips;
+    List<FileStorageDto> images;
 }

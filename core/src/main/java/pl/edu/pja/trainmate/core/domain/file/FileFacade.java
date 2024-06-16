@@ -12,6 +12,10 @@ public class FileFacade {
 
     private final FileService service;
 
+    public void addFiles(Long reportId, List<FileStorageDto> dtos) {
+        dtos.forEach(it -> addFile(reportId, it));
+    }
+
     public StorageId addFile(Long reportId, FileStorageDto dto) {
         return service.addFile(reportId, dto);
     }
