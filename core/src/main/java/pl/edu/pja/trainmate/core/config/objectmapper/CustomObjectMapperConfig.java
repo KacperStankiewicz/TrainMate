@@ -1,9 +1,11 @@
 package pl.edu.pja.trainmate.core.config.objectmapper;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -19,7 +21,10 @@ import org.springframework.data.domain.Page;
 public class CustomObjectMapperConfig {
 
     public static ObjectMapper createObjectMapper() {
-        var objectMapper = new ObjectMapper();
+        var objectMapper = JsonMapper.builder()
+            .enable(ACCEPT_CASE_INSENSITIVE_ENUMS)
+            .build();
+
         var javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
         objectMapper.registerModule(javaTimeModule);

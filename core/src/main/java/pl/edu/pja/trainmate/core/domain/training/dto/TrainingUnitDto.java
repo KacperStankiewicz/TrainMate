@@ -21,7 +21,7 @@ public class TrainingUnitDto {
     Long exerciseId;
     Integer repetitions;
     String tempo;
-    Integer weight;
+    Double weight;
     Integer rir;
     Integer sets;
 }

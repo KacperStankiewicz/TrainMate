@@ -9,8 +9,8 @@ import static pl.edu.pja.trainmate.core.api.mentee.MenteeEndpoints.INVITE;
 import static pl.edu.pja.trainmate.core.api.mentee.MenteeEndpoints.SEARCH;
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.Gender.FEMALE;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +27,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldAllowAccessForTrainedPersonWhenSearchingMentees() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var criteria = new MenteeSearchCriteria("", "", "", new NumberRange(1L, 2L), FEMALE);
         var response = performPost(SEARCH, criteria);
 
@@ -37,7 +37,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldAllowAccessForTrainedPersonWhenInvitingMentee() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var email = "test@test.com";
         var response = performPost(INVITE, "email", email);
 
@@ -57,7 +57,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldAllowAccessForTrainedPersonWhenDeactivatingMenteeAccount() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
         var response = performPost(String.format(DEACTIVATE, id), BasicAuditDto.ofValue(id, 0L));
 
@@ -67,7 +67,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldAllowAccessForTrainedPersonWhenActivatingMenteeAccount() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
         var response = performPost(String.format(ACTIVATE, id), BasicAuditDto.ofValue(id, 0L));
 

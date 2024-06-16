@@ -8,7 +8,7 @@ import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_DAT
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_HEIGHT;
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_PHONE_NUMBER;
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.LASTNAME_MUST_NOT_BE_NULL;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -103,7 +103,7 @@ class UserService {
                 .lastname(userRepresentation.getLastName())
                 .email(userRepresentation.getEmail())
                 .build())
-            .role(TRAINED_PERSON)
+            .role(MENTEE)
             .build();
     }
 

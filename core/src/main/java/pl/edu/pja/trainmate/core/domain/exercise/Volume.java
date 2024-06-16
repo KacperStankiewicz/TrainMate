@@ -15,7 +15,7 @@ public class Volume {
 
     private Integer repetitions;
     private String tempo;
-    private Integer weight;
+    private Double weight;
     private Integer rir;
     private Integer sets;
 }

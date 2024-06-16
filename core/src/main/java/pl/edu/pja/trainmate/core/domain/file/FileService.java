@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.domain.file;
 
 import static pl.edu.pja.trainmate.core.common.error.FileErrorCode.ONLY_OWNER_CAN_DELETE_FILE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.domain.file.mapper.FileStorageMapper.toEntity;
 
 import java.util.List;
@@ -42,7 +42,7 @@ class FileService {
         var userDetails = loggedUserDataProvider.getUserDetails();
         var entity = repository.findByStorageId(storageId);
 
-        if (TRAINED_PERSON.equals(userDetails.getRole()) && !entity.getCreatedBy().getKeycloakId().equals(userDetails.getUserId().getKeycloakId())) {
+        if (MENTEE.equals(userDetails.getRole()) && !entity.getCreatedBy().getKeycloakId().equals(userDetails.getUserId().getKeycloakId())) {
             throw new CommonException(ONLY_OWNER_CAN_DELETE_FILE);
         }
 

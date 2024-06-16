@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,7 +38,7 @@ public class ReportController {
         description = "got all periodical reports for logged user",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @GetMapping("/periodical/all-reports")
     public List<PeriodicalReportProjection> getAllPeriodicalReportsForLoggedUser() {
         log.debug("Request to GET all periodical reports for logged user");
@@ -53,7 +53,7 @@ public class ReportController {
         description = "created periodical report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @PostMapping("/workout-plan/{workoutPlanId}/report")
     public ResultDto<Long> createPeriodicalReport(@PathVariable Long workoutPlanId, @RequestBody PeriodicalReportCreateDto reportCreateDto) {
         validateId(workoutPlanId, reportCreateDto.getWorkoutPlanId());
@@ -84,7 +84,7 @@ public class ReportController {
         description = "created exercise item report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @PostMapping("/exercise/{exerciseId}/report")
     public void createReport(@PathVariable Long exerciseId, @RequestBody ReportCreateDto reportCreateDto) {
         log.debug("Request to CREATE report for exercise item with id: {}", reportCreateDto.getExerciseItemId());

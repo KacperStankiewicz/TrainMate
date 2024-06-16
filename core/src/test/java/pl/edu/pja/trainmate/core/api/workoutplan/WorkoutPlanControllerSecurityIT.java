@@ -9,7 +9,7 @@ import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.CRE
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.GET;
 import static pl.edu.pja.trainmate.core.api.workoutplan.WorkoutPlanEndpoints.UPDATE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,7 +39,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenCreatingWorkoutPlan() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getSampleWorkoutPlanCreateDtoBuilder().build();
 
         //when
@@ -53,7 +53,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingWorkoutPlan() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getSampleWorkoutPlanDtoBuilder().build();
 
         //when
@@ -67,7 +67,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingWorkoutPlan() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
 
         //when
         var response = performDelete(format(DELETE, ID), BasicAuditDto.ofValue(ID, 0L));

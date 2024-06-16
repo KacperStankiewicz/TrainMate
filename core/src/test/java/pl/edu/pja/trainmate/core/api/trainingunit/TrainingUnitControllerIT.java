@@ -22,8 +22,8 @@ import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.G
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseToList;
 
@@ -302,7 +302,7 @@ class TrainingUnitControllerIT extends ControllerSpecification {
     @Test
     void shouldGetTrainingUnitsForCurrentWeek() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         createWorkoutPlanWithTraining();
 
         //when

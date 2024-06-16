@@ -9,7 +9,7 @@ import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.SEARCH;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.UPDATE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,7 +25,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenSearchingExercises() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var criteria = getSearchCriteriaBuilder().build();
 
         //when
@@ -39,7 +39,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenCreatingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getCreateDtoBuilder().build();
 
         //when
@@ -53,7 +53,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
         var dto = getExerciseDtoBuilder().build();
 
@@ -68,7 +68,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
 
         //when

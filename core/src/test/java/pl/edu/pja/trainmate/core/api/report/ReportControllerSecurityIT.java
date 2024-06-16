@@ -10,7 +10,7 @@ import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPO
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT_REVIEW;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,7 +45,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenReviewingReport() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performPost(format(WORKOUT_PLAN_REPORT_REVIEW, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();
@@ -54,7 +54,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenReviewingExerciseReport() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performPost(format(EXERCISE_REPORT_REVIEW, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();

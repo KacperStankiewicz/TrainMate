@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -77,7 +77,7 @@ public class MenteeController {
     )
     @HasRole(roleType = {
         PERSONAL_TRAINER,
-        TRAINED_PERSON
+        MENTEE
     })
     @PutMapping("/update-personal-data")
     public void updateMenteePersonalData(@RequestBody MenteeUpdateDto menteeUpdateDto) {
@@ -92,7 +92,7 @@ public class MenteeController {
         description = "created initial report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @PostMapping("/initial-report")
     public ResultDto<Long> createInitialReport(@RequestBody PeriodicalReportCreateDto reportCreateDto) {
         log.debug("Request to CREATE initial report");

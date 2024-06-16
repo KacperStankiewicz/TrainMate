@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +30,7 @@ public class UserController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
-        PERSONAL_TRAINER, TRAINED_PERSON
+        PERSONAL_TRAINER, MENTEE
     })
     @GetMapping("/get-current-user-info")
     public LoggedUserDataDto getLoggedUserInfo() {

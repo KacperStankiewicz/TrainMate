@@ -12,7 +12,7 @@ import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.G
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,7 +29,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenCreatingTraining() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
 
         var response = performPost(CREATE, getSampleTrainingUnitDtoBuilder().build());
 
@@ -39,7 +39,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingTraining() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performPut(format(UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
@@ -48,7 +48,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingTraining() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performDelete(format(DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();
@@ -57,7 +57,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingExerciseItem() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performPut(format(EXERCISE_ITEM_UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
@@ -66,7 +66,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenDeletingExerciseItem() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performDelete(format(EXERCISE_ITEM_DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
         var exception = (SecurityException) response.getResolvedException();
@@ -75,7 +75,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
 
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenGettingTrainingUnitsByWorkoutPlanIdAndWeekNumber() {
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var response = performGet(format(GET_FOR_WEEK, ID, 1L));
 
         var exception = (SecurityException) response.getResolvedException();

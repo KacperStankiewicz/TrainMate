@@ -12,7 +12,7 @@ import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerc
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
 import lombok.SneakyThrows;
@@ -47,7 +47,7 @@ class ReportControllerIT extends ControllerSpecification {
     @Test
     void shouldCreatePeriodicalReport() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getSamplePeriodicalReportCreateDtoBuilder().build();
 
         //when
@@ -105,7 +105,7 @@ class ReportControllerIT extends ControllerSpecification {
         var dto = getExerciseReportSampleDataBuilder()
             .exerciseItemId(exercise.getId())
             .build();
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
 
         //when
         var response = performPost(String.format(EXERCISE_REPORT, dto.getExerciseItemId()), dto).getResponse();

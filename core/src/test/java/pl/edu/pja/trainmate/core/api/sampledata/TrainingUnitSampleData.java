@@ -20,7 +20,7 @@ public class TrainingUnitSampleData {
             .exerciseId(1L)
             .repetitions(1)
             .tempo("1:1:1:1")
-            .weight(1)
+            .weight(1.0)
             .rir(1)
             .sets(1);
     }
@@ -61,7 +61,7 @@ public class TrainingUnitSampleData {
             .exerciseId(2L)
             .repetitions(2)
             .tempo("2:2:2:2")
-            .weight(2)
+            .weight(2.0)
             .rir(2)
             .sets(2);
     }
@@ -74,7 +74,7 @@ public class TrainingUnitSampleData {
             .volume(Volume.builder()
                 .repetitions(1)
                 .tempo("1:1:1:1")
-                .weight(1)
+                .weight(1.0)
                 .rir(1)
                 .sets(1)
                 .build());

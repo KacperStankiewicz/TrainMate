@@ -12,6 +12,7 @@
             <sequenceExists sequenceName="seq_workout_plan"/>
             <sequenceExists sequenceName="seq_email_template"/>
             <sequenceExists sequenceName="seq_user"/>
+            <sequenceExists sequenceName="seq_report"/>
         </preConditions>
 
         <sql>
@@ -21,6 +22,7 @@
             select setval('seq_workout_plan', (select count(*) from workout_plan), true);
             select setval('seq_email_template', (select count(*) from email_template), true);
             select setval('seq_user', (select count(*) from user), true);
+            select setval('seq_report', (select count(*) from report), true);
         </sql>
     </changeSet>
 

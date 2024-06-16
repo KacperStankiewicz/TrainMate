@@ -4,9 +4,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-
     <changeSet id="Tm65 add first login field to user entity" author="kstankiewicz">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <tableExists tableName="user"/>
             <not>
                 <columnExists tableName="user" columnName="first_login"/>
@@ -18,7 +17,14 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
 
+    <changeSet id="Tm65 change exercise item weight type to numeric" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="exercise_item"/>
+        </preConditions>
+
+        <modifyDataType tableName="exercise_item" columnName="weight" newDataType="double"/>
     </changeSet>
 
 </databaseChangeLog>

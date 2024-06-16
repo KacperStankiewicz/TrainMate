@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,7 +37,7 @@ public class FileStorageController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
-        TRAINED_PERSON,
+        MENTEE,
         PERSONAL_TRAINER
     })
     @GetMapping("/{reportId}/get-all")
@@ -54,7 +54,7 @@ public class FileStorageController {
         description = "Added file to report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @PostMapping("/{reportId}/add")
     public StorageId addFileToReport(@PathVariable Long reportId, @RequestBody FileStorageDto dto) {
         log.debug("Rest request to add file to report with id :{}", reportId);
@@ -70,7 +70,7 @@ public class FileStorageController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
-        TRAINED_PERSON,
+        MENTEE,
         PERSONAL_TRAINER
     })
     @DeleteMapping("/{storageId}/delete")

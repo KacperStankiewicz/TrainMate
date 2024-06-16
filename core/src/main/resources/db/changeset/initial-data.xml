@@ -11,13 +11,39 @@
             <tableExists tableName="exercise_item"/>
             <tableExists tableName="workout_plan"/>
             <tableExists tableName="training_unit"/>
+            <tableExists tableName="report"/>
         </preConditions>
 
-        <loadData tableName="user" file="db/initial-data/users.csv" separator=";"/>
-        <loadData tableName="workout_plan" file="db/initial-data/workoutplan.csv" separator=";"/>
         <loadData tableName="exercise" file="db/initial-data/exercise.csv" separator=";"/>
+        <loadData tableName="workout_plan" file="db/initial-data/workoutplan.csv" separator=";"/>
         <loadData tableName="training_unit" file="db/initial-data/training_unit.csv" separator=";"/>
-        <loadData tableName="exercise_item" file="db/initial-data/exercise_item.csv" separator=";"/>
+        <loadData tableName="exercise_item" file="db/initial-data/exercise_item.csv" separator=";" usePreparedStatements="true">
+            <column name="weight" type="numeric"/>
+        </loadData>
+        <loadData tableName="user" file="db/initial-data/users.csv" separator=";"/>
+        <loadData tableName="report" file="db/initial-data/report.csv" separator=";"/>
+
+        <sql>
+            UPDATE exercise_item
+            SET reported      = true,
+                remarks       = 'ból lewego ramienia',
+                reviewed      = false,
+                reported_sets = '[{\"reportedRepetitions\":3,\"reportedWeight\":2,\"reportedRir\":1,\"set\":1}, {\"reportedRepetitions\":3,\"reportedWeight\":2,\"reportedRir\":1,\"set\":2}]'
+            WHERE id = 1;
+
+            UPDATE exercise_item
+            SET reported      = true,
+                remarks       = 'nie lubie tego ćwiczenia',
+                reviewed      = false,
+                reported_sets = '[{\"reportedRepetitions\":3,\"reportedWeight\":2,\"reportedRir\":1,\"set\":1}]'
+            WHERE id = 2;
+
+            UPDATE exercise_item
+            SET reported      = true,
+                reviewed      = true,
+                reported_sets = '[{\"reportedRepetitions\":3,\"reportedWeight\":2,\"reportedRir\":1,\"set\":1}]'
+            WHERE id = 3;
+        </sql>
     </changeSet>
 
 </databaseChangeLog>

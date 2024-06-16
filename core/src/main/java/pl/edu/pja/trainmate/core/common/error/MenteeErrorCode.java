@@ -14,9 +14,9 @@ public enum MenteeErrorCode implements BaseErrorCode {
     MENTEE_ACCOUNT_IS_ALREADY_ACTIVE("Mentee account is already active", BAD_REQUEST),
     MENTEE_ACCOUNT_IS_ALREADY_INACTIVE("Mentee account is already inactive", BAD_REQUEST),
     EMAIL_MUST_NOT_BE_NULL("Email address must not be null", BAD_REQUEST),
-    FIRSTNAME_MUST_NOT_BE_NULL("Firstname address must not be null", BAD_REQUEST),
-    LASTNAME_MUST_NOT_BE_NULL("Lastname address must not be null", BAD_REQUEST),
-    INVALID_DATE_OF_BIRTH("Invalid  date of birth", BAD_REQUEST),
+    FIRSTNAME_MUST_NOT_BE_NULL("Firstname must not be null", BAD_REQUEST),
+    LASTNAME_MUST_NOT_BE_NULL("Lastname must not be null", BAD_REQUEST),
+    INVALID_DATE_OF_BIRTH("Invalid date of birth", BAD_REQUEST),
     INVALID_PHONE_NUMBER("Invalid phone number", BAD_REQUEST),
     GENDER_MUST_NOT_BE_NULL("Gender must not be null", BAD_REQUEST),
     INVALID_HEIGHT("Invalid height provided", BAD_REQUEST);
