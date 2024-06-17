@@ -14,5 +14,7 @@ public interface FileStorageRepository extends BaseRepository<FileStorageEntity>
 
     List<FileStorageEntity> findAllByReportIdAndCreatedBy(Long reportId, UserId ownerId);
 
+    List<FileStorageEntity> findAllByReportId(Long reportId);
+
     FileStorageEntity findByStorageId(StorageId storageId);
 }
