@@ -1,6 +1,7 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
 import com.querydsl.core.BooleanBuilder;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +41,9 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
             )
             .fetch();
 
-        return setReferencesForTrainingUnits(trainingUnits);
+        return setReferencesForTrainingUnits(trainingUnits).stream()
+            .sorted(Comparator.comparingInt(unit -> unit.getDayOfWeek().getValue()))
+            .collect(Collectors.toList());
     }
 
     private List<TrainingUnitProjection> setReferencesForTrainingUnits(List<TrainingUnitProjection> trainingUnits) {
