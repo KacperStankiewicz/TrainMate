@@ -44,7 +44,7 @@ class ReportService {
 
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {
         var userId = loggedUserDataProvider.getLoggedUserId();
-        if (repository.existsReportEntityByUserIdAndInitialIsTrue(userId.getKeycloakId())) {
+        if (repository.existsReportEntityByUserIdAndInitialIsTrue(userId)) {
             throw new CommonException(INITIAL_REPORT_ALREADY_EXISTS);
         }
 
