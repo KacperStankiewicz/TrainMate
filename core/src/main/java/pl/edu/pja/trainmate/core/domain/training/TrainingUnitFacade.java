@@ -28,7 +28,7 @@ public class TrainingUnitFacade {
 
     public List<TrainingUnitProjection> getCurrentTrainingUnits() {
         var userId = userProvider.getLoggedUserId();
-        var workoutPlan = Optional.of(workoutPlanFacade.getCurrentPlan(userId))
+        var workoutPlan = Optional.ofNullable(workoutPlanFacade.getCurrentPlan(userId))
             .orElseThrow(() -> new CommonException(USER_DOES_NOT_HAVE_ACTIVE_WORKOUT_PLAN));
 
         return service.getTrainingUnitsForCurrentWeekForLoggedUser(workoutPlan);
