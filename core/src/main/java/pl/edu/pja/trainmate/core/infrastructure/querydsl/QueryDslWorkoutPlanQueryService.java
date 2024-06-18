@@ -149,6 +149,7 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         return queryFactory()
             .select(new QExerciseItemProjection(
                 exerciseItem.id,
+                exerciseItem.exerciseId,
                 exerciseItem.volume.repetitions,
                 exerciseItem.volume.tempo,
                 exerciseItem.volume.weight,

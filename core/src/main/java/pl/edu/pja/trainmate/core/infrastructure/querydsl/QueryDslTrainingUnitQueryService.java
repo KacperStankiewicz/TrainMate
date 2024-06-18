@@ -1,9 +1,11 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
 import com.querydsl.core.BooleanBuilder;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         var exerciseItems = fetchExerciseItemsProjectionForTrainingUnits(ids);
 
         return trainingUnits.stream()
-            .peek(it -> it.addExercises(exerciseItems.get(it.getId())))
+            .peek(it -> it.addExercises(Optional.ofNullable(exerciseItems.get(it.getId())).orElseGet(ArrayList::new)))
             .collect(Collectors.toList());
     }
 
@@ -62,6 +64,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         return queryFactory()
             .select(new QExerciseItemProjection(
                 exerciseItem.id,
+                exerciseItem.exerciseId,
                 exerciseItem.volume.repetitions,
                 exerciseItem.volume.tempo,
                 exerciseItem.volume.weight,
