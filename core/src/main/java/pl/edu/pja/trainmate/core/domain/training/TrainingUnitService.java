@@ -10,9 +10,9 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
-import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -39,8 +39,14 @@ class TrainingUnitService {
         return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlanId, week);
     }
 
-    public ExerciseReport getExerciseReportById(Long exerciseItemId) {
-        return exerciseItemRepository.findExactlyOneById(exerciseItemId).getExerciseReport();
+    public ExerciseReportDto getExerciseReportById(Long exerciseItemId) {
+        var exerciseItem = exerciseItemRepository.findExactlyOneById(exerciseItemId);
+
+        return ExerciseReportDto.builder()
+            .version(exerciseItem.getVersion())
+            .reportedSets(exerciseItem.getExerciseReport().getReportedSets())
+            .remarks(exerciseItem.getExerciseReport().getRemarks())
+            .build();
     }
 
     public ResultDto<Long> create(TrainingUnitDto dto) {

@@ -25,6 +25,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -64,7 +65,7 @@ public class TrainingUnitController {
         PERSONAL_TRAINER
     })
     @GetMapping("/exercise/{exerciseItemId}/report")
-    public ExerciseReport getExerciseReport(@PathVariable Long exerciseItemId) {
+    public ExerciseReportDto getExerciseReport(@PathVariable Long exerciseItemId) {
         log.debug("Request to GET report for exercise item with id: {}", exerciseItemId);
         var result = trainingUnitFacade.getExerciseReport(exerciseItemId);
         log.debug("Successfully GOT exercise report");

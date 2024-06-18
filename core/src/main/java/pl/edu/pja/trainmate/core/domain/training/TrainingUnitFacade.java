@@ -12,6 +12,7 @@ import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -38,7 +39,7 @@ public class TrainingUnitFacade {
         return service.getTrainingUnitsByWorkoutPlanIdAndWeek(workoutPlanId, week);
     }
 
-    public ExerciseReport getExerciseReport(Long exerciseItemId) {
+    public ExerciseReportDto getExerciseReport(Long exerciseItemId) {
         return service.getExerciseReportById(exerciseItemId);
     }
 
