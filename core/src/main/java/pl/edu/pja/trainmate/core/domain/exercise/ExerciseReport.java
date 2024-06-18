@@ -23,10 +23,4 @@ public class ExerciseReport {
     @Convert(converter = SetParamsConverter.class)
     List<SetParams> reportedSets = new ArrayList<>();
     private String remarks;
-    @Builder.Default
-    private boolean reviewed = false;
-
-    public void markAsReviewed() {
-        this.reviewed = true;
-    }
 }

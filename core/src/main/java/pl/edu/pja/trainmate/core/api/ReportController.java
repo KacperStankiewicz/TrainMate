@@ -93,21 +93,6 @@ public class ReportController {
         log.debug("CREATED report for exercise item with id: {}", reportCreateDto.getExerciseItemId());
     }
 
-    @Operation(summary = "review exercise item report")
-    @ApiResponse(
-        responseCode = "200",
-        description = "marked exercise item report as reviewed",
-        content = @Content(mediaType = "application/json")
-    )
-    @HasRole(roleType = PERSONAL_TRAINER)
-    @PostMapping("/exercise/{exerciseId}/review")
-    public void reviewReport(@PathVariable Long exerciseId, @RequestBody BasicAuditDto dto) {
-        log.debug("Request to review report for exercise item with id: {}", exerciseId);
-        validateId(exerciseId, dto.getId());
-        trainingUnitFacade.reviewReport(dto);
-        log.debug("Reviewed report for exercise item with id: {}", exerciseId);
-    }
-
     private void validateId(Long bodyId, Long id) {
         if (!Objects.equals(bodyId, id)) {
             throw new IllegalArgumentException("Id in path and body must be the same");

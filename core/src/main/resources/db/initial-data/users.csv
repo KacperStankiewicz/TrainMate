@@ -1,4 +1,4 @@
 id;firstname;lastname;date_of_birth;phone;email;keycloak_id;role;creation_date_time;created_by;version
 1;Bartłomiej;Żmuda Trzebiatowski;1980-01-01;+123456789;inzynierka.trainmate@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc78e;PERSONAL_TRAINER;2021-01-01 00:00:00;1;0
-2;Janusz;Pawlacz;1999-07-03;+48 123 321 123;mentee1@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc88e;MENTEE;2021-01-01 00:00:00;1;0
+2;Janusz;Pawlacz;1999-07-03;+48 123 321 123;mentee1@gmail.com;40112371-d6dd-486f-aaea-cb534e8f4e07;MENTEE;2021-01-01 00:00:00;1;0
 3;Kazimierz;Prodiż;1985-02-03;+48 321 321 321;mentee2@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc79e;MENTEE;2021-01-01 00:00:00;1;0

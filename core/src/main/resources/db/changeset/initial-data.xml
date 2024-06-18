@@ -27,20 +27,17 @@
             UPDATE exercise_item
             SET reported      = true,
                 remarks       = 'ból lewego ramienia',
-                reviewed      = false,
                 reported_sets = '[{"reportedRepetitions":3,"reportedWeight":2,"reportedRir":1,"set":1}, {"reportedRepetitions":3,"reportedWeight":2,"reportedRir":1,"set":2}]'
             WHERE id = 1;
 
             UPDATE exercise_item
             SET reported      = true,
                 remarks       = 'nie lubie tego ćwiczenia',
-                reviewed      = false,
                 reported_sets = '[{"reportedRepetitions":3,"reportedWeight":2,"reportedRir":1,"set":1}]'
             WHERE id = 2;
 
             UPDATE exercise_item
             SET reported      = true,
-                reviewed      = true,
                 reported_sets = '[{"reportedRepetitions":3,"reportedWeight":2,"reportedRir":1,"set":1}]'
             WHERE id = 3;
         </sql>

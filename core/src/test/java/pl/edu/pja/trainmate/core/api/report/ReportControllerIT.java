@@ -4,15 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT;
-import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.EXERCISE_REPORT_REVIEW;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT;
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT_REVIEW;
-import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportSampleDataBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
 import lombok.SneakyThrows;
@@ -123,46 +121,6 @@ class ReportControllerIT extends ControllerSpecification {
         assertEquals(dto.getSets().size(), entity.getExerciseReport().getReportedSets().size());
         assertEquals(dto.getRemarks(), entity.getExerciseReport().getRemarks());
         assertTrue(entity.getReported());
-    }
-
-    @Test
-    void shouldMarkExerciseReportAsReviewed() {
-        //given
-        var report = getExerciseReportBuilder().build();
-        var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
-            .exerciseReport(report)
-            .reported(true)
-            .build());
-        var dto = BasicAuditDto.ofValue(exercise.getId(), exercise.getVersion());
-        userWithRole(PERSONAL_TRAINER);
-
-        //when
-        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
-
-        //then
-        assertEquals(200, response.getStatus());
-        assertTrue(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
-    }
-
-    @Test
-    @SneakyThrows
-    void shouldThrowOptimisticLockExceptionWhenReviewingExerciseItemReport() {
-        //given
-        var report = getExerciseReportBuilder().build();
-        var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder()
-            .exerciseReport(report)
-            .reported(true)
-            .build());
-        var dto = BasicAuditDto.ofValue(exercise.getId(), 99999L);
-        userWithRole(PERSONAL_TRAINER);
-
-        //when
-        var response = performPost(String.format(EXERCISE_REPORT_REVIEW, exercise.getId()), dto).getResponse();
-
-        //then
-        assertEquals(409, response.getStatus());
-        assertTrue(response.getContentAsString().contains("RESOURCE_HAS_BEEN_MODIFIED_BY_ANOTHER_USER"));
-        assertFalse(exerciseItemRepository.findExactlyOneById(exercise.getId()).getExerciseReport().isReviewed());
     }
 
 }

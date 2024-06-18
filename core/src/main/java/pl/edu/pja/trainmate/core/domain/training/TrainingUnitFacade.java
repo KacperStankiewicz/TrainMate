@@ -65,8 +65,4 @@ public class TrainingUnitFacade {
     public void addReport(ReportCreateDto reportCreateDto) {
         service.addExerciseItemReport(reportCreateDto);
     }
-
-    public void reviewReport(BasicAuditDto dto) {
-        service.reviewReport(dto);
-    }
 }

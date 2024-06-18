@@ -1,17 +1,12 @@
 package pl.edu.pja.trainmate.core.domain.training;
 
-import static java.lang.Boolean.TRUE;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseItemErrorCode.COULD_NOT_CREATE_EXERCISE_ITEM;
-import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.CAN_NOT_CHANGE_REVIEWED_REPORT;
-import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_NOT_REPORTED;
 
-import io.vavr.control.Option;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
-import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
@@ -87,25 +82,10 @@ class TrainingUnitService {
 
     public void addExerciseItemReport(ReportCreateDto reportCreateDto) {
         var exerciseItem = getExerciseItemById(reportCreateDto.getExerciseItemId());
-
-        if (exerciseItem.getExerciseReport() != null && TRUE.equals(exerciseItem.getExerciseReport().isReviewed())) {
-            throw new CommonException(CAN_NOT_CHANGE_REVIEWED_REPORT);
-        }
+        exerciseItem.validateVersion(reportCreateDto.getVersion());
 
         exerciseItem.addReport(reportCreateDto);
         exerciseItemRepository.saveAndFlush(exerciseItem);
-    }
-
-    public void reviewReport(BasicAuditDto dto) {
-        var entity = exerciseItemRepository.findExactlyOneById(dto.getId());
-        entity.validateVersion(dto.getVersion());
-
-        entity = Option.of(entity)
-            .filter(ExerciseItemEntity::getReported)
-            .peek(it -> it.getExerciseReport().markAsReviewed())
-            .getOrElseThrow(() -> new CommonException(EXERCISE_WAS_NOT_REPORTED));
-
-        exerciseItemRepository.saveAndFlush(entity);
     }
 
     private TrainingUnitEntity buildTrainingUnitEntityAndSave(TrainingUnitDto dto) {

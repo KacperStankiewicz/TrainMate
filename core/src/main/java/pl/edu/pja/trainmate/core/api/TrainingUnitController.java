@@ -59,7 +59,10 @@ public class TrainingUnitController {
         description = "Got exercise report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = MENTEE)
+    @HasRole(roleType = {
+        MENTEE,
+        PERSONAL_TRAINER
+    })
     @GetMapping("/exercise/{exerciseItemId}/report")
     public ExerciseReport getExerciseReport(@PathVariable Long exerciseItemId) {
         log.debug("Request to GET report for exercise item with id: {}", exerciseItemId);

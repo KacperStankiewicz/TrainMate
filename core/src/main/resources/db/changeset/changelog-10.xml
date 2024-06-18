@@ -27,4 +27,12 @@
         <modifyDataType tableName="exercise_item" columnName="weight" newDataType="double"/>
     </changeSet>
 
+    <changeSet id="Tm65 remove reviewed flag from exercise item" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="exercise_item" columnName="reviewed"/>
+        </preConditions>
+
+        <dropColumn tableName="exercise_item" columnName="reviewed"/>
+    </changeSet>
+
 </databaseChangeLog>
