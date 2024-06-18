@@ -23,6 +23,7 @@ import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
+import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
@@ -49,6 +50,21 @@ public class TrainingUnitController {
         log.debug("Request to GET training units for current week for logged user");
         var result = trainingUnitFacade.getCurrentTrainingUnits();
         log.debug("Successfully GOT training units");
+        return result;
+    }
+
+    @Operation(summary = "get exercise report")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got exercise report",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = MENTEE)
+    @GetMapping("/exercise/{exerciseItemId}/report")
+    public ExerciseReport getExerciseReport(@PathVariable Long exerciseItemId) {
+        log.debug("Request to GET report for exercise item with id: {}", exerciseItemId);
+        var result = trainingUnitFacade.getExerciseReport(exerciseItemId);
+        log.debug("Successfully GOT exercise report");
         return result;
     }
 
