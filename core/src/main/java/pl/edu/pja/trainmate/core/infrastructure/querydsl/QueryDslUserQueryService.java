@@ -1,5 +1,7 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.time.LocalDate;
@@ -46,6 +48,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
                 .and(isLike(personalInfo.lastname, criteria.getLastname()))
                 .and(isLike(personalInfo.email, criteria.getEmail()))
                 .and(equals(personalInfo.gender, criteria.getGender()))
+                .and(equals(user.role, MENTEE))
             )
             .orderBy(OrderByBuilder.with(pageable.getSort())
                 .whenPropertyIs("age").thenSortBy(personalInfo.dateOfBirth)
