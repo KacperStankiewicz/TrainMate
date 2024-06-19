@@ -138,7 +138,7 @@ public class MenteeController {
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/{userId}/activate")
-    public void deleteAccount(@PathVariable String userId) {
+    public void activateAccount(@PathVariable String userId) {
         log.debug("Request to activate mentee account with id: {}", userId);
         menteeFacade.activateAccount(userId);
         log.debug("Successfully activate mentee account with id: {}", userId);
