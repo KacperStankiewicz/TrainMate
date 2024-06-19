@@ -74,7 +74,7 @@ public class FileStorageController {
         PERSONAL_TRAINER
     })
     @DeleteMapping("/{storageId}/delete")
-    public void addFileToReport(@PathVariable UUID storageId) {
+    public void deleteFile(@PathVariable UUID storageId) {
         log.debug("Rest request to DELETE file with id :{}", storageId);
         fileFacade.deleteFile(StorageId.valueOf(storageId));
         log.debug("Successfully DELETED file");
