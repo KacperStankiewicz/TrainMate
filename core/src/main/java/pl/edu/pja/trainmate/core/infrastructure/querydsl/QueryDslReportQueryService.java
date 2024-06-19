@@ -1,14 +1,17 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
+import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.INITIAL_REPORT_WAS_NOT_FOUND;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.report.QReportEntity;
@@ -48,6 +51,19 @@ public class QueryDslReportQueryService extends BaseJpaQueryService implements R
                 .and(prepareUserPredicate(userDetails))
             )
             .fetchOne();
+    }
+
+    @Override
+    public PeriodicalReportProjection getInitialReportByUserId(UserId userId) {
+        return Optional.ofNullable(queryFactory()
+                .select(buildPeriodicalReportProjection())
+                .from(report)
+                .where(new BooleanBuilder()
+                    .and(report.userId.eq(userId))
+                    .and(report.initial)
+                )
+                .fetchOne())
+            .orElseThrow(() -> new CommonException(INITIAL_REPORT_WAS_NOT_FOUND.format(userId.getKeycloakId())));
     }
 
     private QPeriodicalReportProjection buildPeriodicalReportProjection() {

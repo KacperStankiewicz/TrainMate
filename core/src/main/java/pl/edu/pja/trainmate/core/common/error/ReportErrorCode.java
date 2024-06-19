@@ -12,7 +12,8 @@ public enum ReportErrorCode implements BaseErrorCode {
     CAN_NOT_CHANGE_REVIEWED_REPORT("Can not change reviewed exercise report", BAD_REQUEST),
     EXERCISE_WAS_NOT_REPORTED("Can not review report if exercise is not reported", BAD_REQUEST),
     WORKOUT_PLAN_WAS_ALREADY_REPORTED("Report for workout plan with id {} already exists", BAD_REQUEST),
-    INITIAL_REPORT_ALREADY_EXISTS("Initial report already exists", BAD_REQUEST);
+    INITIAL_REPORT_ALREADY_EXISTS("Initial report already exists", BAD_REQUEST),
+    INITIAL_REPORT_WAS_NOT_FOUND("User with id {} does not have initial report", BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

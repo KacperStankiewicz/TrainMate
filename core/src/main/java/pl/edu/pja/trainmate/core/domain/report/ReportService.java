@@ -28,6 +28,10 @@ class ReportService {
         return queryService.getReportById(reportId);
     }
 
+    public PeriodicalReportProjection getInitialReportForUser(String keycloakId) {
+        return queryService.getInitialReportByUserId(UserId.valueOf(keycloakId));
+    }
+
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
         var userId = userProvider.getLoggedUserId();
 

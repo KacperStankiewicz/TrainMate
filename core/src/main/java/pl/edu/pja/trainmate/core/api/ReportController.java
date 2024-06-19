@@ -50,6 +50,23 @@ public class ReportController {
         return result;
     }
 
+    @Operation(summary = "get initial report by user id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got initial report",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        MENTEE,
+        PERSONAL_TRAINER
+    })
+    @GetMapping("/initial/{keycloakId}")
+    public PeriodicalReportProjection getInitialReportByUserId(@PathVariable String keycloakId) {
+        log.debug("Request to GET initial report for user with keycloak id: {}", keycloakId);
+        var result = reportFacade.getInitialReportByUserId(keycloakId);
+        log.debug("Successfully GOT initial report");
+        return result;
+    }
 
     @Operation(summary = "get all periodical reports for logged user")
     @ApiResponse(

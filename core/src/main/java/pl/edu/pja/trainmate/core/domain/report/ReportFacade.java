@@ -24,6 +24,10 @@ public class ReportFacade {
         return reportService.getReportById(reportId);
     }
 
+    public PeriodicalReportProjection getInitialReportByUserId(String keycloakId) {
+        return reportService.getInitialReportForUser(keycloakId);
+    }
+
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
         return reportService.getAllReportsForLoggedUser();
     }
