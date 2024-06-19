@@ -20,6 +20,10 @@ public class ReportFacade {
     private final MenteeFacade menteeFacade;
     private final FileFacade fileFacade;
 
+    public PeriodicalReportProjection getReportById(Long reportId) {
+        return reportService.getReportById(reportId);
+    }
+
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
         return reportService.getAllReportsForLoggedUser();
     }

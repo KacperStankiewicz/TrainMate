@@ -69,12 +69,6 @@ public class BaseJpaQueryService {
         return filterBy(containedBy, () -> field.in(containedBy));
     }
 
-    protected <T> List<T> fetch(JPAQuery<T> query, Consumer<List<T>> additionalFunction) {
-        List<T> list = query.fetch();
-        additionalFunction.accept(list);
-        return list;
-    }
-
     private boolean isNotEmpty(Object inputCriteria) {
         if (inputCriteria instanceof Collection && areAllElementsNull((Collection<?>) inputCriteria)) {
             return false;

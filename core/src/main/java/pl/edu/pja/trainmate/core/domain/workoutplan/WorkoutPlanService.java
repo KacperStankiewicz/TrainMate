@@ -6,6 +6,7 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOU
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_START_DATE;
 
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
@@ -19,6 +20,7 @@ import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanListItemProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
@@ -35,8 +37,8 @@ class WorkoutPlanService {
         return queryService.getWorkoutPlanData(id);
     }
 
-    public WorkoutPlanProjection getCurrentWorkoutPlanProjection(UserId userId) {
-        return queryService.getCurrentWorkoutPlan(userId);
+    public List<WorkoutPlanListItemProjection> getAllWorkouPlansByUserId(UserId userId) {
+        return queryService.getAllWorkoutPlansByUserId(userId);
     }
 
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
@@ -64,6 +66,10 @@ class WorkoutPlanService {
         workoutPlanRepository.delete(workoutPlan);
         exerciseItemRepository.deleteByWorkoutPlanId(dto.getId());
         trainingUnitRepository.deleteByWorkoutPlanId(dto.getId());
+    }
+
+    public WorkoutPlanProjection getCurrentWorkoutPlanProjection(UserId userId) {
+        return queryService.getCurrentWorkoutPlan(userId);
     }
 
     private void validateDto(WorkoutPlanDto dto) {

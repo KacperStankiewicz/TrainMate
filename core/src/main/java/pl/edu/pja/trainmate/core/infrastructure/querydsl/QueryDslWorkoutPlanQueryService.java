@@ -20,6 +20,7 @@ import pl.edu.pja.trainmate.core.domain.exercise.QExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.ExerciseItemProjection;
 import pl.edu.pja.trainmate.core.domain.exercise.querydsl.QExerciseItemProjection;
 import pl.edu.pja.trainmate.core.domain.report.QReportEntity;
+import pl.edu.pja.trainmate.core.domain.report.querydsl.QPeriodicalReportBasicInfoProjection;
 import pl.edu.pja.trainmate.core.domain.training.QTrainingUnitEntity;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.QTrainingUnitProjection;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection;
@@ -27,7 +28,9 @@ import pl.edu.pja.trainmate.core.domain.user.QUserEntity;
 import pl.edu.pja.trainmate.core.domain.workoutplan.QWorkoutPlanEntity;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.QAllWorkoutData;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.QWorkoutPlanListItemProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.QWorkoutPlanProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanListItemProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanQueryService;
 
@@ -67,14 +70,25 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
         return workoutData;
     }
 
-    private Predicate prepareUserPredicate(LoggedUserDataDto userDetails) {
-        var predicate = new BooleanBuilder();
-
-        if (PERSONAL_TRAINER.equals(userDetails.getRole())) {
-            return predicate;
-        }
-
-        return predicate.and(workoutPlan.userId.keycloakId.eq(userDetails.getUserId().getKeycloakId()));
+    @Override
+    public List<WorkoutPlanListItemProjection> getAllWorkoutPlansByUserId(UserId userId) {
+        return queryFactory()
+            .select(new QWorkoutPlanListItemProjection(
+                workoutPlan.id,
+                workoutPlan.name,
+                workoutPlan.dateRange,
+                new QPeriodicalReportBasicInfoProjection(
+                    report.id,
+                    report.reviewed
+                )
+            ))
+            .from(workoutPlan)
+            .leftJoin(report).on(report.workoutPlanId.eq(workoutPlan.id))
+            .where(new BooleanBuilder()
+                .and(workoutPlan.userId.eq(userId))
+            )
+            .orderBy(workoutPlan.dateRange.from.desc())
+            .fetch();
     }
 
     @Override
@@ -124,6 +138,16 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                     ).exists())
             )
             .fetch();
+    }
+
+    private Predicate prepareUserPredicate(LoggedUserDataDto userDetails) {
+        var predicate = new BooleanBuilder();
+
+        if (PERSONAL_TRAINER.equals(userDetails.getRole())) {
+            return predicate;
+        }
+
+        return predicate.and(workoutPlan.userId.keycloakId.eq(userDetails.getUserId().getKeycloakId()));
     }
 
     private List<TrainingUnitProjection> fetchTrainingUnitsProjection(Long workoutPlanId) {

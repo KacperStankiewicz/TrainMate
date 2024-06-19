@@ -21,11 +21,15 @@ import pl.edu.pja.trainmate.core.domain.training.querydsl.ReportQueryService;
 class ReportService {
 
     private final ReportRepository repository;
-    private final LoggedUserDataProvider loggedUserDataProvider;
+    private final LoggedUserDataProvider userProvider;
     private final ReportQueryService queryService;
 
+    public PeriodicalReportProjection getReportById(Long reportId) {
+        return queryService.getReportById(reportId);
+    }
+
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
-        var userId = loggedUserDataProvider.getLoggedUserId();
+        var userId = userProvider.getLoggedUserId();
 
         return queryService.getReportsByUserId(userId);
     }
@@ -40,14 +44,14 @@ class ReportService {
                 WORKOUT_PLAN_WAS_ALREADY_REPORTED.getHttpStatus());
         }
 
-        var userId = loggedUserDataProvider.getLoggedUserId();
+        var userId = userProvider.getLoggedUserId();
         var entity = buildReportEntity(reportCreateDto, userId).build();
 
         return ResultDto.ofValueOrError(repository.save(entity).getId(), COULD_NOT_CREATE_REPORT);
     }
 
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {
-        var userId = loggedUserDataProvider.getLoggedUserId();
+        var userId = userProvider.getLoggedUserId();
         if (repository.existsReportEntityByUserIdAndInitialIsTrue(userId)) {
             throw new CommonException(INITIAL_REPORT_ALREADY_EXISTS);
         }

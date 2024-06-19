@@ -32,6 +32,25 @@ public class ReportController {
     private final ReportFacade reportFacade;
     private final TrainingUnitFacade trainingUnitFacade;
 
+    @Operation(summary = "get periodical report by id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got periodical report",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        MENTEE,
+        PERSONAL_TRAINER
+    })
+    @GetMapping("/periodical/{reportId}")
+    public PeriodicalReportProjection getAllPeriodicalReportsForLoggedUser(@PathVariable Long reportId) {
+        log.debug("Request to GET periodical report with id: {}", reportId);
+        var result = reportFacade.getReportById(reportId);
+        log.debug("Successfully GOT periodical report");
+        return result;
+    }
+
+
     @Operation(summary = "get all periodical reports for logged user")
     @ApiResponse(
         responseCode = "200",
