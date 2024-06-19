@@ -102,6 +102,7 @@ class ReportControllerIT extends ControllerSpecification {
         var exercise = exerciseItemRepository.save(ExerciseItemEntity.builder().build());
         var dto = getExerciseReportSampleDataBuilder()
             .exerciseItemId(exercise.getId())
+            .version(exercise.getVersion())
             .build();
         userWithRole(MENTEE);
 
