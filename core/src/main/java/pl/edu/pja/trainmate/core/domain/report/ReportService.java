@@ -30,6 +30,10 @@ class ReportService {
         return queryService.getReportsByUserId(userId);
     }
 
+    public List<PeriodicalReportProjection> getAllReportsByUserId(String keycloakId) {
+        return queryService.getReportsByUserId(UserId.valueOf(keycloakId));
+    }
+
     public ResultDto<Long> createPeriodicalReport(PeriodicalReportCreateDto reportCreateDto) {
         if (repository.existsReportEntityByWorkoutPlanId(reportCreateDto.getWorkoutPlanId())) {
             throw new CommonException(WORKOUT_PLAN_WAS_ALREADY_REPORTED.format(reportCreateDto.getWorkoutPlanId()),

@@ -47,6 +47,21 @@ public class ReportController {
         return result;
     }
 
+    @Operation(summary = "get all periodical reports by user id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "got all periodical reports by user id",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = PERSONAL_TRAINER)
+    @GetMapping("/periodical/{keycloakId}/all-reports")
+    public List<PeriodicalReportProjection> getAllPeriodicalReportsByUserId(@PathVariable String keycloakId) {
+        log.debug("Request to GET all periodical reports for user with id: {}", keycloakId);
+        var result = reportFacade.getAllReportsByUserKeycloakId(keycloakId);
+        log.debug("Successfully GOT all periodical reports for user");
+        return result;
+    }
+
     @Operation(summary = "create periodical report")
     @ApiResponse(
         responseCode = "200",
