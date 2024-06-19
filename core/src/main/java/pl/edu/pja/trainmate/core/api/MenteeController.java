@@ -52,6 +52,21 @@ public class MenteeController {
         return result;
     }
 
+    @Operation(summary = "Get mentee by user id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got mentee by user id",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = PERSONAL_TRAINER)
+    @PostMapping("/{userId}")
+    public MenteeProjection getMenteeByUserId(@PathVariable String userId) {
+        log.debug("Request to GET mentee with id: {}", userId);
+        var result = menteeFacade.getMenteeByKeycloakId(userId);
+        log.debug("Successfully GOT mentee");
+        return result;
+    }
+
     @Operation(summary = "Send invitation email")
     @ApiResponse(
         responseCode = "200",

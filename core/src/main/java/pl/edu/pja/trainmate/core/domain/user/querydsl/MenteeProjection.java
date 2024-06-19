@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 import pl.edu.pja.trainmate.core.common.Gender;
+import pl.edu.pja.trainmate.core.common.UserId;
 
 @Builder
 @NoArgsConstructor(access = PRIVATE, force = true)
@@ -24,6 +25,7 @@ public class MenteeProjection {
     String email;
     Gender gender;
     Integer height;
+    UserId userId;
 
     @QueryProjection
     public MenteeProjection(
@@ -33,7 +35,7 @@ public class MenteeProjection {
         String phone,
         String email,
         Gender gender,
-        Integer height) {
+        Integer height, UserId userId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -41,5 +43,6 @@ public class MenteeProjection {
         this.email = email;
         this.gender = gender;
         this.height = height;
+        this.userId = userId;
     }
 }

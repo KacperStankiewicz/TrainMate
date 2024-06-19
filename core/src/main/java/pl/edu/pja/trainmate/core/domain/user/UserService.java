@@ -39,6 +39,10 @@ class UserService {
         return queryService.searchMenteeByCriteria(criteria, pageable);
     }
 
+    public MenteeProjection getMenteeByKeycloakId(String keycloakId) {
+        return queryService.getMenteeByKeycloakId(keycloakId);
+    }
+
     public ResultDto<Long> createMentee(UserRepresentation userRepresentation, boolean activate) {
         var mentee = buildUserEntity(userRepresentation, activate);
 

@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.COULD_NOT_FIND_MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import com.querydsl.core.BooleanBuilder;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.NumberRange;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.common.utils.OrderByBuilder;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.QLoggedUserDataDto;
@@ -32,15 +34,7 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
     @Override
     public Page<MenteeProjection> searchMenteeByCriteria(MenteeSearchCriteria criteria, Pageable pageable) {
         var query = queryFactory()
-            .select(new QMenteeProjection(
-                personalInfo.firstname,
-                personalInfo.lastname,
-                personalInfo.dateOfBirth,
-                personalInfo.phone,
-                personalInfo.email,
-                personalInfo.gender,
-                personalInfo.height
-            ))
+            .select(buildMenteeProjection())
             .from(user)
             .where(new BooleanBuilder()
                 .and(buildAgePredicate(criteria.getAgeRange()))
@@ -61,6 +55,17 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
         return fetchPage(query, pageable);
     }
 
+    public MenteeProjection getMenteeByKeycloakId(String keycloakId) {
+        return Optional.ofNullable(queryFactory()
+                .select(buildMenteeProjection())
+                .from(user)
+                .where(new BooleanBuilder()
+                    .and(user.userId.keycloakId.eq(keycloakId))
+                )
+                .fetchOne())
+            .orElseThrow(() -> new CommonException(COULD_NOT_FIND_MENTEE));
+    }
+
     @Override
     public LoggedUserDataDto getUserByKeycloakId(String keycloakId) {
         return queryFactory()
@@ -76,6 +81,19 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
                 .and(user.active.isTrue())
             )
             .fetchOne();
+    }
+
+    private QMenteeProjection buildMenteeProjection() {
+        return new QMenteeProjection(
+            personalInfo.firstname,
+            personalInfo.lastname,
+            personalInfo.dateOfBirth,
+            personalInfo.phone,
+            personalInfo.email,
+            personalInfo.gender,
+            personalInfo.height,
+            user.userId
+        );
     }
 
     private Predicate buildAgePredicate(NumberRange range) {

@@ -26,6 +26,10 @@ public class MenteeFacade {
         return service.searchByCriteria(criteria, pageable);
     }
 
+    public MenteeProjection getMenteeByKeycloakId(String keycloakId) {
+        return service.getMenteeByKeycloakId(keycloakId);
+    }
+
     public ResultDto<Long> invite(String email, boolean activate) {
         if (TRUE.equals(service.checkIfUserExistsByEmail(email))) {
             throw new CommonException(
