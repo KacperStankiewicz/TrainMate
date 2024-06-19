@@ -15,6 +15,7 @@ public class WorkoutPlanListItemProjection {
     Long id;
     String name;
     DateRange dateRange;
+    boolean active;
     PeriodicalReportBasicInfoProjection report;
 
     @QueryProjection
@@ -22,6 +23,7 @@ public class WorkoutPlanListItemProjection {
         this.id = id;
         this.name = name;
         this.dateRange = dateRange;
+        this.active = dateRange.isTodayWithinRange();
         this.report = report;
     }
 }

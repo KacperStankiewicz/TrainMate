@@ -52,6 +52,8 @@ public class QueryDslReportQueryService extends BaseJpaQueryService implements R
 
     private QPeriodicalReportProjection buildPeriodicalReportProjection() {
         return new QPeriodicalReportProjection(
+            report.id,
+            report.version,
             report.initial,
             report.reviewed,
             report.weight,
