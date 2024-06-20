@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.exercise;
 
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.INVALID_SEARCH_CRITERIA;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,10 @@ public class ExerciseFacade {
     public Page<ExerciseListItemProjection> searchByCriteria(ExerciseSearchCriteria criteria, Pageable pageable) {
         validateSearchCriteria(criteria);
         return queryService.searchByCriteria(criteria, pageable);
+    }
+
+    public List<ExerciseListItemProjection> getAll() {
+        return queryService.getAllExercises();
     }
 
     public ExerciseProjection getById(Long id) {

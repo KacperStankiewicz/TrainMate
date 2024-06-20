@@ -7,6 +7,7 @@ import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINE
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -172,13 +173,13 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
             ))
             .from(trainingUnit)
             .where(trainingUnit.workoutPlanId.eq(workoutPlanId))
-            .fetchAll();
+            .fetch();
 
         var exerciseItems = fetchExerciseItemsProjection(workoutPlanId);
 
-        return trainingUnits.stream()
-            .peek(it -> it.addExercises(exerciseItems.get(it.getId())))
-            .collect(Collectors.toList());
+        trainingUnits.forEach(it -> it.addExercises(exerciseItems.get(it.getId())));
+
+        return new ArrayList<>(trainingUnits);
     }
 
     private Map<Long, List<ExerciseItemProjection>> fetchExerciseItemsProjection(Long workoutPlanId) {

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,21 @@ public class ExerciseController {
         log.debug("REST request to search exercises by criteria");
         var result = facade.searchByCriteria(criteria, pageable);
         log.debug("Successfully found exercises");
+        return result;
+    }
+
+    @Operation(summary = "Get all exercises")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got all exercises",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = PERSONAL_TRAINER)
+    @PostMapping("/get-all")
+    public List<ExerciseListItemProjection> getAllExercises() {
+        log.debug("REST request to GET all exercises");
+        var result = facade.getAll();
+        log.debug("Successfully GOT all exercises");
         return result;
     }
 
