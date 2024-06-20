@@ -35,7 +35,7 @@ class FileService {
     public List<FileStorageDto> getAllFilesFor(Long reportId) {
         var userDetails = loggedUserDataProvider.getUserDetails();
 
-        if (PERSONAL_TRAINER.equals(userDetails.getRole())) {
+        if (MENTEE.equals(userDetails.getRole())) {
             return repository.findAllByReportIdAndCreatedBy(reportId, loggedUserDataProvider.getLoggedUserId())
                 .stream()
                 .map(FileStorageMapper::toDto)

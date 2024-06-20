@@ -60,10 +60,10 @@ public class QueryDslReportQueryService extends BaseJpaQueryService implements R
                 .from(report)
                 .where(new BooleanBuilder()
                     .and(report.userId.eq(userId))
-                    .and(report.initial)
+                    .and(report.initial.eq(true))
                 )
                 .fetchOne())
-            .orElseThrow(() -> new CommonException(INITIAL_REPORT_WAS_NOT_FOUND.format(userId.getKeycloakId())));
+            .orElseThrow(() -> new CommonException(INITIAL_REPORT_WAS_NOT_FOUND));
     }
 
     private QPeriodicalReportProjection buildPeriodicalReportProjection() {
