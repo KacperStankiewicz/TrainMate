@@ -63,7 +63,7 @@ public class ExerciseController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PostMapping("/get-all")
+    @GetMapping("/get-all")
     public List<ExerciseListItemProjection> getAllExercises() {
         log.debug("REST request to GET all exercises");
         var result = facade.getAll();
