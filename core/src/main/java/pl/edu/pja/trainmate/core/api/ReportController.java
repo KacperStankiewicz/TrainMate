@@ -43,7 +43,7 @@ public class ReportController {
         PERSONAL_TRAINER
     })
     @GetMapping("/periodical/{reportId}")
-    public PeriodicalReportProjection getAllPeriodicalReportsForLoggedUser(@PathVariable Long reportId) {
+    public PeriodicalReportProjection getPeriodicalReportById(@PathVariable Long reportId) {
         log.debug("Request to GET periodical report with id: {}", reportId);
         var result = reportFacade.getReportById(reportId);
         log.debug("Successfully GOT periodical report");

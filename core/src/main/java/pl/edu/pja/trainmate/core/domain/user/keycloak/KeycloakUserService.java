@@ -26,6 +26,12 @@ class KeycloakUserService implements KeycloakService {
     @Value("${keycloak.realm}")
     private String realm;
 
+    @Value("${keycloak.resource}")
+    private String clientId;
+
+    @Value("${keycloak-properties.redirect-url}")
+    private String redirectUrl;
+
     private final Keycloak keycloak;
     private final RandomPasswordGenerator passwordGenerator;
 
@@ -41,7 +47,7 @@ class KeycloakUserService implements KeycloakService {
         }
 
         var user = getUserByEmail(email);
-        resource.get(user.getId()).executeActionsEmail(List.of("VERIFY_EMAIL", "UPDATE_PASSWORD"));
+        resource.get(user.getId()).executeActionsEmail(clientId, redirectUrl, userRepresentation.getRequiredActions());
         return user;
     }
 
