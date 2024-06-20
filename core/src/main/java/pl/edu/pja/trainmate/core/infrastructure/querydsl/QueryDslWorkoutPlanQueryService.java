@@ -1,6 +1,7 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
 import static com.querydsl.jpa.JPAExpressions.selectFrom;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.USER_DOES_NOT_HAVE_ANY_WORKOUT_PLAN;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import com.querydsl.core.BooleanBuilder;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BaseJpaQueryService;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.exercise.QExerciseEntity;
@@ -64,6 +66,10 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                 .and(prepareUserPredicate(userDetails))
             )
             .fetchOne();
+
+        if (workoutData == null) {
+            throw new CommonException(USER_DOES_NOT_HAVE_ANY_WORKOUT_PLAN);
+        }
 
         var trainingUnits = fetchTrainingUnitsProjection(workoutPlanId);
         workoutData.addTrainingUnits(trainingUnits);

@@ -10,6 +10,7 @@ public enum WorkoutPlanErrorCode implements BaseErrorCode {
 
     COULD_NOT_CREATE_WORKOUT_PLAN("Workout plan was not created", BAD_REQUEST),
     USER_DOES_NOT_HAVE_ACTIVE_WORKOUT_PLAN("User does not have workout plan for current date", BAD_REQUEST),
+    USER_DOES_NOT_HAVE_ANY_WORKOUT_PLAN("User does not have any workout plan", BAD_REQUEST),
     WORKOUT_PLAN_MUST_HAVE_START_DATE("Workout plan must have start date", BAD_REQUEST),
     WORKOUT_PLAN_MUST_HAVE_DURATION("Workout plan must have duration", BAD_REQUEST),
     MUST_NOT_CHANGE_ACTIVE_WORKOUT_PLAN("Must not change active workout plan", BAD_REQUEST),

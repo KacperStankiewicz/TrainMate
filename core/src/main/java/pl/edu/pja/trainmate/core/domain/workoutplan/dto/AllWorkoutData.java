@@ -28,6 +28,8 @@ public class AllWorkoutData {
     }
 
     public void addTrainingUnits(List<TrainingUnitProjection> trainingUnits) {
-        this.trainingUnits.addAll(trainingUnits);
+        if (trainingUnits != null) {
+            this.trainingUnits.addAll(trainingUnits);
+        }
     }
 }
