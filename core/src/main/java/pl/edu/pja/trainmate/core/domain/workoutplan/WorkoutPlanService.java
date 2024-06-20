@@ -44,6 +44,10 @@ class WorkoutPlanService {
         return queryService.getAllWorkoutPlansByUserId(userId);
     }
 
+    public WorkoutPlanProjection getWorkoutPlanHeader(Long workoutPlanId) {
+        return queryService.getWorkoutPlanHeader(workoutPlanId);
+    }
+
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
         validateDto(workoutPlanCreateDto);
         checkForOverlappingWorkoutPlan(workoutPlanCreateDto.getStartDate(), UserId.valueOf(workoutPlanCreateDto.getUserId()));

@@ -40,6 +40,7 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 public abstract class ControllerSpecification {
 
     public static final UserId EXISTING_USER_ID = UserId.valueOf("208d35f7-2c9a-447c-84f0-2566560dc78e");
+    public static final UserId OTHER_USER_ID = UserId.valueOf("3333333-2c9a-447c-84f0-2566560dc78e");
     private static final PersonalInfo EXISTING_USER_PERSONAL_INFO = new PersonalInfo("Janusz", "Januszewski", LocalDate.now(), "123321123", "test@test.com",
         MALE, 180);
 

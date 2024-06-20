@@ -24,6 +24,10 @@ public class WorkoutPlanFacade {
         return service.getWorkoutPlanData(id);
     }
 
+    public WorkoutPlanProjection getWorkoutPlanHeader(Long workoutPlanId) {
+        return service.getWorkoutPlanHeader(workoutPlanId);
+    }
+
     public List<WorkoutPlanListItemProjection> getAllPlansByUserId(String keycloakId) {
         return service.getAllWorkouPlansByUserId(UserId.valueOf(keycloakId));
     }

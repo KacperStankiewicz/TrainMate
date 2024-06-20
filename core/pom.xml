@@ -300,6 +300,7 @@
                         <exclude>pl/edu/pja/trainmate/core/common/error/*</exclude>
                         <exclude>pl/edu/pja/trainmate/core/common/exception/*</exclude>
                         <exclude>pl/edu/pja/trainmate/core/domain/user/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/user/querydsl/*</exclude>
                         <exclude>pl/edu/pja/trainmate/core/domain/email/*Entity*</exclude>
                         <exclude>pl/edu/pja/trainmate/core/domain/exercise/*Entity*</exclude>
                         <exclude>pl/edu/pja/trainmate/core/domain/file/*Entity*</exclude>

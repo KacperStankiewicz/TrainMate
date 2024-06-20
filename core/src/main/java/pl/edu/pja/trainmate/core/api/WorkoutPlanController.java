@@ -26,6 +26,7 @@ import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanUpdateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanListItemProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.querydsl.WorkoutPlanProjection;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,6 +51,24 @@ public class WorkoutPlanController {
         log.debug("REST request to GET all workout data by id: {}", workoutPlanId);
         var result = workoutPlanFacade.getById(workoutPlanId);
         log.debug("Successfully got workout plan data");
+        return result;
+    }
+
+    @Operation(summary = "get workout plan header")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got workout plan header",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        PERSONAL_TRAINER,
+        MENTEE
+    })
+    @GetMapping("/{workoutPlanId}/header")
+    public WorkoutPlanProjection getWorkoutPlanHeader(@PathVariable Long workoutPlanId) {
+        log.debug("REST request to GET workout plan header by id: {}", workoutPlanId);
+        var result = workoutPlanFacade.getWorkoutPlanHeader(workoutPlanId);
+        log.debug("Successfully GOT workout plan header");
         return result;
     }
 

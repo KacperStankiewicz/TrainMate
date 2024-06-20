@@ -94,17 +94,23 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
     @Override
     public WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId) {
         return queryFactory()
-            .select(new QWorkoutPlanProjection(
-                workoutPlan.id,
-                workoutPlan.name,
-                workoutPlan.category,
-                workoutPlan.dateRange
-            ))
+            .select(buildWorkoutPlanProjection())
             .from(workoutPlan)
             .where(new BooleanBuilder()
                 .and(workoutPlan.userId.eq(loggedUserId))
                 .and(workoutPlan.dateRange.from.loe(LocalDate.now()))
                 .and(workoutPlan.dateRange.to.goe(LocalDate.now()))
+            )
+            .fetchOne();
+    }
+
+    @Override
+    public WorkoutPlanProjection getWorkoutPlanHeader(Long workoutPlanId) {
+        return queryFactory()
+            .select(buildWorkoutPlanProjection())
+            .from(workoutPlan)
+            .where(new BooleanBuilder()
+                .and(workoutPlan.id.eq(workoutPlanId))
             )
             .fetchOne();
     }
@@ -192,5 +198,15 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
             .fetch()
             .stream()
             .collect(Collectors.groupingBy(ExerciseItemProjection::getTrainingUnitId));
+    }
+
+    private static QWorkoutPlanProjection buildWorkoutPlanProjection() {
+        return new QWorkoutPlanProjection(
+            workoutPlan.id,
+            workoutPlan.version,
+            workoutPlan.name,
+            workoutPlan.category,
+            workoutPlan.dateRange
+        );
     }
 }

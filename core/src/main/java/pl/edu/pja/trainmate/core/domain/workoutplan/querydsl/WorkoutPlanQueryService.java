@@ -15,4 +15,6 @@ public interface WorkoutPlanQueryService {
     List<String> getUsersEmailsWithActiveWorkoutPlan();
 
     WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId);
+
+    WorkoutPlanProjection getWorkoutPlanHeader(Long workoutPlanId);
 }
