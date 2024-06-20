@@ -10,7 +10,6 @@ import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
-import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
@@ -47,8 +46,8 @@ public class TrainingUnitFacade {
         return service.create(dto);
     }
 
-    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
-        service.updateTrainingUnit(dto);
+    public void addExerciseToTrainingUnit(TrainingUnitUpdateDto dto) {
+        service.addExerciseToTrainingUnit(dto);
     }
 
     public void updateExerciseItem(ExerciseItemUpdateDto dto) {

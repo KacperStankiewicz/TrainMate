@@ -11,6 +11,7 @@ import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
@@ -54,7 +55,7 @@ class TrainingUnitService {
         if (trainingUnitId == null) {
             trainingUnitId = buildTrainingUnitEntityAndSave(dto).getId();
         }
-        buildAndSaveExerciseItemEntity(dto, trainingUnitId);
+        buildAndSaveExerciseItemEntity(dto.getWorkoutPlanId(), dto.getExerciseCreateDto(), trainingUnitId);
         return ResultDto.ofValueOrError(trainingUnitId, COULD_NOT_CREATE_EXERCISE_ITEM);
     }
 
@@ -71,11 +72,13 @@ class TrainingUnitService {
         exerciseItemRepository.delete(entity);
     }
 
-    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
+    public void addExerciseToTrainingUnit(TrainingUnitUpdateDto dto) {
         var trainingUnit = trainingUnitRepository.findExactlyOneById(dto.getId());
         trainingUnit.validateVersion(dto.getVersion());
         trainingUnit.update(dto);
         trainingUnitRepository.saveAndFlush(trainingUnit);
+
+        buildAndSaveExerciseItemEntity(trainingUnit.getWorkoutPlanId(), dto.getExerciseCreateDto(), trainingUnit.getId());
     }
 
     public void updateExerciseItem(ExerciseItemUpdateDto dto) {
@@ -106,16 +109,16 @@ class TrainingUnitService {
         return trainingUnitRepository.save(entity);
     }
 
-    private ExerciseItemEntity buildAndSaveExerciseItemEntity(TrainingUnitDto dto, Long trainingUnitId) {
+    private ExerciseItemEntity buildAndSaveExerciseItemEntity(Long workoutPlanId, ExerciseItemCreateDto dto, Long trainingUnitId) {
         return exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseId(dto.getExerciseId())
             .trainingUnitId(trainingUnitId)
-            .workoutPlanId(dto.getWorkoutPlanId())
+            .workoutPlanId(workoutPlanId)
             .volume(buildVolume(dto))
             .build());
     }
 
-    private Volume buildVolume(TrainingUnitDto dto) {
+    private Volume buildVolume(ExerciseItemCreateDto dto) {
         return Volume.builder()
             .repetitions(dto.getRepetitions())
             .tempo(dto.getTempo())

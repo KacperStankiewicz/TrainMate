@@ -14,13 +14,13 @@ import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.ge
 import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitEntityBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitUpdateDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.ADD_EXERCISE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_UPDATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_CURRENT_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
-import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
@@ -39,6 +39,7 @@ import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseRepository;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitProjection;
 import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
@@ -91,11 +92,11 @@ class TrainingUnitControllerIT extends ControllerSpecification {
             String.join(";", dto.getWorkoutPlanId().toString(), dto.getWeekNumber().toString(), dto.getDayOfWeek().name()).getBytes(UTF_8));
         assertEquals(dto.getDayOfWeek(), entity.getDayOfWeek());
         assertEquals(dto.getWeekNumber(), entity.getWeekNumber());
-        assertEquals(dto.getRepetitions(), volume.getRepetitions());
-        assertEquals(dto.getRir(), volume.getRir());
-        assertEquals(dto.getTempo(), volume.getTempo());
-        assertEquals(dto.getSets(), volume.getSets());
-        assertEquals(dto.getWeight(), volume.getWeight());
+        assertEquals(dto.getExerciseCreateDto().getRepetitions(), volume.getRepetitions());
+        assertEquals(dto.getExerciseCreateDto().getRir(), volume.getRir());
+        assertEquals(dto.getExerciseCreateDto().getTempo(), volume.getTempo());
+        assertEquals(dto.getExerciseCreateDto().getSets(), volume.getSets());
+        assertEquals(dto.getExerciseCreateDto().getWeight(), volume.getWeight());
         assertEquals(dtoHash, entity.getUniqueHash());
     }
 
@@ -109,10 +110,18 @@ class TrainingUnitControllerIT extends ControllerSpecification {
             .weekNumber(2L)
             .dayOfWeek(TUESDAY)
             .version(getTrainingUnitActualVersion(existingEntityId))
+            .exerciseCreateDto(ExerciseItemCreateDto.builder()
+                .exerciseId(1L)
+                .repetitions(1)
+                .tempo("1:1:1:1")
+                .weight(1.0)
+                .rir(1)
+                .sets(1)
+                .build())
             .build();
 
         //when
-        var response = performPut(String.format(UPDATE, existingEntityId), dto).getResponse();
+        var response = performPut(String.format(ADD_EXERCISE, existingEntityId), dto).getResponse();
 
         //then
         assertEquals(200, response.getStatus());
@@ -140,7 +149,7 @@ class TrainingUnitControllerIT extends ControllerSpecification {
             .build();
 
         //when
-        var response = performPut(String.format(UPDATE, existingEntityId), dto).getResponse();
+        var response = performPut(String.format(ADD_EXERCISE, existingEntityId), dto).getResponse();
 
         //then
         assertEquals(409, response.getStatus());

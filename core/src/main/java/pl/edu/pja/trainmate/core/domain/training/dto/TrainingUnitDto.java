@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 
 @Value
 @Builder
@@ -18,10 +19,5 @@ public class TrainingUnitDto {
     Long workoutPlanId;
     DayOfWeek dayOfWeek;
     Long weekNumber;
-    Long exerciseId;
-    Integer repetitions;
-    String tempo;
-    Double weight;
-    Integer rir;
-    Integer sets;
+    ExerciseItemCreateDto exerciseCreateDto;
 }

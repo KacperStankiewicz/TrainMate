@@ -23,7 +23,6 @@ import pl.edu.pja.trainmate.core.annotation.HasRole;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
-import pl.edu.pja.trainmate.core.domain.exercise.ExerciseReport;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
@@ -104,19 +103,19 @@ public class TrainingUnitController {
         return result;
     }
 
-    @Operation(summary = "update training unit")
+    @Operation(summary = "Add exercise to training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "training unit updated",
+        description = "Added exercise to training unit",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PutMapping("/{id}/update")
-    public void updateTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
-        log.debug("Request to UPDATE training unit with id: {}", id);
+    @PutMapping("/{id}/add-exercise")
+    public void addExerciseToTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
+        log.debug("Request to ADD exercise item to training unit with id: {}", id);
         validateId(id, trainingUnitDto.getId());
-        trainingUnitFacade.updateTrainingUnit(trainingUnitDto);
-        log.debug("UPDATED training unit with id: {}", id);
+        trainingUnitFacade.addExerciseToTrainingUnit(trainingUnitDto);
+        log.debug("ADDED exercise item to training unit with id: {}", id);
     }
 
     @Operation(summary = "delete training unit")

@@ -10,7 +10,7 @@ import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.E
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_UPDATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_CURRENT_WEEK;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
-import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.UPDATE;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.ADD_EXERCISE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
@@ -40,7 +40,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     @Test
     void shouldNotAllowAccessForTrainedPersonWhenUpdatingTraining() {
         userWithRole(MENTEE);
-        var response = performPut(format(UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
+        var response = performPut(format(ADD_EXERCISE, ID), getSampleTrainingUnitDtoBuilder().build());
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());

@@ -36,6 +36,7 @@ class WorkoutPlanControllerIT extends ControllerSpecification {
     private WorkoutPlanRepository repository;
 
     @AfterEach
+    @SuppressWarnings("unused")
     private void cleanup() {
         repository.deleteAll();
     }

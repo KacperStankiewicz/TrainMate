@@ -24,4 +24,21 @@ public class StorageId {
         Objects.requireNonNull(value);
         return new StorageId(value);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        StorageId storageId = (StorageId) o;
+        return Objects.equals(value, storageId.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 }

@@ -286,6 +286,38 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>target/generated-test-sources</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/user/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/email/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/exercise/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/file/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/report/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/training/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/workoutplan/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/common/Q*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/common/error/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/common/exception/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/user/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/email/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/exercise/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/file/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/report/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/training/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/workoutplan/*Entity*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/domain/workoutplan/dto/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/config/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/config/emailsender/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/config/jpa/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/config/objectmapper/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/config/security/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/aspect/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/annotation/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/common/error/*</exclude>
+                        <exclude>pl/edu/pja/trainmate/core/CoreApplication*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
             <plugin>

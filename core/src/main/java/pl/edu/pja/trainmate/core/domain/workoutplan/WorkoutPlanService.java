@@ -4,9 +4,12 @@ import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.COULD_
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.START_DATE_MUST_NOT_BE_BEFORE_TODAY;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_DURATION;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_START_DATE;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_START_DATE_OVERLAPS_WITH_OTHER_WORKOUT_PLAN;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
@@ -43,6 +46,7 @@ class WorkoutPlanService {
 
     public ResultDto<Long> create(WorkoutPlanCreateDto workoutPlanCreateDto) {
         validateDto(workoutPlanCreateDto);
+        checkForOverlappingWorkoutPlan(workoutPlanCreateDto.getStartDate(), UserId.valueOf(workoutPlanCreateDto.getUserId()));
 
         var entity = buildWorkoutPlanEntity(workoutPlanCreateDto);
         return ResultDto.ofValueOrError(workoutPlanRepository.save(entity).getId(), COULD_NOT_CREATE_WORKOUT_PLAN);
@@ -53,6 +57,9 @@ class WorkoutPlanService {
         workoutPlan.validateVersion(workoutPlanUpdateDto.getVersion());
         workoutPlan.checkIfModificationAllowed();
         validateDto(workoutPlanUpdateDto);
+        if (workoutPlanUpdateDto.getStartDate() != workoutPlan.getDateRange().getFrom()) {
+            checkForOverlappingWorkoutPlan(workoutPlanUpdateDto.getId(), workoutPlanUpdateDto.getStartDate(), workoutPlan.getUserId());
+        }
 
         workoutPlan.update(workoutPlanUpdateDto);
         workoutPlanRepository.saveAndFlush(workoutPlan);
@@ -83,6 +90,32 @@ class WorkoutPlanService {
 
         if (LocalDate.now().isAfter(dto.getStartDate())) {
             throw new CommonException(START_DATE_MUST_NOT_BE_BEFORE_TODAY);
+        }
+    }
+
+    private void checkForOverlappingWorkoutPlan(Long updatingWorkoutPlanId, LocalDate startDate, UserId userId) {
+        var workouts = getAllWorkouPlansByUserId(userId)
+            .stream()
+            .filter(it -> !Objects.equals(it.getId(), updatingWorkoutPlanId))
+            .collect(Collectors.toList());
+
+        checkOverlapping(startDate, workouts);
+    }
+
+    private void checkForOverlappingWorkoutPlan(LocalDate startDate, UserId userId) {
+        var workouts = getAllWorkouPlansByUserId(userId);
+
+        checkOverlapping(startDate, workouts);
+    }
+
+    private static void checkOverlapping(LocalDate startDate, List<WorkoutPlanListItemProjection> workouts) {
+        if (!workouts.isEmpty()) {
+            var overlaps = workouts.stream()
+                .map(WorkoutPlanListItemProjection::getDateRange)
+                .anyMatch(it -> it.isDateWithinRange(startDate) || startDate.isEqual(it.getFrom()) || startDate.isEqual(it.getTo()));
+            if (overlaps) {
+                throw new CommonException(WORKOUT_PLAN_START_DATE_OVERLAPS_WITH_OTHER_WORKOUT_PLAN);
+            }
         }
     }
 

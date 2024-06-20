@@ -1,9 +1,11 @@
 package pl.edu.pja.trainmate.core.converter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.json.JsonParseException;
 import pl.edu.pja.trainmate.core.domain.exercise.SetParams;
 
 class SetParamsConverterTest {
@@ -144,5 +146,13 @@ class SetParamsConverterTest {
 
         //then
         assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenConvertingToEntityAttributeInvalidJson() {
+        var converter = new SetParamsConverter();
+        var invalidJson = "{invalidJson}";
+
+        assertThrows(JsonParseException.class, () -> converter.convertToEntityAttribute(invalidJson));
     }
 }
