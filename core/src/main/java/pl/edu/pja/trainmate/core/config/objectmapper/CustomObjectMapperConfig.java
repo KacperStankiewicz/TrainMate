@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITI
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -34,6 +35,7 @@ public class CustomObjectMapperConfig {
             instance.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             instance.setDateFormat(DateFormat.getDateInstance());
             instance.configure(DeserializationFeature.USE_LONG_FOR_INTS, true);
+            instance.registerModule(new StringDeserializerModule());
         }
         return instance;
     }

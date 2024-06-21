@@ -78,7 +78,8 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
-        PERSONAL_TRAINER
+        PERSONAL_TRAINER,
+        MENTEE
     })
     @GetMapping("/{workoutPlanId}/get-for-week")
     public List<TrainingUnitProjection> getTrainingsByWorkoutPlanIdAndWeek(@PathVariable Long workoutPlanId, @RequestParam Long week) {

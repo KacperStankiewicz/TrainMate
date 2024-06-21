@@ -93,7 +93,8 @@ class QueryDslUserQueryService extends BaseJpaQueryService implements UserQueryS
             personalInfo.gender,
             personalInfo.height,
             user.userId,
-            user.firstLogin
+            user.firstLogin,
+            user.active
         );
     }
 

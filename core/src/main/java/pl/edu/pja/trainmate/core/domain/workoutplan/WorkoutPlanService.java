@@ -12,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
@@ -75,11 +76,14 @@ class WorkoutPlanService {
         workoutPlanRepository.saveAndFlush(workoutPlan);
     }
 
+    @Transactional
     public void delete(BasicAuditDto dto) {
         var workoutPlan = workoutPlanRepository.findExactlyOneById(dto.getId());
         workoutPlan.validateVersion(dto.getVersion());
         workoutPlan.checkIfModificationAllowed();
 
+        exerciseItemRepository.deleteAllByWorkoutPlanId(dto.getId());
+        trainingUnitRepository.deleteAllByWorkoutPlanId(dto.getId());
         workoutPlanRepository.delete(workoutPlan);
         exerciseItemRepository.deleteAllByWorkoutPlanId(dto.getId());
         trainingUnitRepository.deleteAllByWorkoutPlanId(dto.getId());

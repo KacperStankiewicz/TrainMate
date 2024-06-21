@@ -87,7 +87,8 @@ class QueryDslWorkoutPlanQueryService extends BaseJpaQueryService implements Wor
                 new QPeriodicalReportBasicInfoProjection(
                     report.id,
                     report.reviewed
-                )
+                ),
+                workoutPlan.version
             ))
             .from(workoutPlan)
             .leftJoin(report).on(report.workoutPlanId.eq(workoutPlan.id))
