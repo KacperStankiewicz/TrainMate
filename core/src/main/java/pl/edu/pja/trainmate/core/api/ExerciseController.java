@@ -113,7 +113,7 @@ public class ExerciseController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{exerciseId}")
     public void updateExercise(@PathVariable Long exerciseId, @RequestBody ExerciseDto dto) {
-        log.debug("REST request to UPDATE exercise with id: {}", exerciseId);
+        log.debug("REST request to UPDATE exercise withf id: {}", exerciseId);
         validateId(exerciseId, dto.getId());
         facade.update(dto);
         log.debug("Successfully UPDATED exercise");

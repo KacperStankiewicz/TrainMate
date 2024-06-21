@@ -27,6 +27,7 @@ public class MenteeProjection {
     Integer height;
     UserId userId;
     boolean firstLogin;
+    boolean active;
 
     @QueryProjection
     public MenteeProjection(
@@ -36,7 +37,7 @@ public class MenteeProjection {
         String phone,
         String email,
         Gender gender,
-        Integer height, UserId userId, boolean firstLogin) {
+        Integer height, UserId userId, boolean firstLogin, boolean active) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfBirth = dateOfBirth;
@@ -46,5 +47,6 @@ public class MenteeProjection {
         this.height = height;
         this.userId = userId;
         this.firstLogin = firstLogin;
+        this.active = active;
     }
 }
