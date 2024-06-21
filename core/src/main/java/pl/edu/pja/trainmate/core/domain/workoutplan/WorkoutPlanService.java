@@ -75,8 +75,8 @@ class WorkoutPlanService {
         workoutPlan.checkIfModificationAllowed();
 
         workoutPlanRepository.delete(workoutPlan);
-        exerciseItemRepository.deleteByWorkoutPlanId(dto.getId());
-        trainingUnitRepository.deleteByWorkoutPlanId(dto.getId());
+        exerciseItemRepository.deleteAllByWorkoutPlanId(dto.getId());
+        trainingUnitRepository.deleteAllByWorkoutPlanId(dto.getId());
     }
 
     public WorkoutPlanProjection getCurrentWorkoutPlanProjection(UserId userId) {

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pja.trainmate.core.annotation.HasRole;
@@ -20,6 +21,7 @@ import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.report.ReportFacade;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
+import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
@@ -112,6 +114,21 @@ public class ReportController {
         var result = reportFacade.createPeriodicalReport(reportCreateDto);
         log.debug("CREATED periodical report with id: {}", result.getValue());
         return result;
+    }
+
+    @Operation(summary = "update periodical report")
+    @ApiResponse(
+        responseCode = "200",
+        description = "updated periodical report",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = MENTEE)
+    @PutMapping("/workout-plan/report/{reportId}")
+    public void updatePeriodicalReport(@PathVariable Long reportId, @RequestBody PeriodicalReportUpdateDto reportDto) {
+        validateId(reportId, reportDto.getReportId());
+        log.debug("Request to UPDATE periodical report with id: {}", reportDto.getReportId());
+        reportFacade.updatePeriodicalReport(reportDto);
+        log.debug("UPDATED periodical report with id: {}", reportId);
     }
 
     @Operation(summary = "review periodical report")

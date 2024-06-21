@@ -20,6 +20,12 @@ public class FileFacade {
         return service.addFile(reportId, dto);
     }
 
+    public void deleteAllFilesByReportId(Long reportId) {
+        var files = getAllFilesFor(reportId);
+
+        files.forEach(it -> deleteFile(it.getStorageId()));
+    }
+
     public List<FileStorageDto> getAllFilesFor(Long reportId) {
         return service.getAllFilesFor(reportId);
     }

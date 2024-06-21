@@ -13,6 +13,7 @@ import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
+import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.ReportQueryService;
 
@@ -52,6 +53,14 @@ class ReportService {
         var entity = buildReportEntity(reportCreateDto, userId).build();
 
         return ResultDto.ofValueOrError(repository.save(entity).getId(), COULD_NOT_CREATE_REPORT);
+    }
+
+    public void updatePeriodicalReport(PeriodicalReportUpdateDto reportDto) {
+        var entity = repository.findExactlyOneById(reportDto.getReportId());
+        entity.validateVersion(reportDto.getVersion());
+
+        entity.update(reportDto);
+
     }
 
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {

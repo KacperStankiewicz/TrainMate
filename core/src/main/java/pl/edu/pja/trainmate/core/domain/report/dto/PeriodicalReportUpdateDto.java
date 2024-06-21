@@ -12,9 +12,10 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PRIVATE, force = true)
-public class PeriodicalReportCreateDto extends PeriodicalReportDto {
+public class PeriodicalReportUpdateDto extends PeriodicalReportDto {
 
-    Long workoutPlanId;
+    Long reportId;
+    Long version;
 
     @Override
     public boolean equals(Object o) {
@@ -24,12 +25,12 @@ public class PeriodicalReportCreateDto extends PeriodicalReportDto {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PeriodicalReportCreateDto dto = (PeriodicalReportCreateDto) o;
-        return Objects.equals(workoutPlanId, dto.workoutPlanId);
+        PeriodicalReportUpdateDto that = (PeriodicalReportUpdateDto) o;
+        return Objects.equals(reportId, that.reportId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workoutPlanId);
+        return Objects.hash(reportId);
     }
 }
