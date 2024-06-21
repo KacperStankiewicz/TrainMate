@@ -64,6 +64,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         return queryFactory()
             .select(new QExerciseItemProjection(
                 exerciseItem.id,
+                exerciseItem.version,
                 exerciseItem.exerciseId,
                 exerciseItem.volume.repetitions,
                 exerciseItem.volume.tempo,
