@@ -48,6 +48,19 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
             .collect(Collectors.toList());
     }
 
+    @Override
+    public Long checkExerciseItemsExistenceByWorkoutPlanIdAndWeekNumber(Long workoutPlanId, Long weekNumber) {
+        return queryFactory()
+            .select(exerciseItem.id)
+            .from(exerciseItem)
+            .leftJoin(trainingUnit).on(trainingUnit.workoutPlanId.eq(workoutPlanId))
+            .where(new BooleanBuilder()
+                .and(exerciseItem.workoutPlanId.eq(workoutPlanId))
+                .and(trainingUnit.weekNumber.eq(weekNumber))
+            )
+            .fetchCount();
+    }
+
     private List<TrainingUnitProjection> setReferencesForTrainingUnits(List<TrainingUnitProjection> trainingUnits) {
         var ids = trainingUnits.stream()
             .map(TrainingUnitProjection::getId)

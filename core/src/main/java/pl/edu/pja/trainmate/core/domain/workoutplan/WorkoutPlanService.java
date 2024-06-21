@@ -2,11 +2,13 @@ package pl.edu.pja.trainmate.core.domain.workoutplan;
 
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.COULD_NOT_CREATE_WORKOUT_PLAN;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.START_DATE_MUST_NOT_BE_BEFORE_TODAY;
+import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_HAS_EXERCISES_THAT_WILL_BE_DELETED;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_DURATION;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_MUST_HAVE_START_DATE;
 import static pl.edu.pja.trainmate.core.common.error.WorkoutPlanErrorCode.WORKOUT_PLAN_START_DATE_OVERLAPS_WITH_OTHER_WORKOUT_PLAN;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,6 +21,7 @@ import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitRepository;
+import pl.edu.pja.trainmate.core.domain.training.querydsl.TrainingUnitQueryService;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.AllWorkoutData;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanCreateDto;
 import pl.edu.pja.trainmate.core.domain.workoutplan.dto.WorkoutPlanDto;
@@ -34,6 +37,7 @@ class WorkoutPlanService {
     private final WorkoutPlanRepository workoutPlanRepository;
     private final ExerciseItemRepository exerciseItemRepository;
     private final TrainingUnitRepository trainingUnitRepository;
+    private final TrainingUnitQueryService trainingUnitQueryService;
     private final WorkoutPlanQueryService queryService;
 
     public AllWorkoutData getWorkoutPlanData(Long id) {
@@ -64,6 +68,8 @@ class WorkoutPlanService {
         if (workoutPlanUpdateDto.getStartDate() != workoutPlan.getDateRange().getFrom()) {
             checkForOverlappingWorkoutPlan(workoutPlanUpdateDto.getId(), workoutPlanUpdateDto.getStartDate(), workoutPlan.getUserId());
         }
+
+        checkWorkoutDurationChange(workoutPlan, workoutPlanUpdateDto);
 
         workoutPlan.update(workoutPlanUpdateDto);
         workoutPlanRepository.saveAndFlush(workoutPlan);
@@ -121,6 +127,19 @@ class WorkoutPlanService {
                 throw new CommonException(WORKOUT_PLAN_START_DATE_OVERLAPS_WITH_OTHER_WORKOUT_PLAN);
             }
         }
+    }
+
+    private void checkWorkoutDurationChange(WorkoutPlanEntity entity, WorkoutPlanUpdateDto dto) {
+        var entityStartDate = entity.getDateRange().getFrom();
+        var entityEndDate = entity.getDateRange().getTo();
+        var dtoWeekDuration = dto.getDurationInWeeks();
+        var entityDurationInWeeks = ChronoUnit.WEEKS.between(entityStartDate, entityEndDate);
+
+        if (entityDurationInWeeks > dtoWeekDuration
+            && trainingUnitQueryService.checkExerciseItemsExistenceByWorkoutPlanIdAndWeekNumber(entity.getId(), entityDurationInWeeks) > 0) {
+            throw new CommonException(WORKOUT_PLAN_HAS_EXERCISES_THAT_WILL_BE_DELETED);
+        }
+
     }
 
     private WorkoutPlanEntity buildWorkoutPlanEntity(WorkoutPlanCreateDto workoutPlanCreateDto) {
