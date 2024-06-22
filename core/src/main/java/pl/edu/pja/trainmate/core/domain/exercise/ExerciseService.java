@@ -3,7 +3,6 @@ package pl.edu.pja.trainmate.core.domain.exercise;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.COULD_NOT_CREATE_EXERCISE;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.MUSCLE_INVOLVED_MUST_NOT_BE_NULL;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.NAME_MUST_NOT_BE_NULL;
-import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.URL_MUST_NOT_BE_NULL;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,10 +54,6 @@ class ExerciseService {
     private void validateDto(ExerciseData data) {
         if (data.getName() == null || data.getName().isEmpty()) {
             throw new CommonException(NAME_MUST_NOT_BE_NULL);
-        }
-
-        if (data.getUrl() == null || data.getUrl().isEmpty()) {
-            throw new CommonException(URL_MUST_NOT_BE_NULL);
         }
 
         if (data.getMuscleInvolved() == null) {
