@@ -29,7 +29,7 @@ public final class FileStorageMapper {
         return FileStorageEntity.builder()
             .storageId(StorageId.valueOf(UUID.randomUUID()))
             .fileContent(dto.getContent())
-            .fileName(dto.getName())
+            .fileName(UUID.randomUUID() + dto.getName().substring(dto.getName().lastIndexOf(".")))
             .fileType(dto.getType())
             .fileSize(dto.getSize())
             .reportId(reportId)
