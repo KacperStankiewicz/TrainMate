@@ -1,16 +1,16 @@
 id;name;description;url;muscle_involved;creation_date_time;created_by;version
-1;Bench Press;aaaa;https://en.wikipedia.org/wiki/Bench_press;MIDDLE_CHEST;2021-10-01 00:00:00;admin;0
-2;Squat;aaaa;https://en.wikipedia.org/wiki/Squat_(exercise);QUADS;2021-10-01 00:00:00;admin;0
-3;Deadlift;aaaa;https://en.wikipedia.org/wiki/Deadlift;LOWER_BACK;2021-10-01 00:00:00;admin;0
-4;Pull-up;aaaaa;https://en.wikipedia.org/wiki/Pull-up_(exercise);LATS;2021-10-01 00:00:00;admin;0
-5;Push-up;aaaa;https://en.wikipedia.org/wiki/Push-up;UPPER_CHEST;2021-10-01 00:00:00;admin;0
-6;Dumbbell Curl;aaaaa;https://en.wikipedia.org/wiki/Biceps_curl;BICEPS;2021-10-01 00:00:00;admin;0
-7;Tricep Extension;aaaaa;https://en.wikipedia.org/wiki/Triceps_extension;TRICEPS;2021-10-01 00:00:00;admin;0
-8;Leg Press;aaaaa;https://en.wikipedia.org/wiki/Leg_press;QUADS;2021-10-01 00:00:00;admin;0
-9;Leg Curl;aaaaaa;https://en.wikipedia.org/wiki/Leg_curl;HAMSTRINGS;2021-10-01 00:00:00;admin;0
-10;Calf Raise;aaaaaaaaa;https://en.wikipedia.org/wiki/Calf_raise;CALVES;2021-10-01 00:00:00;admin;0
-11;Shoulder Press;aaabygahygay;https://en.wikipedia.org/wiki/Shoulder_press;FRONTAL_DELTOID;2021-10-01 00:00:00;admin;0
-12;Lateral Raise;asdasdasd;https://en.wikipedia.org/wiki/Lateral_raise;MIDDLE_DELTOID;2021-10-01 00:00:00;admin;0
-13;Front Raise;asdasdas;https://en.wikipedia.org/wiki/Front_raise;FRONTAL_DELTOID;2021-10-01 00:00:00;admin;0
-14;Bent-over Row;asdasdasdsadsaasd;https://en.wikipedia.org/wiki/Bent-over_row;LATS;2021-10-01 00:00:00;admin;0
-15;Crunches;asdasddaads;https://en.wikipedia.org/wiki/Crunches;ABS;2021-10-01 00:00:00;admin;0
+1;Bench Press;Lorem Ipsum;https://www.youtube.com/embed/EeE3f4VWFDo?si=2hz2LJvHwf-LpVJx;MIDDLE_CHEST;2021-10-01 00:00:00;admin;0
+2;Squat;Lorem Ipsum;https://www.youtube.com/embed/i7J5h7BJ07g?si=HAaLjT7zUvfRRMTJ;QUADS;2021-10-01 00:00:00;admin;0
+3;Deadlift;Lorem Ipsum;https://www.youtube.com/embed/AweC3UaM14o?si=jjfooR9b_1_-rpmO;LOWER_BACK;2021-10-01 00:00:00;admin;0
+4;Pull-up;Lorem Ipsum;https://www.youtube.com/embed/eGo4IYlbE5g?si=2SXK9t0iJezvGO0C;LATS;2021-10-01 00:00:00;admin;0
+5;Push-up;Lorem Ipsum;https://www.youtube.com/embed/IODxDxX7oi4?si=vqzsoK6AMot_YMEO;UPPER_CHEST;2021-10-01 00:00:00;admin;0
+6;Dumbbell Curl;Lorem Ipsum;https://www.youtube.com/embed/iixND1P2lik?si=MFFoyX8rQ6GjELHR;BICEPS;2021-10-01 00:00:00;admin;0
+7;Tricep Extension;Lorem Ipsum;https://www.youtube.com/embed/1u18yJELsh0?si=QV_GZMpH3CMhX1ML;TRICEPS;2021-10-01 00:00:00;admin;0
+8;Leg Press;Lorem Ipsum;https://www.youtube.com/embed/yZmx_Ac3880?si=zO2qc2jluitFG3x9;QUADS;2021-10-01 00:00:00;admin;0
+9;Leg Curl;Lorem Ipsum;https://www.youtube.com/embed/Orxowest56U?si=zaDUCatxKVhMdgmv;HAMSTRINGS;2021-10-01 00:00:00;admin;0
+10;Calf Raise;Lorem Ipsum;https://www.youtube.com/embed/eMTy3qylqnE?si=0BCh1pWCSjvbdMMg;CALVES;2021-10-01 00:00:00;admin;0
+11;Shoulder Press;Lorem Ipsum;https://www.youtube.com/embed/WvLMauqrnK8?si=KCB5v8DWR5jZfyWs;FRONTAL_DELTOID;2021-10-01 00:00:00;admin;0
+12;Lateral Raise;Lorem Ipsum;https://www.youtube.com/embed/OuG1smZTsQQ?si=u7obxQQ1W_zd7z_v;MIDDLE_DELTOID;2021-10-01 00:00:00;admin;0
+13;Front Raise;Lorem Ipsum;https://www.youtube.com/embed/hRJ6tR5-if0?si=K6utw9IrqrBmtwHl;FRONTAL_DELTOID;2021-10-01 00:00:00;admin;0
+14;Bent-over Row;Lorem Ipsum;https://www.youtube.com/embed/6FZHJGzMFEc?si=cAs2u3C40bLwQH1L;LATS;2021-10-01 00:00:00;admin;0
+15;Crunches;Lorem Ipsum;https://www.youtube.com/embed/MKmrqcoCZ-M?si=TfnL7YJRiUE3FIek;ABS;2021-10-01 00:00:00;admin;0

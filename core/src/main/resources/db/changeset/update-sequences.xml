@@ -16,13 +16,13 @@
         </preConditions>
 
         <sql>
-            select setval('seq_exercise_item', (select count(*) from exercise_item), true);
-            select setval('seq_exercise', (select count(*) from exercise), true);
-            select setval('seq_training_unit', (select count(*) from training_unit), true);
-            select setval('seq_workout_plan', (select count(*) from workout_plan), true);
-            select setval('seq_email_template', (select count(*) from email_template), true);
-            select setval('seq_user', (select count(*) from user), true);
-            select setval('seq_report', (select count(*) from report), true);
+            select setval('seq_exercise_item', 401, true);
+            select setval('seq_exercise', 16, true);
+            select setval('seq_training_unit', 113, true);
+            select setval('seq_workout_plan', 5, true);
+            select setval('seq_email_template', 3, true);
+            select setval('seq_user', 5, true);
+            select setval('seq_report', 5, true);
         </sql>
     </changeSet>
 

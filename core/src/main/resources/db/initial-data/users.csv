@@ -1,4 +1,5 @@
-id;firstname;lastname;date_of_birth;phone;email;keycloak_id;role;creation_date_time;created_by;version
-1;Bartłomiej;Żmuda Trzebiatowski;1980-01-01;+123456789;inzynierka.trainmate@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc78e;PERSONAL_TRAINER;2021-01-01 00:00:00;1;0
-2;Janusz;Pawlacz;1999-07-03;+48 123 321 123;mentee1@gmail.com;40112371-d6dd-486f-aaea-cb534e8f4e07;MENTEE;2021-01-01 00:00:00;1;0
-3;Kazimierz;Prodiż;1985-02-03;+48 321 321 321;mentee2@gmail.com;208d35f7-2c9a-447c-84f0-2566560dc79e;MENTEE;2021-01-01 00:00:00;1;0
+id;firstname;lastname;date_of_birth;phone;email;keycloak_id;role;creation_date_time;created_by;version;first_login;gender;height
+1;Bartłomiej;Żmuda Trzebiatowski;1980-01-01;123321123;inzynierka.trainmate@gmail.com;d57fedcf-97fa-441d-8ee0-b8f007260667;PERSONAL_TRAINER;2021-01-01 00:00:00;1;0;false;MALE;180
+2;Janusz;Pawlacz;1999-07-03;123321123;mentee1@gmail.com;dac1738b-2b27-465c-8e74-a81f4f3415f5;MENTEE;2021-01-01 00:00:00;1;0;false;MALE;175
+3;Ewa;Wiśniewska;1999-07-03;123321123;mentee2@gmail.com;79a44d47-76a2-4ba7-9bcc-4a9ec80aec42;MENTEE;2021-01-01 00:00:00;1;0;false;FEMALE;160
+4;Kazimierz;Prodiż;1985-02-03;321321321;mentee3@gmail.com;e2c6d885-10d1-4753-ad40-536ecf9060f9;MENTEE;2021-01-01 00:00:00;1;0;true;MALE;195
