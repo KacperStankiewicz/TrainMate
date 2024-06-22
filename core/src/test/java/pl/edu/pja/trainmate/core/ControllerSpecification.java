@@ -9,10 +9,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static pl.edu.pja.trainmate.core.common.Gender.MALE;
 import static pl.edu.pja.trainmate.core.config.Profiles.INTEGRATION;
 import static pl.edu.pja.trainmate.core.config.objectmapper.CustomObjectMapperConfig.createObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -29,6 +31,7 @@ import pl.edu.pja.trainmate.core.config.security.LoggedUserDataDto;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.config.security.RoleType;
 import pl.edu.pja.trainmate.core.config.security.UserIdProvider;
+import pl.edu.pja.trainmate.core.domain.user.PersonalInfo;
 import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 
 @ActiveProfiles(INTEGRATION)
@@ -37,6 +40,9 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.UserQueryService;
 public abstract class ControllerSpecification {
 
     public static final UserId EXISTING_USER_ID = UserId.valueOf("208d35f7-2c9a-447c-84f0-2566560dc78e");
+    public static final UserId OTHER_USER_ID = UserId.valueOf("3333333-2c9a-447c-84f0-2566560dc78e");
+    private static final PersonalInfo EXISTING_USER_PERSONAL_INFO = new PersonalInfo("Janusz", "Januszewski", LocalDate.now(), "123321123", "test@test.com",
+        MALE, 180);
 
     @MockBean
     UserIdProvider userIdProvider;
@@ -60,7 +66,7 @@ public abstract class ControllerSpecification {
 
     public void userWithRole(RoleType roleType) {
         when(queryService.getUserByKeycloakId(anyString()))
-            .thenReturn(new LoggedUserDataDto(EXISTING_USER_ID, roleType));
+            .thenReturn(new LoggedUserDataDto(EXISTING_USER_ID, roleType, EXISTING_USER_PERSONAL_INFO, false));
     }
 
     @SneakyThrows

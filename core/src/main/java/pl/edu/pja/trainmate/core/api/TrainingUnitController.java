@@ -1,8 +1,8 @@
 package pl.edu.pja.trainmate.core.api;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.INVALID_ID;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,6 +24,7 @@ import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitFacade;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -43,14 +44,30 @@ public class TrainingUnitController {
         description = "Got training units for current week",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = {
-        TRAINED_PERSON
-    })
+    @HasRole(roleType = MENTEE)
     @GetMapping("/current")
     public List<TrainingUnitProjection> getCurrentTrainingUnits() {
         log.debug("Request to GET training units for current week for logged user");
         var result = trainingUnitFacade.getCurrentTrainingUnits();
         log.debug("Successfully GOT training units");
+        return result;
+    }
+
+    @Operation(summary = "get exercise report")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got exercise report",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = {
+        MENTEE,
+        PERSONAL_TRAINER
+    })
+    @GetMapping("/exercise/{exerciseItemId}/report")
+    public ExerciseReportDto getExerciseReport(@PathVariable Long exerciseItemId) {
+        log.debug("Request to GET report for exercise item with id: {}", exerciseItemId);
+        var result = trainingUnitFacade.getExerciseReport(exerciseItemId);
+        log.debug("Successfully GOT exercise report");
         return result;
     }
 
@@ -61,7 +78,8 @@ public class TrainingUnitController {
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = {
-        PERSONAL_TRAINER
+        PERSONAL_TRAINER,
+        MENTEE
     })
     @GetMapping("/{workoutPlanId}/get-for-week")
     public List<TrainingUnitProjection> getTrainingsByWorkoutPlanIdAndWeek(@PathVariable Long workoutPlanId, @RequestParam Long week) {
@@ -86,19 +104,19 @@ public class TrainingUnitController {
         return result;
     }
 
-    @Operation(summary = "update training unit")
+    @Operation(summary = "Add exercise to training unit")
     @ApiResponse(
         responseCode = "200",
-        description = "training unit updated",
+        description = "Added exercise to training unit",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
-    @PutMapping("/{id}/update")
-    public void updateTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
-        log.debug("Request to UPDATE training unit with id: {}", id);
+    @PutMapping("/{id}/add-exercise")
+    public void addExerciseToTrainingUnit(@PathVariable Long id, @RequestBody TrainingUnitUpdateDto trainingUnitDto) {
+        log.debug("Request to ADD exercise item to training unit with id: {}", id);
         validateId(id, trainingUnitDto.getId());
-        trainingUnitFacade.updateTrainingUnit(trainingUnitDto);
-        log.debug("UPDATED training unit with id: {}", id);
+        trainingUnitFacade.addExerciseToTrainingUnit(trainingUnitDto);
+        log.debug("ADDED exercise item to training unit with id: {}", id);
     }
 
     @Operation(summary = "delete training unit")

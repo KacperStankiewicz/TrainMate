@@ -45,6 +45,10 @@ keycloak-admin:
   server-url: http://localhost:8123
   client-id: admin-cli
   secret: ${KEYCLOAK_ADMIN_SECRET}
+
+keycloak-properties:
+  redirect-url: http://localhost:4200
+
 logging:
   level:
     web: debug

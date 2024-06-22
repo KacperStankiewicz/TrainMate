@@ -3,6 +3,7 @@ package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 import static pl.edu.pja.trainmate.core.common.Muscle.getAllMusclesByGroup;
 
 import com.querydsl.core.BooleanBuilder;
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +29,7 @@ class QueryDslExerciseQueryService extends BaseJpaQueryService implements Exerci
     @Override
     public Page<ExerciseListItemProjection> searchByCriteria(ExerciseSearchCriteria criteria, Pageable pageable) {
         var query = queryFactory()
-            .select(new QExerciseListItemProjection(
-                exercise.id,
-                exercise.name,
-                exercise.muscleInvolved
-            ))
+            .select(buildExerciseListItemProjection())
             .from(exercise)
             .where(new BooleanBuilder()
                 .and(isLike(exercise.name, criteria.getName()))
@@ -46,6 +43,14 @@ class QueryDslExerciseQueryService extends BaseJpaQueryService implements Exerci
                 .build());
 
         return fetchPage(query, pageable);
+    }
+
+    @Override
+    public List<ExerciseListItemProjection> getAllExercises() {
+        return queryFactory()
+            .select(buildExerciseListItemProjection())
+            .from(exercise)
+            .fetch();
     }
 
     @Override
@@ -67,5 +72,13 @@ class QueryDslExerciseQueryService extends BaseJpaQueryService implements Exerci
             .orElseThrow(
                 () -> new EntityNotFoundException(String.format("Could not find exercise for id: %s", id))
             );
+    }
+
+    private QExerciseListItemProjection buildExerciseListItemProjection() {
+        return new QExerciseListItemProjection(
+            exercise.id,
+            exercise.name,
+            exercise.muscleInvolved
+        );
     }
 }

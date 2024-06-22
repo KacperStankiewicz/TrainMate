@@ -8,5 +8,7 @@ public interface UserQueryService {
 
     Page<MenteeProjection> searchMenteeByCriteria(MenteeSearchCriteria criteria, Pageable pageable);
 
+    MenteeProjection getMenteeByKeycloakId(String keycloakId);
+
     LoggedUserDataDto getUserByKeycloakId(String keycloakId);
 }

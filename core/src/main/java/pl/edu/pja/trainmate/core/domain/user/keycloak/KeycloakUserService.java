@@ -1,7 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.user.keycloak;
 
 import static jakarta.ws.rs.core.Response.Status.CREATED;
-import static org.keycloak.representations.idm.CredentialRepresentation.PASSWORD;
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.COULD_NOT_CREATE_MENTEE;
 
 import java.util.List;
@@ -9,12 +8,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
-import pl.edu.pja.trainmate.core.common.generator.RandomPasswordGenerator;
 
 @Slf4j
 @Service
@@ -26,8 +23,13 @@ class KeycloakUserService implements KeycloakService {
     @Value("${keycloak.realm}")
     private String realm;
 
+    @Value("${keycloak.resource}")
+    private String clientId;
+
+    @Value("${keycloak-properties.redirect-url}")
+    private String redirectUrl;
+
     private final Keycloak keycloak;
-    private final RandomPasswordGenerator passwordGenerator;
 
     public UserRepresentation createUser(String email) {
         var resource = getUsersResource();
@@ -41,7 +43,7 @@ class KeycloakUserService implements KeycloakService {
         }
 
         var user = getUserByEmail(email);
-        resource.get(user.getId()).executeActionsEmail(List.of("VERIFY_EMAIL", "UPDATE_PASSWORD"));
+        resource.get(user.getId()).executeActionsEmail(clientId, redirectUrl, userRepresentation.getRequiredActions());
         return user;
     }
 
@@ -66,13 +68,7 @@ class KeycloakUserService implements KeycloakService {
     }
 
     private UserRepresentation prepareUserRepresentation(String email) {
-        var credentialRepresentation = new CredentialRepresentation();
-        credentialRepresentation.setValue(passwordGenerator.generate(10));
-        credentialRepresentation.setTemporary(true);
-        credentialRepresentation.setType(PASSWORD);
-
         var user = new UserRepresentation();
-        user.setCredentials(List.of(credentialRepresentation));
         user.setEnabled(true);
         user.setUsername(email);
         user.setEmail(email);

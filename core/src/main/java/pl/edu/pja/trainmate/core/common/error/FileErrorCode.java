@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum FileErrorCode implements BaseErrorCode {
 
-    CANNOT_UPLOAD_MORE_THAN_3_FILES("Cannot upload more than 3 files for report", BAD_REQUEST),
+    CANNOT_UPLOAD_MORE_THAN_4_FILES("Cannot upload more than 4 files for report", BAD_REQUEST),
     INCORRECT_FORMAT("Incorrect format", BAD_REQUEST),
     FILE_TOO_LARGE("File too large", BAD_REQUEST),
     FILE_EMPTY("File empty", BAD_REQUEST),

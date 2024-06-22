@@ -1,8 +1,16 @@
 package pl.edu.pja.trainmate.core.domain.user;
 
 import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.COULD_NOT_CREATE_MENTEE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.EMAIL_MUST_NOT_BE_NULL;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.FIRSTNAME_MUST_NOT_BE_NULL;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.GENDER_MUST_NOT_BE_NULL;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_DATE_OF_BIRTH;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_HEIGHT;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.INVALID_PHONE_NUMBER;
+import static pl.edu.pja.trainmate.core.common.error.MenteeErrorCode.LASTNAME_MUST_NOT_BE_NULL;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.data.domain.Page;
@@ -10,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.user.dto.MenteeUpdateDto;
 import pl.edu.pja.trainmate.core.domain.user.keycloak.KeycloakService;
@@ -30,6 +39,10 @@ class UserService {
         return queryService.searchMenteeByCriteria(criteria, pageable);
     }
 
+    public MenteeProjection getMenteeByKeycloakId(String keycloakId) {
+        return queryService.getMenteeByKeycloakId(keycloakId);
+    }
+
     public ResultDto<Long> createMentee(UserRepresentation userRepresentation, boolean activate) {
         var mentee = buildUserEntity(userRepresentation, activate);
 
@@ -37,6 +50,7 @@ class UserService {
     }
 
     public void updatePersonalData(MenteeUpdateDto menteeUpdateDto) {
+        validateDto(menteeUpdateDto);
         var keycloakId = userProvider.getUserDetails().getUserId().getKeycloakId();
 
         var mentee = getUserByKeycloakId(keycloakId);
@@ -55,18 +69,33 @@ class UserService {
             .height(menteeUpdateDto.getHeight())
             .build());
 
-        userRepository.saveAndFlush(mentee);
+        userRepository.save(mentee);
     }
 
     public void changeAccountActivity(String userId, boolean active) {
-        var mentee = userRepository.getUserByKeycloakId(userId);
+        var mentee = userRepository.getActiveOrInactiveUserByKeycloakId(userId);
         mentee.setActive(active);
 
         keycloakService.enableOrDisableAccount(mentee.getUserId().getKeycloakId(), active);
+
+        userRepository.save(mentee);
+    }
+
+    public void unsetFirstLoginFlag() {
+        var userId = userProvider.getLoggedUserId();
+        var user = getUserByKeycloakId(userId.getKeycloakId());
+        user.unsetFirstLoginFlag();
+
+        userRepository.save(user);
     }
 
     private UserEntity getUserByKeycloakId(String keycloakId) {
         return userRepository.getUserByKeycloakId(keycloakId);
+    }
+
+    public boolean checkIfUserExistsByEmail(String email) {
+        return userRepository.userExistsByEmailAddress(email);
+
     }
 
     private UserEntity buildUserEntity(UserRepresentation userRepresentation, boolean activate) {
@@ -78,7 +107,37 @@ class UserService {
                 .lastname(userRepresentation.getLastName())
                 .email(userRepresentation.getEmail())
                 .build())
-            .role(TRAINED_PERSON)
+            .role(MENTEE)
             .build();
+    }
+
+    private void validateDto(MenteeUpdateDto dto) {
+        if (dto.getEmail() == null || dto.getEmail().isEmpty()) {
+            throw new CommonException(EMAIL_MUST_NOT_BE_NULL);
+        }
+
+        if (dto.getFirstname() == null || dto.getFirstname().isEmpty()) {
+            throw new CommonException(FIRSTNAME_MUST_NOT_BE_NULL);
+        }
+
+        if (dto.getLastname() == null || dto.getLastname().isEmpty()) {
+            throw new CommonException(LASTNAME_MUST_NOT_BE_NULL);
+        }
+
+        if (dto.getDateOfBirth() == null || dto.getDateOfBirth().isEqual(LocalDate.now()) || dto.getDateOfBirth().isAfter(LocalDate.now())) {
+            throw new CommonException(INVALID_DATE_OF_BIRTH);
+        }
+
+        if (dto.getPhone() == null || dto.getPhone().length() < 9 || dto.getPhone().length() > 23) {
+            throw new CommonException(INVALID_PHONE_NUMBER);
+        }
+
+        if (dto.getGender() == null) {
+            throw new CommonException(GENDER_MUST_NOT_BE_NULL);
+        }
+
+        if (dto.getHeight() == null || dto.getHeight() < 100 || dto.getHeight() > 250) {
+            throw new CommonException(INVALID_HEIGHT);
+        }
     }
 }

@@ -1,13 +1,14 @@
 package pl.edu.pja.trainmate.core.api;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.INVALID_ID;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,21 @@ public class ExerciseController {
         return result;
     }
 
+    @Operation(summary = "Get all exercises")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got all exercises",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = PERSONAL_TRAINER)
+    @GetMapping("/get-all")
+    public List<ExerciseListItemProjection> getAllExercises() {
+        log.debug("REST request to GET all exercises");
+        var result = facade.getAll();
+        log.debug("Successfully GOT all exercises");
+        return result;
+    }
+
     @Operation(summary = "Get exercise by id")
     @ApiResponse(
         responseCode = "200",
@@ -63,7 +79,7 @@ public class ExerciseController {
     )
     @HasRole(roleType = {
         PERSONAL_TRAINER,
-        TRAINED_PERSON
+        MENTEE
     })
     @GetMapping("/{exerciseId}")
     public ExerciseProjection getExerciseById(@PathVariable Long exerciseId) {
@@ -97,7 +113,7 @@ public class ExerciseController {
     @HasRole(roleType = PERSONAL_TRAINER)
     @PutMapping("/{exerciseId}")
     public void updateExercise(@PathVariable Long exerciseId, @RequestBody ExerciseDto dto) {
-        log.debug("REST request to UPDATE exercise with id: {}", exerciseId);
+        log.debug("REST request to UPDATE exercise withf id: {}", exerciseId);
         validateId(exerciseId, dto.getId());
         facade.update(dto);
         log.debug("Successfully UPDATED exercise");

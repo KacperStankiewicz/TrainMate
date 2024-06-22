@@ -19,7 +19,7 @@ public class ExerciseItemUpdateDto {
     Long exerciseId;
     Integer repetitions;
     String tempo;
-    Integer weight;
+    Double weight;
     Integer rir;
     Integer sets;
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 
 @Value
 @Builder
@@ -18,4 +19,5 @@ public class TrainingUnitUpdateDto {
     Long version;
     DayOfWeek dayOfWeek;
     Long weekNumber;
+    ExerciseItemCreateDto exerciseCreateDto;
 }

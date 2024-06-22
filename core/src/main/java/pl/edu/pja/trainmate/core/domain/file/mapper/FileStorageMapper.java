@@ -1,10 +1,14 @@
 package pl.edu.pja.trainmate.core.domain.file.mapper;
 
+import static lombok.AccessLevel.PRIVATE;
+
 import java.util.UUID;
+import lombok.NoArgsConstructor;
 import pl.edu.pja.trainmate.core.common.StorageId;
 import pl.edu.pja.trainmate.core.domain.file.FileStorageEntity;
 import pl.edu.pja.trainmate.core.domain.file.dto.FileStorageDto;
 
+@NoArgsConstructor(access = PRIVATE)
 public final class FileStorageMapper {
 
     public static FileStorageDto toDto(FileStorageEntity entity) {
@@ -25,7 +29,7 @@ public final class FileStorageMapper {
         return FileStorageEntity.builder()
             .storageId(StorageId.valueOf(UUID.randomUUID()))
             .fileContent(dto.getContent())
-            .fileName(dto.getName())
+            .fileName(UUID.randomUUID() + dto.getName().substring(dto.getName().lastIndexOf(".")))
             .fileType(dto.getType())
             .fileSize(dto.getSize())
             .reportId(reportId)

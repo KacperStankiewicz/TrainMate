@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import pl.edu.pja.trainmate.core.common.BaseEntity;
 import pl.edu.pja.trainmate.core.common.StorageId;
-import pl.edu.pja.trainmate.core.common.UserId;
 
 @Entity
 @Builder(toBuilder = true)

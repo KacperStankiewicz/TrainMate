@@ -6,5 +6,9 @@ import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjecti
 
 public interface ReportQueryService {
 
+    PeriodicalReportProjection getReportById(Long reportId);
+
+    PeriodicalReportProjection getInitialReportByUserId(UserId userId);
+
     List<PeriodicalReportProjection> getReportsByUserId(UserId userId);
 }

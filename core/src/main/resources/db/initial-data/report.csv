@@ -1,0 +1,5 @@
+id;user_id;workout_plan_id;weight;body_fat;left_biceps;right_biceps;left_forearm;right_forearm;left_thigh;right_thigh;left_calf;right_calf;shoulders;chest;waist;abdomen;hips;initial;reviewed;created_by;creation_date_time;version
+1;dac1738b-2b27-465c-8e74-a81f4f3415f5;3;75;30;30;31;25;26;60;61;35;36;110;100;85;95;105;208d35f7-2c9a-447c-84f0-2566560dc88e;false;false;2024-06-16 15:00:00;0
+2;dac1738b-2b27-465c-8e74-a81f4f3415f5;;80;27;27;31;25;26;60;61;35;36;110;100;85;95;105;208d35f7-2c9a-447c-84f0-2566560dc88e;true;false;2024-06-16 15:00:00;0
+3;79a44d47-76a2-4ba7-9bcc-4a9ec80aec42;;80;27;27;31;25;26;60;61;35;36;110;100;85;95;105;208d35f7-2c9a-447c-84f0-2566560dc88e;true;false;2024-06-16 15:00:00;0
+4;79a44d47-76a2-4ba7-9bcc-4a9ec80aec42;4;75;30;30;31;25;26;60;61;35;36;110;100;85;95;105;208d35f7-2c9a-447c-84f0-2566560dc88e;false;true;2024-06-16 15:00:00;0

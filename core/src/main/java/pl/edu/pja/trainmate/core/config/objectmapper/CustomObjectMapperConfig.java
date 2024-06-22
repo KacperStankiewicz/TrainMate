@@ -1,9 +1,11 @@
 package pl.edu.pja.trainmate.core.config.objectmapper;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.USE_LONG_FOR_INTS;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -18,23 +20,34 @@ import org.springframework.data.domain.Page;
 @Configuration
 public class CustomObjectMapperConfig {
 
-    public static ObjectMapper createObjectMapper() {
-        var objectMapper = new ObjectMapper();
-        var javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
-        objectMapper.registerModule(javaTimeModule);
+    private static ObjectMapper instance;
 
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.setDateFormat(DateFormat.getDateInstance());
-        objectMapper.configure(USE_LONG_FOR_INTS, true);
-        return objectMapper;
+    private static synchronized ObjectMapper getInstance() {
+        if (instance == null) {
+            instance = JsonMapper.builder()
+                .enable(ACCEPT_CASE_INSENSITIVE_ENUMS)
+                .build();
+
+            var javaTimeModule = new JavaTimeModule();
+            javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
+            instance.registerModule(javaTimeModule);
+
+            instance.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            instance.setDateFormat(DateFormat.getDateInstance());
+            instance.configure(DeserializationFeature.USE_LONG_FOR_INTS, true);
+            instance.registerModule(new StringDeserializerModule());
+        }
+        return instance;
+    }
+
+    public static ObjectMapper createObjectMapper() {
+        return getInstance();
     }
 
     public static <T> ObjectMapper createPageObjectMapper(Class<T> clazz) {
-        var objectMapper = createObjectMapper();
+        var objectMapper = getInstance();
         var module = new SimpleModule();
         module.addDeserializer(Page.class, new PageDeserializer<>(clazz));
-
         objectMapper.registerModule(module);
         return objectMapper;
     }
@@ -42,6 +55,6 @@ public class CustomObjectMapperConfig {
     @Bean
     @Primary
     public ObjectMapper serializingObjectMapper() {
-        return createObjectMapper();
+        return getInstance();
     }
 }

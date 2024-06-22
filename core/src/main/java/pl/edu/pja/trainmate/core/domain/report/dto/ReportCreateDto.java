@@ -18,4 +18,5 @@ public class ReportCreateDto {
     Long exerciseItemId;
     List<SetParams> sets;
     String remarks;
+    Long version;
 }

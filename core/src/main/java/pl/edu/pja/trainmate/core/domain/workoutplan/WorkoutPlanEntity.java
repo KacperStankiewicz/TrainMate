@@ -66,4 +66,8 @@ public class WorkoutPlanEntity extends BaseEntity {
             throw new CommonException(MUST_NOT_CHANGE_ACTIVE_WORKOUT_PLAN);
         }
     }
+
+    public boolean hasEnded() {
+        return this.dateRange.getTo().isEqual(LocalDate.now()) || this.dateRange.getTo().isBefore(LocalDate.now());
+    }
 }

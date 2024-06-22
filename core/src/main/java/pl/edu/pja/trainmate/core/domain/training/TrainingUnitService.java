@@ -1,22 +1,19 @@
 package pl.edu.pja.trainmate.core.domain.training;
 
-import static java.lang.Boolean.TRUE;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseItemErrorCode.COULD_NOT_CREATE_EXERCISE_ITEM;
-import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_ALREADY_REPORTED;
-import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.EXERCISE_WAS_NOT_REPORTED;
 
-import io.vavr.control.Option;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
 import pl.edu.pja.trainmate.core.common.ResultDto;
-import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.common.utils.WeekNumberCalculator;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -43,12 +40,22 @@ class TrainingUnitService {
         return queryService.getTrainingUnitsByWorkoutPlanIdAndWeekNumber(workoutPlanId, week);
     }
 
+    public ExerciseReportDto getExerciseReportById(Long exerciseItemId) {
+        var exerciseItem = exerciseItemRepository.findExactlyOneById(exerciseItemId);
+
+        return ExerciseReportDto.builder()
+            .version(exerciseItem.getVersion())
+            .reportedSets(exerciseItem.getExerciseReport().getReportedSets())
+            .remarks(exerciseItem.getExerciseReport().getRemarks())
+            .build();
+    }
+
     public ResultDto<Long> create(TrainingUnitDto dto) {
         Long trainingUnitId = dto.getId();
         if (trainingUnitId == null) {
             trainingUnitId = buildTrainingUnitEntityAndSave(dto).getId();
         }
-        buildAndSaveExerciseItemEntity(dto, trainingUnitId);
+        buildAndSaveExerciseItemEntity(dto.getWorkoutPlanId(), dto.getExerciseCreateDto(), trainingUnitId);
         return ResultDto.ofValueOrError(trainingUnitId, COULD_NOT_CREATE_EXERCISE_ITEM);
     }
 
@@ -65,11 +72,13 @@ class TrainingUnitService {
         exerciseItemRepository.delete(entity);
     }
 
-    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
+    public void addExerciseToTrainingUnit(TrainingUnitUpdateDto dto) {
         var trainingUnit = trainingUnitRepository.findExactlyOneById(dto.getId());
         trainingUnit.validateVersion(dto.getVersion());
         trainingUnit.update(dto);
         trainingUnitRepository.saveAndFlush(trainingUnit);
+
+        buildAndSaveExerciseItemEntity(trainingUnit.getWorkoutPlanId(), dto.getExerciseCreateDto(), trainingUnit.getId());
     }
 
     public void updateExerciseItem(ExerciseItemUpdateDto dto) {
@@ -77,6 +86,14 @@ class TrainingUnitService {
         exerciseItem.validateVersion(dto.getVersion());
 
         exerciseItem.update(dto);
+        exerciseItemRepository.saveAndFlush(exerciseItem);
+    }
+
+    public void addExerciseItemReport(ReportCreateDto reportCreateDto) {
+        var exerciseItem = getExerciseItemById(reportCreateDto.getExerciseItemId());
+        exerciseItem.validateVersion(reportCreateDto.getVersion());
+
+        exerciseItem.addReport(reportCreateDto);
         exerciseItemRepository.saveAndFlush(exerciseItem);
     }
 
@@ -92,16 +109,16 @@ class TrainingUnitService {
         return trainingUnitRepository.save(entity);
     }
 
-    private ExerciseItemEntity buildAndSaveExerciseItemEntity(TrainingUnitDto dto, Long trainingUnitId) {
+    private ExerciseItemEntity buildAndSaveExerciseItemEntity(Long workoutPlanId, ExerciseItemCreateDto dto, Long trainingUnitId) {
         return exerciseItemRepository.save(ExerciseItemEntity.builder()
             .exerciseId(dto.getExerciseId())
             .trainingUnitId(trainingUnitId)
-            .workoutPlanId(dto.getWorkoutPlanId())
+            .workoutPlanId(workoutPlanId)
             .volume(buildVolume(dto))
             .build());
     }
 
-    private Volume buildVolume(TrainingUnitDto dto) {
+    private Volume buildVolume(ExerciseItemCreateDto dto) {
         return Volume.builder()
             .repetitions(dto.getRepetitions())
             .tempo(dto.getTempo())
@@ -111,30 +128,7 @@ class TrainingUnitService {
             .build();
     }
 
-    public void addExerciseItemReport(ReportCreateDto reportCreateDto) {
-        var exerciseItem = getExerciseItemById(reportCreateDto.getExerciseItemId());
-
-        if (TRUE.equals(exerciseItem.getReported())) {
-            throw new CommonException(EXERCISE_WAS_ALREADY_REPORTED);
-        }
-
-        exerciseItem.addReport(reportCreateDto);
-        exerciseItemRepository.saveAndFlush(exerciseItem);
-    }
-
     private ExerciseItemEntity getExerciseItemById(Long exerciseItemId) {
         return exerciseItemRepository.findExactlyOneById(exerciseItemId);
-    }
-
-    public void reviewReport(BasicAuditDto dto) {
-        var entity = exerciseItemRepository.findExactlyOneById(dto.getId());
-        entity.validateVersion(dto.getVersion());
-
-        entity = Option.of(entity)
-            .filter(ExerciseItemEntity::getReported)
-            .peek(it -> it.getExerciseReport().markAsReviewed())
-            .getOrElseThrow(() -> new CommonException(EXERCISE_WAS_NOT_REPORTED));
-
-        exerciseItemRepository.saveAndFlush(entity);
     }
 }

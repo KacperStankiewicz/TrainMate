@@ -1,8 +1,11 @@
 package pl.edu.pja.trainmate.core.infrastructure.querydsl;
 
 import com.querydsl.core.BooleanBuilder;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,7 +43,22 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
             )
             .fetch();
 
-        return setReferencesForTrainingUnits(trainingUnits);
+        return setReferencesForTrainingUnits(trainingUnits).stream()
+            .sorted(Comparator.comparingInt(unit -> unit.getDayOfWeek().getValue()))
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long checkExerciseItemsExistenceByWorkoutPlanIdAndWeekNumber(Long workoutPlanId, Long weekNumber) {
+        return queryFactory()
+            .select(exerciseItem.id)
+            .from(exerciseItem)
+            .leftJoin(trainingUnit).on(trainingUnit.workoutPlanId.eq(workoutPlanId))
+            .where(new BooleanBuilder()
+                .and(exerciseItem.workoutPlanId.eq(workoutPlanId))
+                .and(trainingUnit.weekNumber.eq(weekNumber))
+            )
+            .fetchCount();
     }
 
     private List<TrainingUnitProjection> setReferencesForTrainingUnits(List<TrainingUnitProjection> trainingUnits) {
@@ -51,7 +69,7 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         var exerciseItems = fetchExerciseItemsProjectionForTrainingUnits(ids);
 
         return trainingUnits.stream()
-            .peek(it -> it.addExercises(exerciseItems.get(it.getId())))
+            .peek(it -> it.addExercises(Optional.ofNullable(exerciseItems.get(it.getId())).orElseGet(ArrayList::new)))
             .collect(Collectors.toList());
     }
 
@@ -59,6 +77,8 @@ class QueryDslTrainingUnitQueryService extends BaseJpaQueryService implements Tr
         return queryFactory()
             .select(new QExerciseItemProjection(
                 exerciseItem.id,
+                exerciseItem.version,
+                exerciseItem.exerciseId,
                 exerciseItem.volume.repetitions,
                 exerciseItem.volume.tempo,
                 exerciseItem.volume.weight,

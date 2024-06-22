@@ -11,6 +11,7 @@ import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseReportDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.ReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitUpdateDto;
@@ -27,7 +28,7 @@ public class TrainingUnitFacade {
 
     public List<TrainingUnitProjection> getCurrentTrainingUnits() {
         var userId = userProvider.getLoggedUserId();
-        var workoutPlan = Optional.of(workoutPlanFacade.getCurrentPlan(userId))
+        var workoutPlan = Optional.ofNullable(workoutPlanFacade.getCurrentPlan(userId))
             .orElseThrow(() -> new CommonException(USER_DOES_NOT_HAVE_ACTIVE_WORKOUT_PLAN));
 
         return service.getTrainingUnitsForCurrentWeekForLoggedUser(workoutPlan);
@@ -37,12 +38,16 @@ public class TrainingUnitFacade {
         return service.getTrainingUnitsByWorkoutPlanIdAndWeek(workoutPlanId, week);
     }
 
+    public ExerciseReportDto getExerciseReport(Long exerciseItemId) {
+        return service.getExerciseReportById(exerciseItemId);
+    }
+
     public ResultDto<Long> create(TrainingUnitDto dto) {
         return service.create(dto);
     }
 
-    public void updateTrainingUnit(TrainingUnitUpdateDto dto) {
-        service.updateTrainingUnit(dto);
+    public void addExerciseToTrainingUnit(TrainingUnitUpdateDto dto) {
+        service.addExerciseToTrainingUnit(dto);
     }
 
     public void updateExerciseItem(ExerciseItemUpdateDto dto) {
@@ -59,9 +64,5 @@ public class TrainingUnitFacade {
 
     public void addReport(ReportCreateDto reportCreateDto) {
         service.addExerciseItemReport(reportCreateDto);
-    }
-
-    public void reviewReport(BasicAuditDto dto) {
-        service.reviewReport(dto);
     }
 }

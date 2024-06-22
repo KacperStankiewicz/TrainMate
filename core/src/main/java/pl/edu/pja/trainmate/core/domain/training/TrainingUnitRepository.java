@@ -6,5 +6,5 @@ import pl.edu.pja.trainmate.core.common.BaseRepository;
 @Repository
 public interface TrainingUnitRepository extends BaseRepository<TrainingUnitEntity> {
 
-    void deleteByWorkoutPlanId(Long id);
+    void deleteAllByWorkoutPlanId(Long id);
 }

@@ -5,7 +5,7 @@ import static pl.edu.pja.trainmate.core.api.file.FileStorageEndpoints.ADD;
 import static pl.edu.pja.trainmate.core.api.file.FileStorageEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.sampledata.FileStorageSampleData.getSampleFileStorageDtoBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.FileStorageSampleData.getSampleFileStorageEntityBuilder;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseTo;
 
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +34,7 @@ class FileStorageControllerIT extends ControllerSpecification {
     @Test
     void shouldAddFileToReport() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getSampleFileStorageDtoBuilder().build();
 
         //when
@@ -56,7 +56,7 @@ class FileStorageControllerIT extends ControllerSpecification {
     @Test
     void shouldDeleteFile() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var entity = repository.save(getSampleFileStorageEntityBuilder().build());
 
         //when

@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.report;
 
+import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.CANNOT_REPORT_NOT_ENDED_WORKOUT_PLAN;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.COULD_NOT_CREATE_REPORT;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.INITIAL_REPORT_ALREADY_EXISTS;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.WORKOUT_PLAN_WAS_ALREADY_REPORTED;
@@ -13,21 +14,36 @@ import pl.edu.pja.trainmate.core.common.UserId;
 import pl.edu.pja.trainmate.core.common.exception.CommonException;
 import pl.edu.pja.trainmate.core.config.security.LoggedUserDataProvider;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
+import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.ReportQueryService;
+import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
 
 @Service
 @RequiredArgsConstructor
 class ReportService {
 
     private final ReportRepository repository;
-    private final LoggedUserDataProvider loggedUserDataProvider;
+    private final LoggedUserDataProvider userProvider;
     private final ReportQueryService queryService;
+    private final WorkoutPlanRepository workoutPlanRepository;
+
+    public PeriodicalReportProjection getReportById(Long reportId) {
+        return queryService.getReportById(reportId);
+    }
+
+    public PeriodicalReportProjection getInitialReportForUser(String keycloakId) {
+        return queryService.getInitialReportByUserId(UserId.valueOf(keycloakId));
+    }
 
     public List<PeriodicalReportProjection> getAllReportsForLoggedUser() {
-        var userId = loggedUserDataProvider.getLoggedUserId();
+        var userId = userProvider.getLoggedUserId();
 
         return queryService.getReportsByUserId(userId);
+    }
+
+    public List<PeriodicalReportProjection> getAllReportsByUserId(String keycloakId) {
+        return queryService.getReportsByUserId(UserId.valueOf(keycloakId));
     }
 
     public ResultDto<Long> createPeriodicalReport(PeriodicalReportCreateDto reportCreateDto) {
@@ -36,15 +52,29 @@ class ReportService {
                 WORKOUT_PLAN_WAS_ALREADY_REPORTED.getHttpStatus());
         }
 
-        var userId = loggedUserDataProvider.getLoggedUserId();
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(reportCreateDto.getWorkoutPlanId());
+
+        if (workoutPlan.hasEnded()) {
+            throw new CommonException(CANNOT_REPORT_NOT_ENDED_WORKOUT_PLAN);
+        }
+
+        var userId = userProvider.getLoggedUserId();
         var entity = buildReportEntity(reportCreateDto, userId).build();
 
         return ResultDto.ofValueOrError(repository.save(entity).getId(), COULD_NOT_CREATE_REPORT);
     }
 
+    public void updatePeriodicalReport(PeriodicalReportUpdateDto reportDto) {
+        var entity = repository.findExactlyOneById(reportDto.getReportId());
+        entity.validateVersion(reportDto.getVersion());
+
+        entity.update(reportDto);
+
+    }
+
     public ResultDto<Long> createInitialReport(PeriodicalReportCreateDto reportCreateDto) {
-        var userId = loggedUserDataProvider.getLoggedUserId();
-        if (repository.existsReportEntityByUserIdAndInitialIsTrue(userId.getKeycloakId())) {
+        var userId = userProvider.getLoggedUserId();
+        if (repository.existsReportEntityByUserIdAndInitialIsTrue(userId)) {
             throw new CommonException(INITIAL_REPORT_ALREADY_EXISTS);
         }
 

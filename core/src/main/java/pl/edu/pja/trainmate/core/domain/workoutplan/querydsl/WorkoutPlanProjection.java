@@ -3,6 +3,7 @@ package pl.edu.pja.trainmate.core.domain.workoutplan.querydsl;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.querydsl.core.annotations.QueryProjection;
+import java.time.temporal.ChronoUnit;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import pl.edu.pja.trainmate.core.common.DateRange;
@@ -12,15 +13,19 @@ import pl.edu.pja.trainmate.core.common.DateRange;
 public class WorkoutPlanProjection {
 
     Long id;
+    Long version;
     String name;
     String category;
     DateRange dateRange;
+    Long duration;
 
     @QueryProjection
-    public WorkoutPlanProjection(Long id, String name, String category, DateRange dateRange) {
+    public WorkoutPlanProjection(Long id, Long version, String name, String category, DateRange dateRange) {
         this.id = id;
+        this.version = version;
         this.name = name;
         this.category = category;
         this.dateRange = dateRange;
+        this.duration = ChronoUnit.WEEKS.between(dateRange.getFrom(), dateRange.getTo());
     }
 }

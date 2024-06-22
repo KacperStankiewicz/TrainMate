@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static pl.edu.pja.trainmate.core.api.user.UserEndpoints.GET_USER_INFO;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,8 +17,8 @@ import pl.edu.pja.trainmate.core.ControllerSpecification;
 class UserControllerSecurityIT extends ControllerSpecification {
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenGettingUserInfo() {
-        userWithRole(TRAINED_PERSON);
+    void shouldAllowAccessForMenteeWhenGettingUserInfo() {
+        userWithRole(MENTEE);
         var response = performGet(GET_USER_INFO);
         assertNotEquals(FORBIDDEN, HttpStatus.valueOf(response.getResponse().getStatus()));
     }

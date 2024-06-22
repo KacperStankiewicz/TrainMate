@@ -1,7 +1,6 @@
 package pl.edu.pja.trainmate.core.aspect;
 
 import static pl.edu.pja.trainmate.core.common.error.SecurityErrorCode.NO_ACCESS_TO_THE_RESOURCE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.ADMIN;
 
 import io.vavr.collection.List;
 import io.vavr.control.Option;
@@ -51,10 +50,6 @@ class HasWorkContextAspect {
             ? methodSignature.getMethod().getDeclaringClass()
             : methodSignature.getMethod();
         var annotation = declaration.getAnnotation(HasRole.class);
-
-        if (ADMIN.equals(userActiveContext)) {
-            return point.proceed();
-        }
 
         if (annotation.roleType().length != 0 && !List.of(annotation.roleType()).contains(userActiveContext)) {
             throw new SecurityException(NO_ACCESS_TO_THE_RESOURCE);

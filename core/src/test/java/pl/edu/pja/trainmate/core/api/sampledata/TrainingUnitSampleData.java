@@ -4,6 +4,7 @@ import static java.time.DayOfWeek.MONDAY;
 
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.Volume;
+import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemCreateDto;
 import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseItemUpdateDto;
 import pl.edu.pja.trainmate.core.domain.training.TrainingUnitEntity;
 import pl.edu.pja.trainmate.core.domain.training.dto.TrainingUnitDto;
@@ -17,12 +18,16 @@ public class TrainingUnitSampleData {
             .workoutPlanId(1L)
             .dayOfWeek(MONDAY)
             .weekNumber(1L)
-            .exerciseId(1L)
-            .repetitions(1)
-            .tempo("1:1:1:1")
-            .weight(1)
-            .rir(1)
-            .sets(1);
+            .exerciseCreateDto(
+                ExerciseItemCreateDto.builder()
+                    .exerciseId(1L)
+                    .repetitions(1)
+                    .tempo("1:1:1:1")
+                    .weight(1.0)
+                    .rir(1)
+                    .sets(1)
+                    .build()
+            );
     }
 
     public static TrainingUnitEntity getSampleTrainingUnitEntity() {
@@ -61,7 +66,7 @@ public class TrainingUnitSampleData {
             .exerciseId(2L)
             .repetitions(2)
             .tempo("2:2:2:2")
-            .weight(2)
+            .weight(2.0)
             .rir(2)
             .sets(2);
     }
@@ -74,7 +79,7 @@ public class TrainingUnitSampleData {
             .volume(Volume.builder()
                 .repetitions(1)
                 .tempo("1:1:1:1")
-                .weight(1)
+                .weight(1.0)
                 .rir(1)
                 .sets(1)
                 .build());

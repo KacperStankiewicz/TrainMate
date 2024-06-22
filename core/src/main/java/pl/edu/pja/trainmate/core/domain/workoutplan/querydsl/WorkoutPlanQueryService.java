@@ -8,9 +8,13 @@ public interface WorkoutPlanQueryService {
 
     AllWorkoutData getWorkoutPlanData(Long workoutPlanId);
 
-    WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId);
+    List<WorkoutPlanListItemProjection> getAllWorkoutPlansByUserId(UserId userId);
 
     List<String> getUsersEmailsForEndedWorkoutPlanWithoutReport();
 
     List<String> getUsersEmailsWithActiveWorkoutPlan();
+
+    WorkoutPlanProjection getCurrentWorkoutPlan(UserId loggedUserId);
+
+    WorkoutPlanProjection getWorkoutPlanHeader(Long workoutPlanId);
 }

@@ -28,4 +28,13 @@ public class DateRange {
         this.from = from;
         this.to = to;
     }
+
+    public Boolean isTodayWithinRange() {
+        LocalDate today = LocalDate.now();
+        return isDateWithinRange(today);
+    }
+
+    public Boolean isDateWithinRange(LocalDate date) {
+        return !date.isBefore(from) && !date.isAfter(to);
+    }
 }

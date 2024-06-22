@@ -9,7 +9,7 @@ import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.SEARCH;
 import static pl.edu.pja.trainmate.core.api.exercise.ExerciseEndpoints.UPDATE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,9 +23,9 @@ import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 class ExerciseControllerSecurityIT extends ControllerSpecification {
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenSearchingExercises() {
+    void shouldNotAllowAccessForMenteeWhenSearchingExercises() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var criteria = getSearchCriteriaBuilder().build();
 
         //when
@@ -37,9 +37,9 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenCreatingExercise() {
+    void shouldNotAllowAccessForMenteeWhenCreatingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var dto = getCreateDtoBuilder().build();
 
         //when
@@ -51,9 +51,9 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenUpdatingExercise() {
+    void shouldNotAllowAccessForMenteeWhenUpdatingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
         var dto = getExerciseDtoBuilder().build();
 
@@ -66,9 +66,9 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenDeletingExercise() {
+    void shouldNotAllowAccessForMenteeWhenDeletingExercise() {
         //given
-        userWithRole(TRAINED_PERSON);
+        userWithRole(MENTEE);
         var id = 1L;
 
         //when

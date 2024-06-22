@@ -1,7 +1,7 @@
 package pl.edu.pja.trainmate.core.api;
 
+import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.TRAINED_PERSON;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,6 +52,21 @@ public class MenteeController {
         return result;
     }
 
+    @Operation(summary = "Get mentee by user id")
+    @ApiResponse(
+        responseCode = "200",
+        description = "Got mentee by user id",
+        content = @Content(mediaType = "application/json")
+    )
+    @HasRole(roleType = PERSONAL_TRAINER)
+    @PostMapping("/{userId}")
+    public MenteeProjection getMenteeByUserId(@PathVariable String userId) {
+        log.debug("Request to GET mentee with id: {}", userId);
+        var result = menteeFacade.getMenteeByKeycloakId(userId);
+        log.debug("Successfully GOT mentee");
+        return result;
+    }
+
     @Operation(summary = "Send invitation email")
     @ApiResponse(
         responseCode = "200",
@@ -77,7 +92,7 @@ public class MenteeController {
     )
     @HasRole(roleType = {
         PERSONAL_TRAINER,
-        TRAINED_PERSON
+        MENTEE
     })
     @PutMapping("/update-personal-data")
     public void updateMenteePersonalData(@RequestBody MenteeUpdateDto menteeUpdateDto) {
@@ -92,7 +107,7 @@ public class MenteeController {
         description = "created initial report",
         content = @Content(mediaType = "application/json")
     )
-    @HasRole(roleType = TRAINED_PERSON)
+    @HasRole(roleType = MENTEE)
     @PostMapping("/initial-report")
     public ResultDto<Long> createInitialReport(@RequestBody PeriodicalReportCreateDto reportCreateDto) {
         log.debug("Request to CREATE initial report");
@@ -111,19 +126,19 @@ public class MenteeController {
     @PostMapping("/{userId}/deactivate")
     public void deactivateAccount(@PathVariable String userId) {
         log.debug("Request to deactivate mentee account with id: {}", userId);
-        menteeFacade.deleteAccount(userId);
+        menteeFacade.deactivateAccount(userId);
         log.debug("Successfully deactivated mentee account with id: {}", userId);
     }
 
-    @Operation(summary = "add file to report")
+    @Operation(summary = "Activate user account")
     @ApiResponse(
         responseCode = "200",
-        description = "Added file to report",
+        description = "User account activated",
         content = @Content(mediaType = "application/json")
     )
     @HasRole(roleType = PERSONAL_TRAINER)
     @PostMapping("/{userId}/activate")
-    public void deleteAccount(@PathVariable String userId) {
+    public void activateAccount(@PathVariable String userId) {
         log.debug("Request to activate mentee account with id: {}", userId);
         menteeFacade.activateAccount(userId);
         log.debug("Successfully activate mentee account with id: {}", userId);

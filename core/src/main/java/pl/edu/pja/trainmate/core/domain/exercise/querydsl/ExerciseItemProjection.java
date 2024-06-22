@@ -13,9 +13,11 @@ import pl.edu.pja.trainmate.core.common.Muscle;
 public class ExerciseItemProjection {
 
     Long id;
+    Long version;
+    Long exerciseId;
     Integer repetitions;
     String tempo;
-    Integer weight;
+    Double weight;
     Integer rir;
     Integer sets;
     Muscle muscleInvolved;
@@ -27,9 +29,11 @@ public class ExerciseItemProjection {
     Long trainingUnitId;
 
     @QueryProjection
-    public ExerciseItemProjection(Long id, Integer repetitions, String tempo, Integer weight, Integer rir, Integer sets,
+    public ExerciseItemProjection(Long id, Long version, Long exerciseId, Integer repetitions, String tempo, Double weight, Integer rir, Integer sets,
         Muscle muscleInvolved, String name, String description, String url, boolean reported, Long trainingUnitId) {
         this.id = id;
+        this.version = version;
+        this.exerciseId = exerciseId;
         this.repetitions = repetitions;
         this.tempo = tempo;
         this.weight = weight;

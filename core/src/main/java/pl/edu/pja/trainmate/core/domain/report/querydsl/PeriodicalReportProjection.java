@@ -12,6 +12,8 @@ import lombok.Value;
 @NoArgsConstructor(access = PRIVATE, force = true)
 public class PeriodicalReportProjection {
 
+    Long id;
+    Long version;
     boolean initial;
     boolean reviewed;
     Double weight;
@@ -33,6 +35,8 @@ public class PeriodicalReportProjection {
 
     @QueryProjection
     public PeriodicalReportProjection(
+        Long id,
+        Long version,
         boolean initial,
         boolean reviewed,
         Double weight,
@@ -51,6 +55,8 @@ public class PeriodicalReportProjection {
         Double abdomen,
         Double hips,
         LocalDateTime createdDate) {
+        this.id = id;
+        this.version = version;
         this.initial = initial;
         this.reviewed = reviewed;
         this.weight = weight;

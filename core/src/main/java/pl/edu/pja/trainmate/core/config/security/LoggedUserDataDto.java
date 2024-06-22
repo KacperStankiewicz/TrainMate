@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 import pl.edu.pja.trainmate.core.common.UserId;
+import pl.edu.pja.trainmate.core.domain.user.PersonalInfo;
 
 @FieldNameConstants
 @Value
@@ -17,10 +18,14 @@ public class LoggedUserDataDto {
 
     UserId userId;
     RoleType role;
+    PersonalInfo personalInfo;
+    boolean firstLogin;
 
     @QueryProjection
-    public LoggedUserDataDto(UserId userId, RoleType role) {
+    public LoggedUserDataDto(UserId userId, RoleType role, PersonalInfo personalInfo, boolean firstLogin) {
         this.userId = userId;
         this.role = role;
+        this.personalInfo = personalInfo;
+        this.firstLogin = firstLogin;
     }
 }
