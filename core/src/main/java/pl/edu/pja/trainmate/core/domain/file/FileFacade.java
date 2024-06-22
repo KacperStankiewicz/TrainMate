@@ -13,6 +13,9 @@ public class FileFacade {
     private final FileService service;
 
     public void addFiles(Long reportId, List<FileStorageDto> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return;
+        }
         dtos.forEach(it -> addFile(reportId, it));
     }
 

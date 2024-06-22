@@ -17,7 +17,7 @@ import pl.edu.pja.trainmate.core.ControllerSpecification;
 class UserControllerSecurityIT extends ControllerSpecification {
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenGettingUserInfo() {
+    void shouldAllowAccessForMenteeWhenGettingUserInfo() {
         userWithRole(MENTEE);
         var response = performGet(GET_USER_INFO);
         assertNotEquals(FORBIDDEN, HttpStatus.valueOf(response.getResponse().getStatus()));

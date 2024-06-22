@@ -43,7 +43,7 @@ class ReportControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenReviewingReport() {
+    void shouldNotAllowAccessForMenteeWhenReviewingReport() {
         userWithRole(MENTEE);
         var response = performPost(format(WORKOUT_PLAN_REPORT_REVIEW, ID), BasicAuditDto.ofValue(ID, 0L));
 

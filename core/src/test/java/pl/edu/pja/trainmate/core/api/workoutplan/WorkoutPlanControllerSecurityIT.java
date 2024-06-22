@@ -37,7 +37,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenCreatingWorkoutPlan() {
+    void shouldNotAllowAccessForMenteeWhenCreatingWorkoutPlan() {
         //given
         userWithRole(MENTEE);
         var dto = getSampleWorkoutPlanCreateDtoBuilder().build();
@@ -51,7 +51,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenUpdatingWorkoutPlan() {
+    void shouldNotAllowAccessForMenteeWhenUpdatingWorkoutPlan() {
         //given
         userWithRole(MENTEE);
         var dto = getSampleWorkoutPlanDtoBuilder().build();
@@ -65,7 +65,7 @@ class WorkoutPlanControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenDeletingWorkoutPlan() {
+    void shouldNotAllowAccessForMenteeWhenDeletingWorkoutPlan() {
         //given
         userWithRole(MENTEE);
 

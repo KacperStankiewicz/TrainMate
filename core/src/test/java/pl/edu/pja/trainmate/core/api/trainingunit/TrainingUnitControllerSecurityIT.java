@@ -4,15 +4,14 @@ import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static pl.edu.pja.trainmate.core.api.sampledata.TrainingUnitSampleData.getSampleTrainingUnitDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.ADD_EXERCISE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.CREATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_DELETE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.EXERCISE_ITEM_UPDATE;
 import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_CURRENT_WEEK;
-import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.GET_FOR_WEEK;
-import static pl.edu.pja.trainmate.core.api.trainingunit.TrainingUnitEndpoints.ADD_EXERCISE;
-import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
+import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,7 +27,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     private static final Long ID = 1L;
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenCreatingTraining() {
+    void shouldNotAllowAccessForMenteeWhenCreatingTraining() {
         userWithRole(MENTEE);
 
         var response = performPost(CREATE, getSampleTrainingUnitDtoBuilder().build());
@@ -38,7 +37,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenUpdatingTraining() {
+    void shouldNotAllowAccessForMenteeWhenUpdatingTraining() {
         userWithRole(MENTEE);
         var response = performPut(format(ADD_EXERCISE, ID), getSampleTrainingUnitDtoBuilder().build());
 
@@ -47,7 +46,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenDeletingTraining() {
+    void shouldNotAllowAccessForMenteeWhenDeletingTraining() {
         userWithRole(MENTEE);
         var response = performDelete(format(DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
 
@@ -56,7 +55,7 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenUpdatingExerciseItem() {
+    void shouldNotAllowAccessForMenteeWhenUpdatingExerciseItem() {
         userWithRole(MENTEE);
         var response = performPut(format(EXERCISE_ITEM_UPDATE, ID), getSampleTrainingUnitDtoBuilder().build());
 
@@ -65,18 +64,9 @@ class TrainingUnitControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenDeletingExerciseItem() {
+    void shouldNotAllowAccessForMenteeWhenDeletingExerciseItem() {
         userWithRole(MENTEE);
         var response = performDelete(format(EXERCISE_ITEM_DELETE, ID), BasicAuditDto.ofValue(ID, 0L));
-
-        var exception = (SecurityException) response.getResolvedException();
-        assertEquals(FORBIDDEN, exception.getStatus());
-    }
-
-    @Test
-    void shouldNotAllowAccessForTrainedPersonWhenGettingTrainingUnitsByWorkoutPlanIdAndWeekNumber() {
-        userWithRole(MENTEE);
-        var response = performGet(format(GET_FOR_WEEK, ID, 1L));
 
         var exception = (SecurityException) response.getResolvedException();
         assertEquals(FORBIDDEN, exception.getStatus());

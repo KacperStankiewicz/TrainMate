@@ -26,7 +26,7 @@ import pl.edu.pja.trainmate.core.domain.user.querydsl.MenteeSearchCriteria;
 class MenteeControllerSecurityIT extends ControllerSpecification {
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenSearchingMentees() {
+    void shouldAllowAccessForMenteeWhenSearchingMentees() {
         userWithRole(MENTEE);
         var criteria = new MenteeSearchCriteria("", "", "", new NumberRange(1L, 2L), FEMALE);
         var response = performPost(SEARCH, criteria);
@@ -36,7 +36,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenInvitingMentee() {
+    void shouldAllowAccessForMenteeWhenInvitingMentee() {
         userWithRole(MENTEE);
         var email = "test@test.com";
         var response = performPost(INVITE, "email", email);
@@ -56,7 +56,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenDeactivatingMenteeAccount() {
+    void shouldAllowAccessForMenteeWhenDeactivatingMenteeAccount() {
         userWithRole(MENTEE);
         var id = 1L;
         var response = performPost(String.format(DEACTIVATE, id), BasicAuditDto.ofValue(id, 0L));
@@ -66,7 +66,7 @@ class MenteeControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldAllowAccessForTrainedPersonWhenActivatingMenteeAccount() {
+    void shouldAllowAccessForMenteeWhenActivatingMenteeAccount() {
         userWithRole(MENTEE);
         var id = 1L;
         var response = performPost(String.format(ACTIVATE, id), BasicAuditDto.ofValue(id, 0L));

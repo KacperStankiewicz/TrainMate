@@ -23,7 +23,7 @@ import pl.edu.pja.trainmate.core.common.exception.SecurityException;
 class ExerciseControllerSecurityIT extends ControllerSpecification {
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenSearchingExercises() {
+    void shouldNotAllowAccessForMenteeWhenSearchingExercises() {
         //given
         userWithRole(MENTEE);
         var criteria = getSearchCriteriaBuilder().build();
@@ -37,7 +37,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenCreatingExercise() {
+    void shouldNotAllowAccessForMenteeWhenCreatingExercise() {
         //given
         userWithRole(MENTEE);
         var dto = getCreateDtoBuilder().build();
@@ -51,7 +51,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenUpdatingExercise() {
+    void shouldNotAllowAccessForMenteeWhenUpdatingExercise() {
         //given
         userWithRole(MENTEE);
         var id = 1L;
@@ -66,7 +66,7 @@ class ExerciseControllerSecurityIT extends ControllerSpecification {
     }
 
     @Test
-    void shouldNotAllowAccessForTrainedPersonWhenDeletingExercise() {
+    void shouldNotAllowAccessForMenteeWhenDeletingExercise() {
         //given
         userWithRole(MENTEE);
         var id = 1L;
