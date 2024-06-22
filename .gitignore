@@ -35,3 +35,4 @@ target/
 *.ipr
 /.idea/*
 /.idea/
+/.jpb/jpb-settings.xml

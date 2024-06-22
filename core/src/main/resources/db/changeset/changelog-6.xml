@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="Tm46 added report columns" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="exercise_item" columnName="reported_repetitions"/>
+                <columnExists tableName="exercise_item" columnName="reported_weight"/>
+                <columnExists tableName="exercise_item" columnName="reported_rir"/>
+                <columnExists tableName="exercise_item" columnName="reported_sets"/>
+                <columnExists tableName="exercise_item" columnName="remarks"/>
+                <columnExists tableName="exercise_item" columnName="reported"/>
+            </not>
+        </preConditions>
+
+        <renameColumn tableName="exercise_item" oldColumnName="target_rir" newColumnName="rir"/>
+        <renameColumn tableName="exercise_item" oldColumnName="actual_rir" newColumnName="reported_rir"/>
+
+        <addColumn tableName="exercise_item">
+            <column name="reported" type="boolean" defaultValue="false"/>
+            <column name="remarks" type="varchar(1024)"/>
+            <column name="reported_weight" type="int"/>
+            <column name="reported_repetitions" type="int"/>
+            <column name="reported_sets" type="int"/>
+            <column name="reviewed" type="boolean" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm46 delete weight from user entity" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="user" columnName="weight"/>
+        </preConditions>
+
+        <dropColumn tableName="user" columnName="weight"/>
+    </changeSet>
+
+    <changeSet id="Tm46 create report entity" author="kstankeiwicz">
+        <preConditions>
+            <not>
+                <tableExists tableName="report"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="report">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_report_id"/>
+            </column>
+            <column name="user_id" type="varchar(36)"/>
+            <column name="workout_plan_id" type="bigint"/>
+            <column name="weight" type="double"/>
+            <column name="initial" type="boolean" defaultValue="false"/>
+            <column name="left_biceps" type="double"/>
+            <column name="right_biceps" type="double"/>
+            <column name="left_forearm" type="double"/>
+            <column name="right_forearm" type="double"/>
+            <column name="shoulders" type="double"/>
+            <column name="chest" type="double"/>
+            <column name="waist" type="double"/>
+            <column name="abdomen" type="double"/>
+            <column name="hips" type="double"/>
+            <column name="right_thigh" type="double"/>
+            <column name="left_thigh" type="double"/>
+            <column name="right_calf" type="double"/>
+            <column name="left_calf" type="double"/>
+            <column name="body_fat" type="int"/>
+            <column name="reviewed" type="boolean" defaultValue="false"/>
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(36)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_report" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="Tm46 add start and end dates to workout plan" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="workout_plan" columnName="workout_start_date"/>
+                <columnExists tableName="workout_plan" columnName="workout_end_date"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="workout_plan">
+            <column name="workout_plan_start_date" type="date"/>
+            <column name="workout_plan_end_date" type="date"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm46 add unique hash to training unit" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <columnExists tableName="training_unit" columnName="unique_hash"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="training_unit">
+            <column name="unique_hash" type="varchar(32)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Tm46 rename was_completed column in training unit entity" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="training_unit" columnName="was_completed"/>
+        </preConditions>
+
+        <renameColumn tableName="training_unit" oldColumnName="was_completed" newColumnName="completed"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change keycloak id,created by,modified by column size in user" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="user" columnName="keycloak_id"/>
+            <columnExists tableName="user" columnName="created_by"/>
+            <columnExists tableName="user" columnName="modified_by"/>
+        </preConditions>
+
+        <modifyDataType tableName="user" columnName="keycloak_id" newDataType="varchar(36)"/>
+        <modifyDataType tableName="user" columnName="created_by" newDataType="varchar(36)"/>
+        <modifyDataType tableName="user" columnName="modified_by" newDataType="varchar(36)"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change keycloak id,created by,modified by column size in exercise" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="exercise" columnName="created_by"/>
+            <columnExists tableName="exercise" columnName="modified_by"/>
+        </preConditions>
+
+        <modifyDataType tableName="exercise" columnName="created_by" newDataType="varchar(36)"/>
+        <modifyDataType tableName="exercise" columnName="modified_by" newDataType="varchar(36)"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change keycloak id,created by,modified by column size in exercise item" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="exercise_item" columnName="created_by"/>
+            <columnExists tableName="exercise_item" columnName="modified_by"/>
+        </preConditions>
+
+        <modifyDataType tableName="exercise_item" columnName="created_by" newDataType="varchar(36)"/>
+        <modifyDataType tableName="exercise_item" columnName="modified_by" newDataType="varchar(36)"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change keycloak id,created by,modified by column size in training unit" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="training_unit" columnName="created_by"/>
+            <columnExists tableName="training_unit" columnName="modified_by"/>
+        </preConditions>
+
+        <modifyDataType tableName="training_unit" columnName="created_by" newDataType="varchar(36)"/>
+        <modifyDataType tableName="training_unit" columnName="modified_by" newDataType="varchar(36)"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change keycloak id,created by,modified by column size in workout plan" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="workout_plan" columnName="created_by"/>
+            <columnExists tableName="workout_plan" columnName="modified_by"/>
+        </preConditions>
+
+        <modifyDataType tableName="workout_plan" columnName="created_by" newDataType="varchar(36)"/>
+        <modifyDataType tableName="workout_plan" columnName="modified_by" newDataType="varchar(36)"/>
+    </changeSet>
+
+    <changeSet id="Tm46 change user id column in workout plan" author="kstankiewicz">
+        <preConditions>
+            <columnExists tableName="workout_plan" columnName="user_id"/>
+        </preConditions>
+
+        <modifyDataType tableName="workout_plan" columnName="user_id" newDataType="varchar(36)"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,17 +1,15 @@
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show_sql: false
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
-
   datasource:
     url: jdbc:postgresql://localhost:5432/tm_core
     username: postgres
-    password: postgres
+    password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver
 
   liquibase:
@@ -22,8 +20,6 @@ springdoc:
     path: /api-docs
   override-with-generic-response: false
   show-actuator: true
-
-
 management:
   endpoints:
     web:
@@ -33,3 +29,38 @@ management:
 server:
   servlet:
     context-path: /api/tm-core
+
+keycloak:
+  auth-server-url: http://localhost:8123
+  realm: trainmate
+  resource: train-mate
+  bearerOnly: true
+  enabled: true
+  public-client: true
+  cors: true
+  use-resource-role-mappings: true
+  ssl-required: none
+
+keycloak-admin:
+  server-url: http://localhost:8123
+  client-id: admin-cli
+  secret: ${KEYCLOAK_ADMIN_SECRET}
+
+keycloak-properties:
+  redirect-url: http://localhost:4200
+
+logging:
+  level:
+    web: debug
+
+email-sender:
+  host: smtp.gmail.com
+  port: 587
+  username: inzynierka.trainmate@gmail.com
+  protocol: smtp
+  password: ${EMAIL_SENDER_PASSWORD}
+  from: no-reply@trainmate.com
+
+email-scheduler:
+  periodical-report: "0 0 8 * * 0"
+  weekly-report: "0 0 8 * * 0"

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="TrainMate#10 - create workout plan entity" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="workout_plan"/>
+                <sequenceExists sequenceName="seq_workout_plan"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="workout_plan">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="pk_workout_plan_id" nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+            <column name="user_id" type="varchar(255)"/>
+            <column name="category" type="varchar(255)"/>
+
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_workout_plan" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="TrainMate#10 - create training unit entity" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="training_unit"/>
+                <sequenceExists sequenceName="seq_training_unit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="training_unit">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="pk_training_unit_id" nullable="false"/>
+            </column>
+
+            <column name="workout_plan_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="day_of_week" type="varchar(255)"/>
+            <column name="week_number" type="bigint"/>
+            <column name="was_completed" type="boolean" defaultValue="false"/>
+
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_training_unit" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="TrainMate#10 - create exercise entity" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exercise"/>
+                <sequenceExists sequenceName="seq_exercise"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="exercise">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="pk_exercise_id" nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="url" type="text"/>
+
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_exercise" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="TrainMate#10 - create exercise item entity" author="kstankiewicz">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="exercise_item"/>
+                <sequenceExists sequenceName="seq_exercise_item"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="exercise_item">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="pk_exercise_item_id" nullable="false"/>
+            </column>
+
+            <column name="exercise_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="training_unit_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="repetitions" type="int"/>
+            <column name="tempo" type="varchar(32)"/>
+            <column name="weight" type="int"/>
+            <column name="rir" type="int"/>
+            <column name="sets" type="int"/>
+
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(255)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_exercise_item" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="TrainMate#10 - create training unit foreign key constraint" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_training_unit_workout_plan_id"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseTableName="training_unit"
+          baseColumnNames="workout_plan_id"
+          constraintName="fk_training_unit_workout_plan_id"
+          referencedTableName="workout_plan"
+          referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="TrainMate#10 - create exercise item foreign key constraint" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="fk_exercise_item_exercise_id"/>
+                <foreignKeyConstraintExists foreignKeyName="fk_exercise_item_training_unit_id"/>
+            </not>
+        </preConditions>
+
+        <addForeignKeyConstraint baseTableName="exercise_item"
+          baseColumnNames="exercise_id"
+          constraintName="fk_exercise_item_exercise_id"
+          referencedTableName="exercise"
+          referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="exercise_item"
+          baseColumnNames="training_unit_id"
+          constraintName="fk_exercise_item_training_unit_id"
+          referencedTableName="training_unit"
+          referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

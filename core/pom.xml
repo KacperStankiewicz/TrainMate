@@ -16,36 +16,136 @@
         <java.version>11</java.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-
-        <!--        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>-->
         <checkstyle.version>9.1</checkstyle.version>
         <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
-        <!--        <cxf.version>2.2.3</cxf.version>-->
-        <!--        <cxf-rt-frontend-jaxws.verison>3.5.0</cxf-rt-frontend-jaxws.verison>-->
         <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
-        <!--        <greenmail-spring.version>1.6.10</greenmail-spring.version>-->
-        <!--        <hibernate-types.version>2.19.2</hibernate-types.version>-->
         <liquibase.version>4.7.1</liquibase.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <spock-spring.version>2.0-groovy-3.0</spock-spring.version>
-        <sonar.scaner.version>3.9.1.2184</sonar.scaner.version>
-        <sonar.tests>src/test/groovy</sonar.tests>
+        <keycloak-security-adapter.version>24.0.1</keycloak-security-adapter.version>
+        <vavr.version>0.10.4</vavr.version>
+        <keycloak.version>16.1.0</keycloak.version>
+        <spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
+        <spring-boot.version>2.6.6</spring-boot.version>
+        <keycloak-admin-client.version>24.0.3</keycloak-admin-client.version>
+        <resteasy-client.version>6.2.8.Final</resteasy-client.version>
+        <resteasy-jackson2-provider.version>6.2.8.Final</resteasy-jackson2-provider.version>
+        <passay.version>1.6.4</passay.version>
+        <jakarta.ws.rs-api.version>3.1.0</jakarta.ws.rs-api.version>
+        <jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+        <jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
+        <jakarta.activation-api.version>2.1.3</jakarta.activation-api.version>
+        <jakarta.mail-api.version>2.1.3</jakarta.mail-api.version>
+        <spring-cloud-starter-openfeign.version>3.1.1</spring-cloud-starter-openfeign.version>
+        <springdoc-openapi-ui.version>1.6.4</springdoc-openapi-ui.version>
+        <simple-java-mail.version>6.6.0</simple-java-mail.version>
+        <spotbugs.version>4.5.0</spotbugs.version>
+        <spotbugs-annotations.version>4.7.2</spotbugs-annotations.version>
+        <spotbugs-maven-plugin.version>4.5.0.0</spotbugs-maven-plugin.version>
+        <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
+        <fastinfoset.version>2.1.1</fastinfoset.version>
+        <awaitility.version>4.1.0</awaitility.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.10.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
 
-        <!--                <dependency>-->
-        <!--                    <groupId>org.springframework</groupId>-->
-        <!--                    <artifactId>spring-beans</artifactId>-->
-        <!--                    <version>6.1.1</version>-->
-        <!--                </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>${simple-java-mail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.fastinfoset</groupId>
+            <artifactId>FastInfoset</artifactId>
+            <version>${fastinfoset.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>${passay.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>${keycloak-admin-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>${resteasy-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <version>${resteasy-jackson2-provider.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>${jakarta.ws.rs-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta.annotation-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jakarta.xml.bind-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>${jakarta.activation-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+            <version>${jakarta.mail-api.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.querydsl</groupId>
@@ -55,6 +155,30 @@
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-spring-boot-starter</artifactId>
+            <version>${keycloak.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${spring-security-oauth2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
@@ -68,37 +192,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>commons-validator</groupId>-->
-        <!--            <artifactId>commons-validator</artifactId>-->
-        <!--            <version>1.7</version>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.vladmihalcea</groupId>-->
-        <!--            <artifactId>hibernate-types-60</artifactId>-->
-        <!--            <version>2.21.1</version>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -117,12 +213,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
@@ -131,10 +221,17 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.4</version>
+            <version>${springdoc-openapi-ui.version}</version>
         </dependency>
 
         <!--Test's dependencies-->
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -142,23 +239,21 @@
         </dependency>
 
         <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-core</artifactId>
-            <scope>test</scope>
-            <version>2.3-groovy-4.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.spockframework</groupId>
-            <artifactId>spock-spring</artifactId>
-            <scope>test</scope>
-            <version>${spock-spring.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -180,11 +275,6 @@
                     <target>${java.version}</target>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
-                        </path>
-                        <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
@@ -197,7 +287,7 @@
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
-                            <version>2.6.6</version>
+                            <version>${spring-boot.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
@@ -219,7 +309,7 @@
 
                 <configuration>
                     <violationSeverity>warning</violationSeverity>
-                    <configLocation>config/checkstyle.xml</configLocation>
+                    <configLocation>codestyleconfig/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
@@ -282,30 +372,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
-            <!--            <plugin>-->
-            <!--                <groupId>io.github.git-commit-id</groupId>-->
-            <!--                <artifactId>git-commit-id-maven-plugin</artifactId>-->
-            <!--                <version>5.0.0</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>get-the-git-infos</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>revision</goal>-->
-            <!--                        </goals>-->
-            <!--                        <phase>initialize</phase>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--                <configuration>-->
-            <!--                    <generateGitPropertiesFile>true</generateGitPropertiesFile>-->
-            <!--                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>-->
-            <!--                    <includeOnlyProperties>-->
-            <!--                        <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>-->
-            <!--                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>-->
-            <!--                    </includeOnlyProperties>-->
-            <!--                    <commitIdGenerationMode>full</commitIdGenerationMode>-->
-            <!--                </configuration>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

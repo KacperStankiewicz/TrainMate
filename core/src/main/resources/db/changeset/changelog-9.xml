@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+
+    <changeSet id="Tm63 create file storage entity" author="kstankiewicz">
+        <preConditions>
+            <not>
+                <tableExists tableName="file_storage"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="file_storage">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="pk_file_storage_id"/>
+            </column>
+            <column name="file_name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_type" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_size" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_content" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="report_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="storage_id" type="uuid">
+                <constraints unique="true" uniqueConstraintName="uq_file_storage_storage_id"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date_time" type="${timestamp}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modification_date_time" type="${timestamp}"/>
+            <column name="modified_by" type="varchar(36)"/>
+        </createTable>
+
+        <createSequence sequenceName="seq_file_storage" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+</databaseChangeLog>
