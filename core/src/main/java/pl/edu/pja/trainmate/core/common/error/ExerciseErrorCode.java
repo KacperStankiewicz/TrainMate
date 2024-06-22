@@ -13,7 +13,8 @@ public enum ExerciseErrorCode implements BaseErrorCode {
     INVALID_SEARCH_CRITERIA("Provided exercise search criteria are invalid", BAD_REQUEST),
     NAME_MUST_NOT_BE_NULL("Exercise name must not be null", BAD_REQUEST),
     URL_MUST_NOT_BE_NULL("Exercise video URL must not be null", BAD_REQUEST),
-    MUSCLE_INVOLVED_MUST_NOT_BE_NULL("Exercise muscle involved must not be null", BAD_REQUEST);
+    MUSCLE_INVOLVED_MUST_NOT_BE_NULL("Exercise muscle involved must not be null", BAD_REQUEST),
+    MUST_NOT_DELETE_EXERCISE_USED_IN_WORKOUT("Cannot delete exercise used in workouts", BAD_REQUEST);
 
     private final String message;
     private final HttpStatus httpStatus;

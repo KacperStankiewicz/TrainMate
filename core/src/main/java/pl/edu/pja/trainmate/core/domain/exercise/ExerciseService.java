@@ -2,6 +2,7 @@ package pl.edu.pja.trainmate.core.domain.exercise;
 
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.COULD_NOT_CREATE_EXERCISE;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.MUSCLE_INVOLVED_MUST_NOT_BE_NULL;
+import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.MUST_NOT_DELETE_EXERCISE_USED_IN_WORKOUT;
 import static pl.edu.pja.trainmate.core.common.error.ExerciseErrorCode.NAME_MUST_NOT_BE_NULL;
 
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,16 @@ import pl.edu.pja.trainmate.core.domain.exercise.dto.ExerciseDto;
 class ExerciseService {
 
     private final ExerciseRepository repository;
+    private final ExerciseItemRepository exerciseItemRepository;
 
     public void deleteById(BasicAuditDto dto) {
         var entity = repository.findExactlyOneById(dto.getId());
         entity.validateVersion(dto.getVersion());
+
+        if (exerciseItemRepository.existsExerciseItemEntityByExerciseId(dto.getId())) {
+            throw new CommonException(MUST_NOT_DELETE_EXERCISE_USED_IN_WORKOUT);
+        }
+
         repository.deleteById(dto.getId());
     }
 
