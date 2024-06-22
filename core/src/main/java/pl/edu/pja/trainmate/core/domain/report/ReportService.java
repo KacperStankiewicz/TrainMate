@@ -1,5 +1,6 @@
 package pl.edu.pja.trainmate.core.domain.report;
 
+import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.CANNOT_REPORT_NOT_ENDED_WORKOUT_PLAN;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.COULD_NOT_CREATE_REPORT;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.INITIAL_REPORT_ALREADY_EXISTS;
 import static pl.edu.pja.trainmate.core.common.error.ReportErrorCode.WORKOUT_PLAN_WAS_ALREADY_REPORTED;
@@ -16,6 +17,7 @@ import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportCreateDto;
 import pl.edu.pja.trainmate.core.domain.report.dto.PeriodicalReportUpdateDto;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
 import pl.edu.pja.trainmate.core.domain.training.querydsl.ReportQueryService;
+import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ class ReportService {
     private final ReportRepository repository;
     private final LoggedUserDataProvider userProvider;
     private final ReportQueryService queryService;
+    private final WorkoutPlanRepository workoutPlanRepository;
 
     public PeriodicalReportProjection getReportById(Long reportId) {
         return queryService.getReportById(reportId);
@@ -47,6 +50,12 @@ class ReportService {
         if (repository.existsReportEntityByWorkoutPlanId(reportCreateDto.getWorkoutPlanId())) {
             throw new CommonException(WORKOUT_PLAN_WAS_ALREADY_REPORTED.format(reportCreateDto.getWorkoutPlanId()),
                 WORKOUT_PLAN_WAS_ALREADY_REPORTED.getHttpStatus());
+        }
+
+        var workoutPlan = workoutPlanRepository.findExactlyOneById(reportCreateDto.getWorkoutPlanId());
+
+        if (workoutPlan.hasEnded()) {
+            throw new CommonException(CANNOT_REPORT_NOT_ENDED_WORKOUT_PLAN);
         }
 
         var userId = userProvider.getLoggedUserId();
