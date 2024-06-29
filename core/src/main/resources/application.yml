@@ -51,7 +51,7 @@ keycloak-properties:
 
 logging:
   level:
-    web: debug
+    pl.edu.pja.trainmate.core: debug
 
 email-sender:
   host: smtp.gmail.com
@@ -63,4 +63,4 @@ email-sender:
 
 email-scheduler:
   periodical-report: "0 0 8 * * 0"
-  weekly-report: "0 0 8 * * 0"
+  weekly-report: "0 0 7 * * 0"

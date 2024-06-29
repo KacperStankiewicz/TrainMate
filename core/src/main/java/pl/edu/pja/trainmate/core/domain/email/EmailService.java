@@ -33,7 +33,7 @@ public class EmailService {
     public void sendEmail(String email, TemplateType type) {
         var template = repository.getEmailTemplateEntityByType(type);
         var params = new EmailParamsDto(email, template.getSubject(), template.getContent());
-
+        log.debug("Sending email to :{}", email);
         Try.of(() -> params)
             .andThenTry(this::configureSender)
             .andThenTry(sender::testConnection)
