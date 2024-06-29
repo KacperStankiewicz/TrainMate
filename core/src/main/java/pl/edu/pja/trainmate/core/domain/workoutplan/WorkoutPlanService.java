@@ -126,7 +126,7 @@ class WorkoutPlanService {
         if (!workouts.isEmpty()) {
             var overlaps = workouts.stream()
                 .map(WorkoutPlanListItemProjection::getDateRange)
-                .anyMatch(it -> it.isDateWithinRange(startDate) || startDate.isEqual(it.getFrom()) || startDate.isEqual(it.getTo()));
+                .anyMatch(it -> it.isDateWithinRange(startDate) || startDate.isEqual(it.getFrom()));
             if (overlaps) {
                 throw new CommonException(WORKOUT_PLAN_START_DATE_OVERLAPS_WITH_OTHER_WORKOUT_PLAN);
             }

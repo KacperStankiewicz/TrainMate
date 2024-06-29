@@ -54,7 +54,7 @@ class ReportService {
 
         var workoutPlan = workoutPlanRepository.findExactlyOneById(reportCreateDto.getWorkoutPlanId());
 
-        if (workoutPlan.hasEnded()) {
+        if (!workoutPlan.hasEnded()) {
             throw new CommonException(CANNOT_REPORT_NOT_ENDED_WORKOUT_PLAN);
         }
 

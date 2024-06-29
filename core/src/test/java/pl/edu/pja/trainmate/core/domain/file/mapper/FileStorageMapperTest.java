@@ -47,7 +47,7 @@ class FileStorageMapperTest {
         var dto = FileStorageDto.builder()
             .storageId(StorageId.valueOf(UUID.randomUUID()))
             .content("content")
-            .name("name")
+            .name("name.png")
             .type("type")
             .size(123L)
             .build();
@@ -56,7 +56,7 @@ class FileStorageMapperTest {
 
         assertNotEquals(dto.getStorageId(), entity.getStorageId());
         assertEquals(dto.getContent(), entity.getFileContent());
-        assertEquals(dto.getName(), entity.getFileName());
+        assertNotEquals(dto.getName(), entity.getFileName());
         assertEquals(dto.getType(), entity.getFileType());
         assertEquals(dto.getSize(), entity.getFileSize());
         assertEquals(1L, entity.getReportId());

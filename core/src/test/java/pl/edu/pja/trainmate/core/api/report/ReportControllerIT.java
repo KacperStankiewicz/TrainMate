@@ -11,6 +11,7 @@ import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_
 import static pl.edu.pja.trainmate.core.api.report.ReportEndpoints.WORKOUT_PLAN_REPORT_REVIEW;
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getExerciseReportSampleDataBuilder;
 import static pl.edu.pja.trainmate.core.api.sampledata.ReportSampleData.getSamplePeriodicalReportCreateDtoBuilder;
+import static pl.edu.pja.trainmate.core.api.sampledata.WorkoutPlanSampleData.getSampleActiveWorkoutPlanEntityBuilder;
 import static pl.edu.pja.trainmate.core.common.ResultStatus.SUCCESS;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.MENTEE;
 import static pl.edu.pja.trainmate.core.config.security.RoleType.PERSONAL_TRAINER;
@@ -18,6 +19,7 @@ import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponse
 import static pl.edu.pja.trainmate.core.testutils.ResponseConverter.castResponseToList;
 
 import io.vavr.collection.List;
+import java.time.LocalDate;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +28,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.edu.pja.trainmate.core.ControllerSpecification;
 import pl.edu.pja.trainmate.core.common.BasicAuditDto;
+import pl.edu.pja.trainmate.core.common.DateRange;
 import pl.edu.pja.trainmate.core.common.ResultDto;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemEntity;
 import pl.edu.pja.trainmate.core.domain.exercise.ExerciseItemRepository;
 import pl.edu.pja.trainmate.core.domain.report.ReportEntity;
 import pl.edu.pja.trainmate.core.domain.report.ReportRepository;
 import pl.edu.pja.trainmate.core.domain.report.querydsl.PeriodicalReportProjection;
+import pl.edu.pja.trainmate.core.domain.workoutplan.WorkoutPlanRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,6 +46,9 @@ class ReportControllerIT extends ControllerSpecification {
 
     @Autowired
     private ExerciseItemRepository exerciseItemRepository;
+
+    @Autowired
+    private WorkoutPlanRepository workoutPlanRepository;
 
     @AfterEach
     @SuppressWarnings("unused")
@@ -149,8 +156,16 @@ class ReportControllerIT extends ControllerSpecification {
     @Test
     void shouldCreatePeriodicalReport() {
         //given
+        userWithRole(PERSONAL_TRAINER);
+        var entityDto = getSampleActiveWorkoutPlanEntityBuilder()
+            .dateRange(new DateRange(LocalDate.now().minusWeeks(5), LocalDate.now().minusDays(1)))
+            .build();
+        var entity = workoutPlanRepository.save(entityDto);
+
         userWithRole(MENTEE);
-        var dto = getSamplePeriodicalReportCreateDtoBuilder().build();
+        var dto = getSamplePeriodicalReportCreateDtoBuilder()
+            .workoutPlanId(entity.getId())
+            .build();
 
         //when
         var response = performPost(String.format(WORKOUT_PLAN_REPORT, dto.getWorkoutPlanId()), dto).getResponse();
@@ -160,12 +175,12 @@ class ReportControllerIT extends ControllerSpecification {
         assertEquals(SUCCESS, responseBody.getStatus());
 
         //and
-        var entity = reportRepository.findExactlyOneById((Long) responseBody.getValue());
-        assertEquals(dto.getBodyFat(), entity.getBodyFat());
-        assertEquals(dto.getWeight(), entity.getWeight());
-        assertEquals(dto.getHips(), entity.getCircumferences().getHips());
-        assertFalse(entity.isInitial());
-        assertFalse(entity.isReviewed());
+        var reportEntity = reportRepository.findExactlyOneById((Long) responseBody.getValue());
+        assertEquals(dto.getBodyFat(), reportEntity.getBodyFat());
+        assertEquals(dto.getWeight(), reportEntity.getWeight());
+        assertEquals(dto.getHips(), reportEntity.getCircumferences().getHips());
+        assertFalse(reportEntity.isInitial());
+        assertFalse(reportEntity.isReviewed());
     }
 
     @Test

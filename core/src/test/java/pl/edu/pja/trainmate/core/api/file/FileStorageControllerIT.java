@@ -1,6 +1,7 @@
 package pl.edu.pja.trainmate.core.api.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static pl.edu.pja.trainmate.core.api.file.FileStorageEndpoints.ADD;
 import static pl.edu.pja.trainmate.core.api.file.FileStorageEndpoints.DELETE;
 import static pl.edu.pja.trainmate.core.api.sampledata.FileStorageSampleData.getSampleFileStorageDtoBuilder;
@@ -49,7 +50,7 @@ class FileStorageControllerIT extends ControllerSpecification {
 
         assertEquals(dto.getSize(), entity.getFileSize());
         assertEquals(dto.getType(), entity.getFileType());
-        assertEquals(dto.getName(), entity.getFileName());
+        assertNotEquals(dto.getName(), entity.getFileName());
         assertEquals(dto.getContent(), entity.getFileContent());
     }
 

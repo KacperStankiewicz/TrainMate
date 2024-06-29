@@ -16,7 +16,10 @@ class ExerciseServiceTest {
     @MockBean
     private ExerciseRepository repository;
 
-    private final ExerciseService service = new ExerciseService(repository);
+    @MockBean
+    private ExerciseItemRepository exerciseItemRepository;
+
+    private final ExerciseService service = new ExerciseService(repository, exerciseItemRepository);
 
     @Test
     void shouldThrowExceptionWhenNameIsNull() {
